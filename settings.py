@@ -42,7 +42,7 @@ aldryn_addons.settings.load(locals())
 #
 # for guidance on managing these settings.
 BASE_DIR = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "..")
-sys.path.insert(0, os.path.join(BASE_DIR, "apps"))  # 使apps目录优于其他目录被import语句检索到
+sys.path.insert(0, os.path.join(BASE_DIR, "apps"))  
 
 # 文章列表分页数量
 ARTICLE_PAGINATE_BY = 8
