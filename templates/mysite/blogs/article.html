@@ -1,0 +1,340 @@
+{% extends 'mysite/layout.html' %}
+{% load blog_tags %}
+{% load staticfiles %}
+
+{% block meta %}
+<title>{{ post.title }}</title>
+<meta name="description" content="{{ post.excerpt }}"/>
+<meta name="keywords" content="{% for tag in post.tag.all %}{{ tag.name }},{% endfor %}"/>
+{% endblock %}
+{% block content%}
+    <!-- ***** Breadcrumb Area Start ***** -->
+    <div class="breadcrumb-area">
+        <div class="container h-75">
+            <div class="row h-75 align-items-end">
+                <div class="col-12">
+                    <div class="breadcumb--con">
+                        <nav aria-label="breadcrumb">
+                            <ol class="breadcrumb">
+                                <li class="breadcrumb-item"><a href=""><i class="fa fa-home"></i> Home</a></li>
+                                <li class="breadcrumb-item"><a href="">Blogs</a></li>
+                                <li class="breadcrumb-item active" aria-current="page">{{ post.title }}</li>
+                            </ol>
+                        </nav>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Background Curve -->
+        <div class="breadcrumb-bg-curve">
+            <img src="{% static 'app/img/core-img/curve-5.png' %}" alt="">
+        </div>
+    </div>
+    <!-- ***** Breadcrumb Area End ***** -->
+
+    <!-- ***** Blog Details Area Start ***** -->
+    <section class="blog-details-area section-padding-80">
+        <div class="container">
+            <div class="row">
+                <div class="col-12">
+                    <div class="blog-details-content">
+                        <!-- Post Details Text -->
+                        <div class="post-details-text">
+                            <div class="row">
+                            <div class="col-md-3">
+                                {% block content_right %}
+                                <div class = "content-sidebar">
+                                    {% block sidebar %}
+                                        {% ifnotequal '' post.toc %}
+                                            <div class="sidebar" >
+                                                <div class="title">
+                                                    <h3>Article Directory</h3>
+                                                </div>
+                                                <div class="post-toc">
+                                                    {% autoescape off %}
+                                                    {{ post.toc }}
+                                                    {% endautoescape %}
+                                                </div>
+                                            </div>
+                                        {% endifnotequal %}
+
+                                        {% block category_sidebar %}
+                                            <div class="sidebar">
+                                                <div class="title"><h3>Article Category</h3></div>
+                                                    <div class="git_tags">
+                                                            {% get_category as categories %}
+                                                            {% for category in categories %}
+                                                                <a href="{{ category.get_absolute_url  }}">{{ category.name }}</a>
+                                                            {% endfor %}
+                                                    </div>
+                                            </div>
+                                        {% endblock %}
+
+                                        {% block tag_sidebar %}
+                                            <div class="sidebar" >
+                                                <div class="title"><h3>Popular tags</h3></div>
+                                                <div class="git_tags">
+                                                    {% get_posts_tags as tags %}
+                                                    {% for tag in tags %}
+                                                        <a href="{{ tag.get_absolute_url  }}">{{ tag.name }}</a>
+                                                    {% endfor %}
+                                                </div>
+                                            </div>
+                                        {% endblock %}
+                                    {% endblock %}
+                                </div>
+                            {% endblock %}
+                            </div>
+                                <div class="col-md-9">
+                                    <div class="article">
+                                            <div class="article-header">
+                                                <h2>{{ post.title }}</h2>
+                                                <div class="article-meta">
+                                                    <span>date：{{ post.created_time|timesince }}</span>
+
+                                                    <span>classification：<a href="{% url 'blog:category' post.category.id %}" itemprop="url" rel="index">{{ category.name }}</a></span>
+
+                                                    <span>
+                                                        <span>label：
+                                                            {% for tag in post.tag.all %}
+                                                                <a href="{{ tag.get_absolute_url }}">{{ tag.name }}</a>
+                                                            {% endfor %}
+                                                        </span>
+                                                    </span>
+                                                    <span class="post-views">read（{{ post.views }}）</span>
+
+                                                    <span>comment({% get_comment_count post %})</span>
+                                                </div>
+                                            </div>
+
+                                            <!--文章内容-->
+                                            <div class="article-body">
+                                                {% autoescape off %}
+                                                    {{ post.body| markdown|safe }}
+                                                {% endautoescape %}
+                                            </div>
+                                        </div>
+                                    <div class="d-flex align-items-center justify-content-between">
+                                        <!-- Post Catagories -->
+                                        <div class="post-catagories">
+                                            <ul class="d-flex flex-wrap align-items-center">
+                                                <li><a href="#">Tutorials</a></li>
+                                                <li><a href="#">Business</a></li>
+                                            </ul>
+                                        </div>
+
+                                        <!-- Post Share -->
+                                        <div class="uza-post-share d-flex align-items-center">
+                                            <h6 class="mb-0 mr-3">Share:</h6>
+                                            <div class="social-info-">
+                                                <a href="#"><i class="fa fa-facebook" aria-hidden="true"></i></a>
+                                                <a href="#"><i class="fa fa-twitter" aria-hidden="true"></i></a>
+                                                <a href="#"><i class="fa fa-google-plus" aria-hidden="true"></i></a>
+                                                <a href="#"><i class="fa fa-linkedin" aria-hidden="true"></i></a>
+                                                <a href="#"><i class="fa fa-envelope" aria-hidden="true"></i></a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                               <div class="related-news-area">
+                                        <h2 class="mb-4">Relatest News</h2>
+
+                                        <div class="row">
+                                            <!-- Single Blog Post -->
+                                            
+                                            {% for relative_post in relative_posts %}
+                                            <div class="col-12 col-lg-6">
+                                                <div class="single-blog-post bg-img mb-50" style="background-image: url(./static/app/img/bg-img/8.jpg);">
+                                                    <!-- Post Content -->
+                                                    <div class="post-content">
+                                                        <span class="post-date"><span>{{ relative_post.id }}</span> {{ relative_post.created_time|timesince}} ago</span><span>Category: {{relative_post.category}} </span>
+                                                        <span> Read :({{relative_post.views}})</span>
+                                                        <span>comment:({% get_comment_count relative_post %})</span>
+                                                        <a href="{{ relative_post.get_absolute_url }}" title="{{ relative_post.title }}" class="post-title">{{ relative_post.title | slice:":50" }}</a>
+                                                        <p>{{ relative_post.excerpt}}......</p>
+                                                        <a href="{{ relative_post.get_absolute_url }}" class="read-more-btn">Read More <i class="arrow_carrot-2right"></i></a>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            {% endfor %}
+                                            
+                                        </div>
+                                    </div>
+
+                                    <!-- Comments Area -->
+                                    <div class="comment_area mb-50 clearfix">
+									
+                                        <h5 class="title" id="comment">{{ total_comments }} comments</h5>
+                                        <ol>
+                                            
+                                            <li class="single_comment_area" id="comment_list">
+                                                    <!-- Comment Content -->
+                                                    {% get_comments_list post as comments %}
+                                                    {% for comment in comments %} 
+                                                    <div  class="comment-content d-flex comment"  id="root_{{ comment.pk }}">
+                                                        <!-- Comment Author -->
+                                                        {% ifequal comment.user.username 'reborn' %}
+                                                        <div class="comment-author">
+                                                            <img src="{% static 'blog/image/touxiang.jpg' %}" alt="{{ comment.user.username }}">
+                                                        </div>
+                                                        {% else %}
+                                                        <div class="comment-author">
+                                                            <img src="{% static 'blog/image/touxiang.jpg' %}" alt="{{ comment.user.username }}">
+                                                        </div>
+                                                        {% endifequal %}
+                                                        <!-- Comment Meta -->
+                                                        <div class="comment-meta" id="comment_{{ comment.pk }}">
+                                                            <a href="#" class="post-date">{{ comment.comment_time| timesince}} ago</a>
+                                                            {% ifequal reply.user.username 'reborn' %}
+                                                                <h5>Blogger</h5>
+                                                            {% else %}
+                                                                <h5>{{ comment.user.username }}</h5>
+                                                            {% endifequal %}
+                                                            <p>{{ comment.text|safe }}</p>
+                                                            <a href="#" class="like">Like</a>
+                                                            <a href="javascript:reply({{ comment.pk }})" class="reply">Reply</a>
+                                                        </div>
+                                                    </div>
+                                                    {% if reply.user.username is  null %}
+                                                        <ol class="children">
+                                                            {% for reply in comment.root_comment.all %}
+                                                                <li class="single_comment_area">
+                                                                    <!-- Comment Content -->
+                                                                    <div class="comment-content d-flex">
+                                                                        <!-- Comment Author -->
+                                                                        {% ifequal reply.user.username 'reborn' %}
+                                                                        <div class="comment-author">
+                                                                            <img src="{% static 'blog/image/touxiang.jpg' %}" alt="{{ reply.user.username }}">
+                                                                        </div>
+                                                                        {% else %}
+                                                                        <div class="comment-author">
+                                                                            <img src="{% static 'blog/image/touxiang.jpg' %}" alt="{{ reply.user.username }}">
+                                                                        </div>
+                                                                        {% endifequal %}
+                                                                        <!-- Comment Meta -->
+                                                                        <div class="comment-meta">
+                                                                            <a href="#" class="post-date">{{ reply.comment_time|date:'Y-m-d H:i:s'}}</a>
+                                                                            {% ifequal reply.user.username 'reborn' %}
+                                                                            <h5>Blogger</h5>
+                                                                            {% else %}
+                                                                            <h5>{{ reply.user.username }}-
+                                                                                {% ifequal reply.reply_to.username 'reborn' %}
+                                                                                Blogger
+                                                                                {% else %}
+                                                                                {{ reply.reply_to.username }}
+                                                                                {% endifequal %}
+                                                                            </h5>
+                                                                            {% endifequal %}
+                                                                            <p id="comment_{{ reply.pk }}">{{ reply.text|safe }}</p>
+                                                                            <a href="#" class="like">Like</a>
+                                                                            <a href="javascript:reply({{ reply.pk }})" class="reply">Reply</a>
+                                                                        </div>
+                                                                    </div>
+                                                                </li>
+                                                                {% endfor %}
+                                                        </ol>
+                                                        {% endif %}
+
+                                                      {% empty %}
+                                                    There are no comments for this article. Just say a few words!
+                                                    {% endfor %}  
+                                                </li>
+                                        </ol>
+                                    </div>
+                                    <!-- Leave A Reply -->
+									
+                                    <div class="uza-contact-form">
+                                        <h2 class="mb-4">Leave A Comment</h2>
+                                            {% if user.is_authenticated  %}
+                                                <form id = "comment_form" action="{% url 'comment:update_comment' %}" method="POST">
+
+                                                    <div id="reply_content_container" style="display:none;">
+                                                        <p id="reply_title">Reply：</p>
+                                                        <div id="reply_content"></div>
+                                                    </div>
+
+                                                    {% csrf_token %}
+                                                    {% get_comment_form post as comment_form%}
+
+                                                    {% for field in comment_form %}
+                                                        {{ field }}
+                                                    {% endfor %}
+
+                                                    <span id="comment_error" class="text-danger pull-left"></span>
+                                                    <input class="btn btn-primary pull-right" type="submit" value="comment">
+                                                </form>
+                                            {% else %}
+                                            Please login and comment
+                                                <a class = "btn btn-primary" href="{% url 'login' %}?from={{ request.get_full_path }}">log in</a>
+                                                <span> or </span>
+                                                <a class = "btn btn-danger" href="{% url 'register' %}?from={{ request.get_full_path }}">register</a>
+                                            {% endif %}
+                                        
+                                </div>
+                        </div>
+                    </div>
+                 </div>
+                </div>
+            </div>
+            </div>
+    </section>
+    <!-- ***** Blog Details Area End ***** -->
+
+    <!-- ***** Newsletter Area Start ***** -->
+    <section class="uza-newsletter-area">
+        <div class="container">
+            <div class="row align-items-center justify-content-between">
+                <!-- Newsletter Content -->
+                <div class="col-12 col-md-6 col-lg-6">
+                    <div class="nl-content mb-80">
+                        <h2>Subscribe to our Newsletter</h2>
+                        <p>Subscribe our newsletter gor get notification about new updates, etc...</p>
+                    </div>
+                </div>
+                <!-- Newsletter Form -->
+                <div class="col-12 col-md-6 col-lg-5">
+                    <div class="nl-form mb-80">
+                        <form action="#" method="post">
+                            <input type="email" name="nl-email" value="" placeholder="Your Email">
+                            <button type="submit">Subscribe</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <!-- Border Bottom -->
+            <div class="border-line"></div>
+        </div>
+    </section>
+    <!-- ***** Newsletter Area End ***** -->
+{% endblock content %}
+    <!-- ***** Footer Area Start ***** -->
+    
+{% block script_extends %}
+    <script type="text/javascript">
+            function reply(reply_comment_id){
+            // 设置值
+            $('#reply_comment_id').val(reply_comment_id);
+            var html = $("#comment_" + reply_comment_id).html();
+            $('#reply_content').html(html);
+            $('#reply_content_container').show();
+            $('html').animate({scrollTop: $('#comment_form').offset().top - 60}, 300, function(){
+                CKEDITOR.instances['id_text'].focus();
+            });
+        }
+
+        $("#comment_form").submit(function(){
+            // 清空错误内容
+            $("#comment_error").text('');
+            // 更新数据
+            if(CKEDITOR.instances['id_text'].document.getBody().getText().trim() === ''){
+                // 显示错误信息
+                $("#comment_error").text('Comment content cannot be empty');
+                return false;``
+            }
+        });
+
+    </script>
+{% endblock %}
+
