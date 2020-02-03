@@ -1,0 +1,23 @@
+{% extends 'mysite/blogs/blogs.html' %}
+{% load blog_tags %}
+{% block content_left%}
+                <div class="row">
+                    {% for post in posts%}
+                        <div class="col-lg-6">
+                        
+                            <div class="single-blog-post bg-img mb-80" style="background-image: url(./static/app/img/bg-img/8.jpg);">
+                                <!-- Post Content -->
+                                <div class="post-content">
+                                    <span class="post-date"><span>{{ post.id }}</span> {{ post.created_time | timesince }}</span><span>Category: {{post.category}} </span>
+                                    <span> Read :({{post.views}})</span>
+                                    <span>comment:({% get_comment_count post %})</span>
+                                    <a href="{{ post.get_absolute_url }}" title="{{ post.title }}" class="post-title">{{ post.title | slice:":50" }}</a>
+                                    <p>{{ post.body | slice:":100"}}...</p>
+                                    <a href="{{ post.get_absolute_url }}" class="read-more-btn">Read More <i class="arrow_carrot-2right"></i></a>
+                                </div>
+                            </div>
+                            
+                        </div>
+                    {% endfor %}
+                </div>                              
+{%  endblock %}

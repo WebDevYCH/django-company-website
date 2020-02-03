@@ -1,0 +1,67 @@
+{% load staticfiles %}
+{% load notifications_tags %}
+{% load blog_tags %}
+<header class="header-area">
+    <!-- Main Header Start -->
+    <div class="main-header-area">
+        <div class="classy-nav-container breakpoint-off">
+            <!-- Classy Menu -->
+            <nav class="classy-navbar justify-content-between" id="uzaNav">
+
+                <!-- Logo -->
+                <a class="nav-brand" href=""><img src="{% static 'app/img/core-img/logo.png' %}" alt="agrowdev logo"></a>
+
+                <!-- Navbar Toggler -->
+                <div class="classy-navbar-toggler">
+                    <span class="navbarToggler"><span></span><span></span><span></span></span>
+                </div>
+
+                <!-- Menu -->
+                <div class="classy-menu">
+                    <!-- Menu Close Button -->
+                    <div class="classycloseIcon">
+                        <div class="cross-wrap"><span class="top"></span><span class="bottom"></span></div>
+                    </div>
+
+                    <!-- Nav Start -->
+                    <div class="classynav">
+                        <ul id="nav">
+                        {% get_meanList as means %}
+                            <li class="current-item"><a href="{% url 'mysite:home' %}">Home</a></li>
+                            <li><a href="{% url 'mysite:about' %}">About</a></li>
+                            <li><a href="{% url 'mysite:blogs' %}">Blogs</a></li>
+                            <li><a href="{% url 'mysite:services' %}">Services</a></li>
+                            <li><a href="{% url 'mysite:portfolio' %}">Portfolio</a></li>
+                            <li><a href="{% url 'mysite:contact' %}">Contact</a></li>
+                            <li><a href="{% url 'mysite:careers' %}">Careers</a></li>
+                        {% for mean in means %}
+                            {% if mean.status == 'y'%}
+                                <li><a href="{% url 'blog:index' %}{{ mean.link }}"><i class="menu-item-icon fa {{ mean.icon }}"></i>{{ mean.title }}</a></li>
+                            {% endif%}
+                        {% endfor %}
+                        {% if user.is_authenticated  %}
+                        <li class="">
+                            {% notifications_unread as unread_count %}
+                            <a href="{% url 'notice:my_notifications' %}"><i class="fa fa-bell" aria-hidden="true"></i>{% if unread_count %} <span class="badge">{{ unread_count }}</span>{% endif %}</a>
+                        </li>
+
+                        {% else %}
+                            <li class="">
+                                <a href="{% url 'login' %}?from={{ request.get_full_path }}">login/Register</a>
+                            </li>
+                        {% endif %}
+                        </ul>
+                        
+                        <!-- Search Icon -->
+                        <div class="search-icon" data-toggle="modal" data-target="#searchModal">
+                            <i class="icon_search"></i>
+                        </div>
+                    </div>
+                    <!-- Nav End -->
+
+                </div>
+            </nav>
+        </div>
+    </div>
+</header>
+<!-- ***** Header Area End ***** -->

@@ -1,0 +1,58 @@
+{% extends 'mysite/blogs/blogs.html' %}
+{% load highlight %}
+{% load staticfiles %}
+{% load blog_tags %}
+{% block content_left %}
+    {% if query %}
+        <div class="row">
+            {% for post in page.object_list%}
+            <div class="col-lg-6">
+                    <div class="single-blog-post bg-img mb-80" style="background-image: url(./static/app/img/bg-img/8.jpg);">
+                        <!-- Post Content -->
+                        <div class="post-content">
+                            <span class="post-date"><span>{{ post.object.id }}</span> {{ post.object.created_time }}</span><span>Category: {{post.object.category}} </span>
+                            <span> Read :({{post.object.views}})</span>
+                            <span>comment:({% get_comment_count post.object %})</span>
+                            <a href="{{ post.object.get_absolute_url }}" title="{{ post.object.title }}" class="post-title">{{ post.object.title | slice:":50" }}</a>
+                            <p>{{ post.object.body| safe | slice:":100"}}......</p>
+                            <a href="{{ post.object.get_absolute_url }}" class="read-more-btn">Read More <i class="arrow_carrot-2right"></i></a>
+                        </div>
+                    </div>
+                </div>
+                
+            {% empty %}
+                <div class="django-panel django-panel-padding">
+                    <p>Sorry......No results found!</p>
+                    <p>Please enter <strong> complete and meaningful search keywords </strong>, such as: django</p>
+                </div>
+            {% endfor %}
+        </div>
+        <nav class="Page navigation conatiner">
+            <ul class="pagination justify-content-center">
+                <li><a href="?q={{ query }}&amp;?page=1" class="page-link"><span class="fa fa-step-backward" aria-hidden="true"></span></a></li>
+
+                    {% if page.has_previous%}
+                         <li><a href="?q={{ query }}&amp;page={{page.previous_page_number }}" class="page-link"><span class="fa fa-chevron-left" aria-hidden="true"></span></a></li>
+                    {% else %}
+                        <li><a href="" class="page-link"><span class="fa fa-chevron-left" aria-hidden="true"></span></a></li>
+                    {% endif %}
+
+                        <li><span class="page-link" >{{ page.number }} of {{ page.paginator.num_pages }}</span></li>
+
+                    {% if page.has_next %}
+                        <li><a class="page-link" href="?q={{ query }}&amp;page={{ page.next_page_number }}" ><span class="fa fa-chevron-right" aria-hidden="true"></span></a></li>
+                    {% else %}
+                        <li><span class="page-link"><span class="fa fa-chevron-right" aria-hidden="true"></span></span></li>
+                    {% endif %}
+
+                    <li><a class="page-link" href="?q={{ query }}&amp;page={{ page.paginator.num_pages }}"><span class="fa fa-step-forward" aria-hidden="true"></span></a></li>
+                </ul>
+            </nav>
+        
+
+    {% else %}
+        <div class="django-panel-padding django-panel">
+            Please enter keywords to search ~
+        </div>
+    {% endif %}
+{% endblock %}
