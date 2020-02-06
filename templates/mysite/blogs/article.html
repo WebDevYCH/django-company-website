@@ -5,7 +5,7 @@
 {% block meta %}
 <title>{{ post.title }}</title>
 <meta name="description" content="{{ post.excerpt }}"/>
-<meta name="keywords" content="{% for tag in post.tag.all %}{{ tag.name }},{% endfor %}"/>
+<meta name="keywords" content="{{ category.name }},{% for tag in post.tag.all %}{{ tag.name }},{% endfor %}"/>
 {% endblock %}
 {% block content%}
     <!-- ***** Breadcrumb Area Start ***** -->

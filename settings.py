@@ -46,16 +46,14 @@ sys.path.insert(0, os.path.join(BASE_DIR, "apps"))
 
 # 文章列表分页数量
 ARTICLE_PAGINATE_BY = 8
-LANGUAGE_CODE = "en-us"
+LANGUAGE_CODE = "en"
 TIME_ZONE = 'UTC'
 USE_I18N = True
 USE_L10N = True
 USE_TZ = True
 
-# 书单影单分页数量
 BOOK_MOVIE_PAGINATE_BY = 8
 
-# 搜索结果分页
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 7
 INSTALLED_APPS.extend([
     # Extend the INSTALLED_APPS setting by listing additional applications here
@@ -66,6 +64,7 @@ INSTALLED_APPS.extend([
     'notifications',
     'apps.myzone',
     'apps.mysite',
+    'apps.accounts',
     
     'xadmin',
     'haystack',

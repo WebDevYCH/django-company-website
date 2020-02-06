@@ -6,7 +6,7 @@ from django.conf.urls.static import static
 from django.conf import settings
 from django.urls import path,include
 from werobot.contrib.django import make_view
-from apps import views
+from apps.accounts import views
 
 urlpatterns = [
     # add your own patterns here
@@ -21,6 +21,10 @@ urlpatterns = [
     path('', include('apps.mysite.urls')),
     path('', include('apps.blog.urls')),
     path('search/', include('haystack.urls')),
+    path('api/', include([
+        path('', include('apps.mysite.api.urls')),
+    ])),
+    
 ]  + aldryn_addons.urls.patterns() + i18n_patterns(
     # add your own i18n patterns here
     *aldryn_addons.urls.i18n_patterns()  # MUST be the last entry!

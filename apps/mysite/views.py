@@ -40,7 +40,7 @@ def article(request, pk):
     post = get_object_or_404(Post, pk=pk,)
     author = User.objects.get(id=post.author_id)
     category = Category.objects.get(id=post.category_id)
-    post.increase_views()  # 阅读量加1
+    post.increase_views()  
     md = markdown.Markdown(extensions=[
         'markdown.extensions.extra',
         'markdown.extensions.codehilite',
@@ -187,3 +187,19 @@ class ApplyJobView(CreateView):
         form.instance.user = self.request.user
         form.save()
         return super().form_valid(form)
+
+class SearchView(ListView):
+    model = Job
+    template_name = 'mysite/jobs/search.html'
+    context_object_name = 'jobs'
+
+    def get_queryset(self):
+        return self.model.objects.filter(location__contains=self.request.GET['location'],
+                                         title__contains=self.request.GET['position'])
+
+
+class JobListView(ListView):
+    model = Job
+    template_name = 'mysite/jobs/jobs.html'
+    context_object_name = 'jobs'
+    paginate_by = 5

@@ -143,7 +143,7 @@ class Portfolio(models.Model):
 	slug = models.SlugField('Slug', max_length = 200,  unique = True)
 	excerpt = models.CharField('Summary', max_length = 200, blank = True,)
 	content =  MDTextField('content')
-	cover = models.ImageField("Upload cover", upload_to = 'movies', blank = True)
+	cover = models.ImageField("Upload cover", upload_to = 'portfolio', blank = True)
 	created_time = models.DateTimeField('Creation time', auto_now = True)
 	modified_time = models.DateTimeField('Modified time', auto_now = True)
 	views = models.PositiveIntegerField('Views', default = 0)
@@ -188,7 +188,6 @@ class Category(models.Model):
 		return reverse('blog:category', kwargs={'pk': self.pk})
 
 
-# 创建文章标签的表
 class Tag(models.Model):
 	# name是标签名的字段
 	name = models.CharField('Label name',max_length=100)
@@ -222,6 +221,7 @@ class Post(models.Model):
 	)
 
 	title = models.CharField ('Title', max_length = 100, unique = True)
+	slug = models.SlugField('Slug', max_length = 200,  unique = True)
 	body = MDTextField('body')
 	created_time = models.DateTimeField('Creation time', auto_now = True)
 	modified_time = models.DateTimeField('Modified time', auto_now = True)

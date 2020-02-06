@@ -1,5 +1,12 @@
 {% extends "mysite/layout.html" %}
 {% load static %}
+{% load blog_tags %}
+{% block meta %}
+{% get_seo_info as seo_info %}
+    <title>{{ seo_info.title }}—{{ seo_info.sub_title }}</title>
+    <meta name="description" content="{{ seo_info.description }}"/>
+    <meta name="keywords" content="{{ seo_info.keywords }}" />
+{% endblock %}
 {% block content %}
 
     <!-- ***** Breadcrumb Area Start ***** -->
@@ -102,7 +109,7 @@
 
         <!-- About Background Pattern -->
         <div class="about-bg-pattern">
-            <img src="{% static 'app/img/core-img/curve-2.png" alt="">
+            <img src="{% static 'app/img/core-img/curve-2.png' %}" alt="">
         </div>
     </section>
     <!-- ***** About Us Area End ***** -->
@@ -131,7 +138,7 @@
                 <!-- Choose Us Thumbnail -->
                 <div class="col-12 col-lg-6">
                     <div class="choose-us-thumbnail mb-80">
-                        <img class="w-100" src="img/bg-img/22.jpg' %}" alt="">
+                        <img class="w-100" src="{% static 'app/img/bg-img/22.jpg' %}" alt="">
                     </div>
                 </div>
             </div>
@@ -251,7 +258,7 @@
                                     <h5>Darrell Goodman <span>- CEO colorlib</span></h5>
                                 </div>
                                 <!-- Quote Icon -->
-                                <div class="quote-icon"><img src="img/core-img/quote.png' %}" alt=""></div>
+                                <div class="quote-icon"><img src="{% static 'app/img/core-img/quote.png' %}" alt=""></div>
                             </div>
                         </div>
 
@@ -277,7 +284,7 @@
                                     <h5>Darrell Goodman <span>- CEO colorlib</span></h5>
                                 </div>
                                 <!-- Quote Icon -->
-                                <div class="quote-icon"><img src="img/core-img/quote.png' %}" alt=""></div>
+                                <div class="quote-icon"><img src="{% static 'app/img/core-img/quote.png' %}" alt=""></div>
                             </div>
                         </div>
 
@@ -303,7 +310,7 @@
                                     <h5>Darrell Goodman <span>- CEO colorlib</span></h5>
                                 </div>
                                 <!-- Quote Icon -->
-                                <div class="quote-icon"><img src="img/core-img/quote.png' %}" alt=""></div>
+                                <div class="quote-icon"><img src="{% static 'app/img/core-img/quote.png' %}" alt=""></div>
                             </div>
                         </div>
 

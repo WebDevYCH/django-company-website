@@ -2,7 +2,6 @@ from django.db import models
 import django.utils.timezone as timezone
 
 
-# 友情链接
 class FriendLinks(models.Model):
     name = models.CharField('Site name', max_length = 50, default = 'Eastbound notebook')
     link = models.CharField('Website address', max_length = 200, default = 'https: //www.eastnotes.com')
@@ -13,7 +12,6 @@ class FriendLinks(models.Model):
         ordering = ['-pk']
 
 
-# SEO设置
 class Seo(models.Model):
     title = models.CharField("Site Master Name", max_length = 100, default = 'DjangoEast')
     sub_title = models.CharField("Site name for website", max_length = 200, default = 'DjangoEast')
@@ -25,7 +23,6 @@ class Seo(models.Model):
         verbose_name_plural = verbose_name
 
 
-# 自定义代码
 class CustomCode(models.Model):
     statistics = models.TextField("Website Statistics Code ", default = 'Statistics Code')
 
@@ -34,7 +31,6 @@ class CustomCode(models.Model):
         verbose_name_plural = verbose_name
 
 
-# 站点信息
 class SiteInfo(models.Model):
     created_time = models.DateField("Website time", default = timezone.now)
     record_info = models.CharField("Record information", max_length = 100, default = 'Record number')
@@ -45,8 +41,6 @@ class SiteInfo(models.Model):
         verbose_name = "Site Information"
         verbose_name_plural = verbose_name
 
-
-# 社交账号
 class Social(models.Model):
     github = models.URLField("Github address", max_length=200, default='https://github.com/mxdshr/DjangoEast')
     wei_bo = models.URLField("Weibo address", max_length=200, default='https://weibo.com/')
