@@ -5,8 +5,8 @@ from aldryn_client import forms
 class Form(forms.BaseForm):
     hide_user_management = forms.CheckboxField(
         'Hide user management',
-        required=True,
-        initial=True,
+        required=False,
+        initial=False,
     )
 
     def to_settings(self, data, settings):
