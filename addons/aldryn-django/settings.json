@@ -1,7 +1,7 @@
 {
-    "disable_default_language_prefix": false,
-    "enable_gis": false,
+    "disable_default_language_prefix": true,
+    "enable_gis": true,
     "languages": "[\"en\", \"de\"]",
     "session_timeout": 1209600,
-    "use_manifeststaticfilesstorage": false
+    "use_manifeststaticfilesstorage": true
 }
