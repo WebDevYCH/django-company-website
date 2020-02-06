@@ -10,11 +10,11 @@
                     <div class="single-blog-post bg-img mb-80" style="background-image: url(./static/app/img/bg-img/8.jpg);">
                         <!-- Post Content -->
                         <div class="post-content">
-                            <span class="post-date"><span>{{ post.object.id }}</span> {{ post.object.created_time }}</span><span>Category: {{post.object.category}} </span>
+                            <span class="post-date"><span>{{ post.object.id }}</span> {{ post.object.created_time|timesince }}</span><span>Category: {{post.object.category}} </span>
                             <span> Read :({{post.object.views}})</span>
                             <span>comment:({% get_comment_count post.object %})</span>
-                            <a href="{{ post.object.get_absolute_url }}" title="{{ post.object.title }}" class="post-title">{{ post.object.title | slice:":50" }}</a>
-                            <p>{{ post.object.body| safe | slice:":100"}}......</p>
+                            <a href="{{ post.object.get_absolute_url }}" title="{{ post.object.title }}" class="post-title">{% highlight post.object.title with query %}</a>
+                            <p>{% highlight post.object.excerpt with query %}....</p>
                             <a href="{{ post.object.get_absolute_url }}" class="read-more-btn">Read More <i class="arrow_carrot-2right"></i></a>
                         </div>
                     </div>

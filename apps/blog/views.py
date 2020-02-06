@@ -76,10 +76,10 @@ class CategoryView(ArticleListView):
 
 
 def article(request, pk):
-    post = get_object_or_404(Post, pk=pk,)
+    post = get_object_or_404(Post, pk=pk)
     author = User.objects.get(id=post.author_id)
     category = Category.objects.get(id=post.category_id)
-    post.increase_views()  # 阅读量加1
+    post.increase_views()  
     md = markdown.Markdown(extensions=[
         'markdown.extensions.extra',
         'markdown.extensions.codehilite',

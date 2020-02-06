@@ -145,6 +145,7 @@ class Form(forms.BaseForm):
             'django.contrib.messages',
             'django.contrib.admin',
             'django.contrib.staticfiles',
+            'django.contrib.sitemaps',
             'aldryn_django',
         ])
 

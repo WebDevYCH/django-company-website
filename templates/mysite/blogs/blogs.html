@@ -78,24 +78,25 @@
                                     {% block toc_sidebar %}{% endblock %}
 
                                     {% block category_sidebar %}
-                                        <div class="sidebar">
+                                        <div class="sidebar mb-80">
                                             <div class="title"><h3>Article Category</h3></div>
                                                 <div class="git_tags">
                                                         {% get_category as categories %}
                                                         {% for category in categories %}
-                                                            <a href="{{ category.get_absolute_url  }}">{{ category.name }}</a>
+                                                            <a href="{{ category.get_absolute_url  }}"><span class="badge-pill">{{ category.name }}</span></a>
                                                         {% endfor %}
                                                 </div>
                                         </div>
+
                                     {% endblock %}
 
                                     {% block tag_sidebar %}
-                                        <div class="sidebar" >
+                                        <div class="sidebar mb-80" >
                                             <div class="title"><h3>Popular tags</h3></div>
                                             <div class="git_tags">
                                                 {% get_posts_tags as tags %}
                                                 {% for tag in tags %}
-                                                    <a href="{{ tag.get_absolute_url  }}">{{ tag.name }}</a>
+                                                    <a href="{{ tag.get_absolute_url  }}"><span class="badge-pill">{{ tag.name }}</span></a>
                                                 {% endfor %}
                                             </div>
                                         </div>

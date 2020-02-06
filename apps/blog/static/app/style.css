@@ -601,6 +601,111 @@ input:focus {
     }
 }
 
+@media only screen and (max-width: 767px) {
+    .content-sidebar {
+        display: none;
+    }
+}
+
+.content-sidebar {
+    margin-left: -20px;
+}
+
+.toc {
+    margin-bottom: 10px;
+}
+.highlighted{
+    color: #d23f31;
+}
+.sidebar {
+    border-radius: 0.28571429rem;
+    width: 100%;
+    float: left;
+    background: #fff;
+    margin-bottom: 10px;
+    box-shadow: 0 2px 2px 0 rgba(0, 0, 0, 0.12), 0 3px 1px -2px rgba(0, 0, 0, 0.06), 0 1px 5px 0 rgba(0, 0, 0, 0.12);
+}
+@media only screen and (min-width:800) and (max-width: 990px) {
+    .sidebar {
+        width: 130%;
+    }
+}
+.sidebar .title {
+    position: relative;
+    margin: 5px 15px;
+    height: 30px;
+    border-bottom: 1px solid #b9b9b9;
+}
+
+.sidebar .title h3 {
+    font-size: 18px!important;
+}
+
+.sidebar .git_tags {
+    padding: 10px 10px 10px 20px
+}
+
+.sidebar .git_tags a:nth-child(9n) {
+    color: #fff;
+    background-color: #4a4a4a;
+}
+
+.sidebar .git_tags a:nth-child(9n+1) {
+    color: #fff;
+    background-color: #15a287
+}
+
+.sidebar .git_tags a:nth-child(9n+2) {
+    color: #fff;
+    background-color: #5cb85c
+}
+
+.sidebar .git_tags a:nth-child(9n+3) {
+    color: #fff;
+    background-color: #d9534f
+}
+
+.sidebar .git_tags a:nth-child(9n+4) {
+    color: #fff;
+    background-color: #567e95
+}
+
+.sidebar .git_tags a:nth-child(9n+5) {
+    color: #fff;
+    background-color: #b433ff
+}
+
+.sidebar .git_tags a:nth-child(9n+6) {
+    color: #fff;
+    background-color: #00a67c
+}
+
+.sidebar .git_tags a:nth-child(9n+7) {
+    background-color: #b37333
+}
+
+.sidebar .git_tags a:nth-child(9n+8) {
+    color: #fff;
+    background-color: #f60
+}
+
+.sidebar .git_tags a {
+    display: inline-block;
+    padding: .45em .24em;
+    font-size: 85%;
+    font-weight: 700;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25rem;
+}
+
+.sidebar .git_tags a:hover {
+    opacity: 1;
+    filter: alpha(opacity=100)
+}
+
 
 /* :: 6.0 Buttons CSS */
 

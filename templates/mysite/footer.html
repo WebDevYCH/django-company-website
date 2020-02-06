@@ -1,4 +1,5 @@
-{% load static %}
+{% load staticfiles %}
+{% load blog_tags %}
  <!-- ***** Footer Area Start ***** -->
  <footer class="footer-area section-padding-80-0">
     <div class="container">
@@ -12,8 +13,9 @@
 
                     <!-- Footer Content -->
                     <div class="footer-content mb-15">
-                        <h3>(+65) 1234 5678</h3>
-                        <p>40 Baria Sreet 13/2 NY City, US <br> hello.colorlib@gmail.com</p>
+                     {% get_site_info as site_info %}
+                        <h3>(+91){{ site_info.record_info}}</h3>
+                        <p>40 Baria Sreet 13/2 NY City, US <br> {{site_info.arrange_info}}</p>
                     </div>
                     <p class="mb-0">Mon - Fri: 9:00 - 19:00 <br>
                         Closed on Weekends</p>
@@ -63,15 +65,23 @@
                 <div class="single-footer-widget mb-80">
                     <!-- Widget Title -->
                     <h4 class="widget-title">About Us</h4>
-                    <p>Integer vehicula mauris libero, at molestie eros imperdiet sit amet.</p>
-
+                    {% get_site_info as site_info %}
+                        <p>Powered by {{ site_info.created_time | date }}Start online</p>
+                        <p>{{ site_info.development_info }}</p>
+                        <p>{{ site_info.arrange_info }}</p>
+                    {% get_custom_code as custom_code %}
+                        <p>{% autoescape off %}{{ custom_code.statistics }}{% endautoescape %}</p>
                     <!-- Copywrite Text -->
                     <div class="copywrite-text mb-30">
                         <p>&copy; Copyright 2018 <a href="#">Colorlib</a>.</p>
                     </div>
 
                     <!-- Social Info -->
+                    {% get_friend_links as links %}
                     <div class="footer-social-info">
+                        {% for link in links %}
+                            <p><a href="{{ link.link }}" target="_blank">{{ link.name }}</a></p>
+                        {% endfor %}
                         <a href="#" class="facebook" data-toggle="tooltip" data-placement="top" title="Facebook"><i class="fa fa-facebook"></i></a>
                         <a href="#" class="twitter" data-toggle="tooltip" data-placement="top" title="Twitter"><i class="fa fa-twitter"></i></a>
                         <a href="#" class="pinterest" data-toggle="tooltip" data-placement="top" title="Pinterest"><i class="fa fa-pinterest"></i></a>
@@ -84,9 +94,9 @@
         </div>
 
 <div class="row" style="margin-bottom: 30px;">
-            
+{% get_seo_info as seo_info %}          
 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
-Copyright &copy;{{year}} All rights reserved | This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://colorlib.com" target="_blank">Colorlib</a>
+Copyright &copy;{{year}} All rights reserved |This template is made with <i class="fa fa-heart-o" aria-hidden="true"></i> by <a href="https://agrowdev.com" target="_blank">{{ seo_info.title }}</a>
 <!-- Link back to Colorlib can't be removed. Template is licensed under CC BY 3.0. -->
         </div>
 
