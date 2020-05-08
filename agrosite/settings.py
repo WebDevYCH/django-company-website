@@ -72,6 +72,14 @@ USE_TZ = True
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 7
 INSTALLED_APPS = [
     # Extend the INSTALLED_APPS setting by listing additional applications here
+    "django.contrib.admin",
+    "django.contrib.auth",
+    "django.contrib.contenttypes",
+    "django.contrib.sessions",
+    "django.contrib.messages",
+    "django.contrib.staticfiles",
+    
+    'django.contrib.humanize',
     'apps.blog',
     'apps.notice',
     'apps.setting',
