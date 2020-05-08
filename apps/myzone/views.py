@@ -1,6 +1,6 @@
 from django.views.generic import ListView
 from apps.myzone.models import *
-from settings import *
+from agrosite.settings import *
 
 
 class TalkView(ListView):
