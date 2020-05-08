@@ -344,7 +344,7 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'agrosite/static')
 
 PROXY_URL = os.environ.get('PROXY_URL', '')
 
@@ -491,7 +491,8 @@ if IS_PRODUCTION:
     DEFAULT_FILE_STORAGE = 'agrosite.storage_backends.S3PublicMediaStorage'
 
     PRIVATE_FILE_STORAGE = 'agrosite.storage_backends.S3PrivateMediaStorage'
-
+else:
+    STATIC_URL = '/static/'
     
 # ONE SIGNAL
 ONE_SIGNAL_APP_ID = os.environ.get('ONE_SIGNAL_APP_ID')
