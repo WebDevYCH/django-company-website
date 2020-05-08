@@ -1,39 +1,74 @@
-# This docker-compose.yml file is used to set up your project in the local
-# development environment *only*. It is *not* used in deployment to our cloud
-# servers, and has no effect whatsoever in cloud deployments.
-#
-# See our Developer Handbook for more information:
-# http://docs.divio.com/en/latest/reference/docker-docker-compose.html
-version: "2"
+version: '3.4'
 
 services:
-  # The web container is an instance of exactly the same Docker image as your
-  # Cloud application container.
-  web:
-    build: "."
-    links:
-      - "db:postgres"
-    # Change the port if you'd like to expose your project locally on a
-    # different port, for example if you already use port 8000 for
-    # something else.
+  webserver:
+    restart: always
+    container_name: agrosite
+    build:
+      dockerfile: Dockerfile
+      context: ./.docker/agrosite
+    privileged: true
+    volumes:
+      - ./:/opt/agrosite
+      - ./.docker-cache/pip:/root/.cache/pip
     ports:
-      - "8000:80"
+      - 8000:8000
+    working_dir: /opt/agrosite
+    depends_on:
+      - db
+      - redis
+      - nginx
+    command: /usr/local/bin/gunicorn agrosite.wsgi:application -w 2 -b :8000
+    env_file:
+      - .env
+    networks:
+      - djangonetwork
+  
+  nginx:
+    restart: always
+    build: ./config/nginx/
+    ports:
+      - "80:80"
+      - "443:443"
     volumes:
-      - ".:/app:rw"
-      - "./data:/data:rw"
-    # The default command that the container starts with. If you'd like to run
-    # the project locally in Live configuration, you will need to change this.
-    # See https://docs.divio.com/en/latest/how-to/local-in-live-mode.html.
-    command: python manage.py runserver 0.0.0.0:80
-    # Add any environment variables your project needs to the .env-local file.
-    # See https://docs.divio.com/en/latest/reference/configuration-environment-variables.html.
-    env_file: .env-local
-
-  # On the Cloud, your database runs on a dedicated cluster. Locally, we
-  # replicate it in a Docker container called "db".
+      - ./:/opt/agrosite
+      - ./dh-param/dhparam-2048.pem:/etc/ssl/certs/dhparam-2048.pem
+      - ./config/nginx/ssl:/etc/nginx/certs
+    networks:
+      - djangonetwork
   db:
-    image: postgres:9.6-alpine
-    environment:
-      POSTGRES_DB: "db"
+    restart: always
+    image: postgres:latest
+    hostname: agroapp_db
     volumes:
-      - ".:/app:rw"
+      - postgresdb:/var/lib/postgresdb
+      - postgresdb_backup:/backups
+    ports:
+      - 5432
+    privileged: false
+    env_file:
+      - .db.env
+    networks:
+      - djangonetwork
+  redis:
+    restart: always
+    image: bitnami/redis:latest
+    privileged: false
+    command: redis-server --requirepass Puneeth@123
+    ports:
+      - 6379
+    env_file:
+      - .env
+    volumes:
+      - redisdb:/bitnami/redis/data
+    networks:
+      - djangonetwork
+
+volumes:
+  postgresdb:
+  postgresdb_backup:
+  redisdb:
+
+networks:
+  djangonetwork:
+    driver: bridge
