@@ -57,6 +57,8 @@ if not SECRET_KEY:
 
 # Application definition
 ARTICLE_PAGINATE_BY = 8
+
+BOOK_MOVIE_PAGINATE_BY = 8
 LANGUAGE_CODE = "en-us"
 
 TIME_ZONE = "UTC"
