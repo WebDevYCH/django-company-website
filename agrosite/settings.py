@@ -9,7 +9,6 @@ from django_replicated.settings import *
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 PROJECT_ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 sys.path.insert(0, os.path.join(PROJECT_ROOT, 'apps'))
-import django_heroku
 import logging.config
 from agrosite.environment import EnvironmentChecker
 LOGGING_CONFIG = None
@@ -57,7 +56,6 @@ if not SECRET_KEY:
 # SECURITY WARNING: don't run with debug turned on in production!
 
 # Application definition
-django_heroku.settings(locals())
 ARTICLE_PAGINATE_BY = 8
 LANGUAGE_CODE = "en-us"
 
@@ -125,7 +123,6 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    'whitenoise.middleware.WhiteNoiseMiddleware',
     'agrosite.middleware.TimezoneMiddleware'
 ]
 
@@ -486,8 +483,7 @@ if IS_PRODUCTION:
     PRIVATE_FILE_STORAGE = 'agrosite.storage_backends.S3PrivateMediaStorage'
 else:
     STATIC_URL = '/static/'
-    STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
-
+    
 # ONE SIGNAL
 ONE_SIGNAL_APP_ID = os.environ.get('ONE_SIGNAL_APP_ID')
 ONE_SIGNAL_API_KEY = os.environ.get('ONE_SIGNAL_API_KEY')
