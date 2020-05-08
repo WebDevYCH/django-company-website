@@ -14,7 +14,6 @@ Thumbs.db
 *.pyo
 
 # Aldryn
-/.env
 .aldryn
 /data
 /data.tar.gz
