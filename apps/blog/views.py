@@ -4,7 +4,7 @@ from django.views.generic import ListView
 from django.contrib.auth.models import User
 from django.utils.html import strip_tags
 from django.shortcuts import render, get_object_or_404, HttpResponse
-from settings import *
+from agrosite.settings import *
 import os
 
 
