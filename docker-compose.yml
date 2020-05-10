@@ -33,7 +33,7 @@ services:
     volumes:
       - ./:/opt/agrosite
       - ./dh-param/dhparam-2048.pem:/etc/ssl/certs/dhparam-2048.pem
-      - ./config/nginx/ssl:/etc/nginx/certs
+      - ./private:/etc/nginx/certs
     networks:
       - djangonetwork
   db:
