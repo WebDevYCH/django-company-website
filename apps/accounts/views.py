@@ -3,6 +3,7 @@ from django.contrib import auth
 from django.contrib.auth.models import User
 from .form import LoginForm, RegForm
 
+
 def login(request):
     if request.method == 'POST':
         login_form = LoginForm(request.POST)

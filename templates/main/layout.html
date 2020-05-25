@@ -1,0 +1,103 @@
+﻿{% load staticfiles %}
+{% load notifications_tags %}
+{% load cache %}
+{% load compress %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    
+    {% block meta %}{% endblock %}
+    <link rel="profile" href="http://gmpg.org/xfn/11"/>
+
+    <!--[if lt IE 9]>
+    <script src="{% static 'blog/js/html5.js' %}" type="text/javascript"></script>
+    <![endif]-->
+
+    <link rel="alternate" type="application/rss+xml" title="{{ SITE_NAME }} &raquo; Feed"
+          href="/feed"/>
+    
+   
+    
+    <link rel="shortcut icon" type="image/x-icon" href="{% static 'app/img/favicon.ico' %}">
+
+    <!-- CSS here -->
+    {% compress css %}
+        <link rel="stylesheet" href="{% static 'app/css/bootstrap.min.css' %}">
+        <link rel="stylesheet" href="{% static 'app/css/owl.carousel.min.css' %}">
+        <link rel="stylesheet" href="{% static 'app/css/flaticon.css' %}">
+        <link rel="stylesheet" href="{% static 'app/css/slicknav.css' %}">
+        <link rel="stylesheet" href="{% static 'app/css/animate.min.css' %}">
+        <link rel="stylesheet" href="{% static 'app/css/magnific-popup.css' %}">
+        <link rel="stylesheet" href="{% static 'app/css/fontawesome-all.min.css' %}">
+        <link rel="stylesheet" href="{% static 'app/css/themify-icons.css' %}">
+        <link rel="stylesheet" href="{% static 'app/css/slick.css' %}">
+        <link rel="stylesheet" href="{% static 'app/css/nice-select.css' %}">
+        <link rel="stylesheet" href="{% static 'app/css/style.css' %}">
+        {% block compress_css %}{% endblock %}
+    {% endcompress %}
+    
+</head>
+
+<body>
+{% cache 36000 header %}
+    {% include 'main/header.html' %}
+{% endcache %}
+  
+{% include 'main/load-search.html' %}  
+<main>
+{% block content %}
+    
+{% endblock %}
+{% include 'main/connectus.html' %}
+</main>
+{% include 'main/footer.html' %}
+{% compress js %}
+    <!-- ******* All JS Files ******* -->
+    <!-- jQuery js -->
+    <script src="{% static 'app/js/jquery.min.js' %}"></script>
+    <!-- Popper js -->
+    <script src="{% static 'app/js/vendor/modernizr-3.5.0.min.js' %}"></script>
+    
+    <!-- Jquery, Popper, Bootstrap -->
+    <script src="{% static 'app/js/vendor/jquery-1.12.4.min.js' %}"></script>
+    <script src="{% static 'app/js/popper.min.js' %}"></script>
+    <script src="{% static 'app/js/bootstrap.min.js' %}"></script>
+	    <!-- Jquery Mobile Menu -->
+    <script src="{% static 'app/js/jquery.slicknav.min.js' %}"></script>
+
+    <!-- Jquery Slick , Owl-Carousel Plugins -->
+    <script src="{% static 'app/js/owl.carousel.min.js' %}"></script>
+    <script src="{% static 'app/js/slick.min.js' %}"></script>
+    <!-- Date Picker -->
+    <script src="{% static 'app/js/gijgo.min.js' %}"></script>
+    <!-- One Page, Animated-HeadLin -->
+    <script src="{% static 'app/js/wow.min.js' %}"></script>
+    <script src="{% static 'app/js/animated.headline.js' %}"></script>
+    <script src="{% static 'app/js/jquery.magnific-popup.js' %}"></script>
+
+    <!-- Scrollup, nice-select, sticky -->
+    <script src="{% static 'app/js/jquery.scrollUp.min.js' %}"></script>
+    <script src="{% static 'app/js/jquery.nice-select.min.js' %}"></script>
+    <script src="{% static 'app/js/jquery.sticky.js' %}"></script>
+    
+    <!-- contact js -->
+    <script src="{% static 'app/js/contact.js' %}"></script>
+    <script src="{% static 'app/js/jquery.form.js' %}"></script>
+    <script src="{% static 'app/js/jquery.validate.min.js' %}"></script>
+    <script src="{% static 'app/js/mail-script.js' %}"></script>
+    <script src="{% static 'app/js/jquery.ajaxchimp.min.js' %}"></script>
+    
+    <!-- Jquery Plugins, main Jquery -->	
+    <script src="{% static 'app/js/plugins.js' %}"></script>
+    <script src="{% static 'app/js/main.js' %}"></script>
+    
+    
+    {% block scripts %}{% endblock %}
+    {% block script_extends %} {% endblock %}
+{% endcompress %}
+</body>
+</html>

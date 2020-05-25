@@ -74,22 +74,27 @@ USE_TZ = True
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 7
 INSTALLED_APPS = [
     # Extend the INSTALLED_APPS setting by listing additional applications here
+    
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
     "django.contrib.sessions",
     "django.contrib.messages",
     "django.contrib.staticfiles",
-    
     'django.contrib.humanize',
-    'apps.blog',
-    'apps.notice',
-    'apps.setting',
-    'apps.comment',
+    
+    'comment',
+    'blogs',
+    'notice',
+    'setting',
     'notifications',
-    'apps.myzone',
-    'apps.mysite',
-    'apps.accounts',
+    'myzone',
+    'home',
+    'accounts',
+    'careers',
+    'contactus',
+    'about',
+    'services',
     
     'xadmin',
     'haystack',
@@ -97,11 +102,15 @@ INSTALLED_APPS = [
     'ckeditor',
     'crispy_forms',
     'rest_framework',
+    'django_summernote',
 
     'storages',
     'django_rq',
     'scheduler',
+    'compressor',
 
+    'blog',
+    'servermanager',
     
     'cacheops',
     'django_extensions',
@@ -134,6 +143,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
     'agrosite.middleware.TimezoneMiddleware'
+    'blog.middleware.OnlineMiddleware'
 ]
 
 CKEDITOR_CONFIGS = {
@@ -173,7 +183,7 @@ CKEDITOR_CONFIGS = {
 }
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'apps.blog.whoosh_cn_backend.WhooshEngine',
+        'ENGINE': 'agrosite.whoosh_cn_backend.WhooshEngine',
         'PATH': os.path.join(BASE_DIR, 'whoosh_index'),
     },
 }
@@ -265,6 +275,12 @@ else:
         }
     }
     
+    # DATABASES = {
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.sqlite3',
+    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    # }
+# }
     DATABASE_ROUTERS = ['django_replicated.router.ReplicationRouter']
 
     REPLICATED_DATABASE_SLAVES = ['Reader', ]
@@ -419,6 +435,26 @@ CACHEOPS = {
     # Don't cache anything automatically
     '*.*': {},
 }
+
+STATICFILES_FINDERS = (
+    'django.contrib.staticfiles.finders.FileSystemFinder',
+    'django.contrib.staticfiles.finders.AppDirectoriesFinder',
+    # other
+    'compressor.finders.CompressorFinder',
+)
+COMPRESS_ENABLED = True
+# COMPRESS_OFFLINE = True
+
+
+COMPRESS_CSS_FILTERS = [
+    # creates absolute urls from relative ones
+    'compressor.filters.css_default.CssAbsoluteFilter',
+    # css minimizer
+    'compressor.filters.cssmin.CSSMinFilter'
+]
+COMPRESS_JS_FILTERS = [
+    'compressor.filters.jsmin.JSMinFilter'
+]
 
 RQ_QUEUES = {
     'default': {

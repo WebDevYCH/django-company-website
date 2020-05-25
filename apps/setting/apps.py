@@ -2,5 +2,5 @@ from django.apps import AppConfig
 
 
 class SettingConfig(AppConfig):
-    name = 'apps.setting'
+    name = 'setting'
     verbose_name = 'Global configuration'

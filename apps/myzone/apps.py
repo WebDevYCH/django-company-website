@@ -2,5 +2,5 @@ from django.apps import AppConfig
 
 
 class MyzoneConfig(AppConfig):
-    name = 'apps.myzone'
+    name = 'myzone'
     verbose_name = 'personal space'

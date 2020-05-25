@@ -1,0 +1,36 @@
+{% load staticfiles %}
+<!-- Preloader Start -->
+    <div id="preloader-active">
+        <div class="preloader d-flex align-items-center justify-content-center">
+            <div class="preloader-inner position-relative">
+                <div class="preloader-circle"></div>
+                <div class="preloader-img pere-text">
+                    <img src="{% static 'app/img/logo/logo.png' %}" alt="">
+                </div>
+            </div>
+        </div>
+    </div>
+<!-- Preloader Start -->
+
+<!-- ***** Top Search Area Start ***** -->
+<div class="top-search-area">
+    <!-- Search Modal -->
+    <div class="modal fade" id="searchModal" tabindex="-1" role="dialog" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-top" role="document">
+            <div class="modal-content">
+                <div class="modal-body">
+                    <!-- Close Button -->
+                    <button type="button" class="btn close-btn" data-dismiss="modal"><i class="fa fa-times"></i></button>
+                    <!-- Form -->
+                    <form action="{% url 'haystack_search' %}">
+                        <input type="search" name="q"  placeholder="Search and hit enter..." autocomplete="off" class="form-control"/>
+                        <button type="submit">Search</button>
+                    </form>
+                    
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<!-- ***** Top Search Area End ***** -->
+

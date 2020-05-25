@@ -11,6 +11,9 @@ cd /opt/agrosite
 pip install -r requirements.txt --quiet
 
 python manage.py migrate
-echo "yes" | python manage.py collectstatic
+
+python manage.py collectstatic --noinput
+
+python manage.py compress --force
 
 exec $@

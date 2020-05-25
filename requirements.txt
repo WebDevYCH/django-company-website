@@ -24,6 +24,10 @@ sentry-sdk==0.14.3
 watchdog==0.9.0
 boto3==1.10.29
 botocore==1.13.29
+django-compressor==2.4
+django-autoslug==1.9.7
+django-summernote==0.8.11.6
+django-uuslug==1.2.0
 
 asn1crypto==0.24.0
 beautifulsoup4==4.7.1
