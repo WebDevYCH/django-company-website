@@ -1,414 +1,289 @@
-# -*- coding: utf-8 -*-
+import logging
+from abc import ABCMeta, abstractmethod, abstractproperty
+
 from django.db import models
-from django.contrib.auth.models import User
 from django.urls import reverse
-from django.utils.html import strip_tags
-import django.utils.timezone as timezone
+from django.conf import settings
+from uuslug import slugify
+from django.core.exceptions import ValidationError
+from django.utils.translation import gettext_lazy as _
+from agrosite.utils import get_current_site
+from agrosite.utils import cache_decorator, cache
+from django.utils.timezone import now
 from mdeditor.fields import MDTextField
 
-# 创建博文分类的表
-class JobCategory(models.Model):
-	name = models.CharField(max_length=100, verbose_name='Category Name')
+logger = logging.getLogger(__name__)
 
-	def __str__(self):
-		return self.name
+LINK_SHOW_TYPE = (
+    ('i', '首页'),
+    ('l', '列表页'),
+    ('p', '文章页面'),
+    ('a', '全站'),
+    ('s', '友情链接页面'),
+)
 
-	class Meta:
-		verbose_name = "Job Category"
-		verbose_name_plural = verbose_name
 
-	def get_absolute_url(self):
-		return reverse('mysite:careers', kwargs={'pk': self.pk})
+class BaseModel(models.Model):
+    id = models.AutoField(primary_key=True)
+    created_time = models.DateTimeField('创建时间', default=now)
+    last_mod_time = models.DateTimeField('修改时间', default=now)
 
-class Job(models.Model):
-	JOB_TYPE = (
-		('1', "Full time"),
-		('2', "Part time"),
-		('3', "Internship"),
-	)
-	PUBLISH_STATUS = (
-		('p', 'Article Page'),
-		('c', 'Tutorial page'),
-		('d', 'Draft Box'),
-		('r', 'Recycle Bin'),
-	)
+    def save(self, *args, **kwargs):
+        is_update_views = isinstance(self, Article) and 'update_fields' in kwargs and kwargs['update_fields'] == [
+            'views']
+        if is_update_views:
+            Article.objects.filter(pk=self.pk).update(views=self.views)
+        else:
+            if 'slug' in self.__dict__:
+                slug = getattr(self, 'title') if 'title' in self.__dict__ else getattr(self, 'name')
+                setattr(self, 'slug', slugify(slug))
+            super().save(*args, **kwargs)
 
-	STICK_STATUS = (
-		('y', 'Sticky'),
-		('n', 'Do not top'),
-	)
-	user = models.ForeignKey(User,verbose_name = 'CreatedBy',on_delete=models.CASCADE)
-	title = models.CharField('title',max_length=300)
-	slug = models.SlugField('Slug', max_length = 200,  unique = True)
-	cover = models.ImageField("Upload cover", upload_to = 'job')
-	description = MDTextField('description')
-	location = models.CharField('Location',max_length=150)
-	jobtype = models.CharField('JobType',choices=JOB_TYPE, max_length=10)
-	jobcategory = models.ForeignKey(JobCategory, verbose_name = 'Job_Category', on_delete = models.CASCADE)
-	last_date = models.DateTimeField('LastDate',default=timezone.now)
-	created_at = models.DateTimeField('CreatedAt',default=timezone.now)
-	filled = models.BooleanField('Filled',default=False)
-	salary = models.IntegerField('Salary',default=0, blank=True)
-	views = models.PositiveIntegerField('Views', default = 0)
-	status = models.CharField('Article status', max_length = 1, choices = PUBLISH_STATUS, default = 'p')
-	stick = models.CharField('Whether sticky', max_length = 1, choices = STICK_STATUS, default = 'n')
+    def get_full_url(self):
+        site = get_current_site().domain
+        url = "https://{site}{path}".format(site=site, path=self.get_absolute_url())
+        return url
 
-	def get_absolute_url(self):
-		return reverse('mysite:job_description', kwargs={'pk': self.pk,'slug': self.slug})
+    class Meta:
+        abstract = True
 
-	def __str__(self):
-		return self.title
+    @abstractmethod
+    def get_absolute_url(self):
+        pass
 
-	def increase_views(self):
-		self.views += 1
-		self.save(update_fields=['views'])
 
-	def save(self, *args, **kwargs):
-		super(Job, self).save(*args, **kwargs)
+class Article(BaseModel):
+    """文章"""
+    STATUS_CHOICES = (
+        ('d', '草稿'),
+        ('p', '发表'),
+    )
+    COMMENT_STATUS = (
+        ('o', '打开'),
+        ('c', '关闭'),
+    )
+    TYPE = (
+        ('a', 'article'),
+        ('p', 'page'),
+    )
+    title = models.CharField('title', max_length=200, unique=True)
+    body = MDTextField('content')
+    pub_time = models.DateTimeField('publish time', blank=False, null=False, default=now)
+    status = models.CharField('status', max_length=1, choices=STATUS_CHOICES, default='p')
+    comment_status = models.CharField('comment_status', max_length=1, choices=COMMENT_STATUS, default='o')
+    type = models.CharField('type', max_length=1, choices=TYPE, default='a')
+    views = models.PositiveIntegerField('views', default=0)
+    author = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='author', blank=False, null=False,
+                               on_delete=models.CASCADE)
+    article_order = models.IntegerField('article order', blank=False, null=False, default=0)
+    category = models.ForeignKey('Category', verbose_name='category', on_delete=models.CASCADE, blank=False, null=False)
+    tags = models.ManyToManyField('Tag', verbose_name='tags', blank=True)
 
-	class Meta:
-		verbose_name = "Add Job"
-		verbose_name_plural = verbose_name
-		ordering = ['-created_at']
-	
-class Applicant(models.Model):
-    user = models.ForeignKey(User,verbose_name = 'Applicant', on_delete=models.CASCADE)
-    job = models.ForeignKey(Job,verbose_name = 'Job', on_delete=models.CASCADE, related_name='applicants')
-    created_at = models.DateTimeField('AppliedOn',default=timezone.now)
+    def body_to_string(self):
+        return self.body
 
     def __str__(self):
-        return self.user.get_full_name()
-
-class TeamExpert(models.Model):
-
-	PUBLISH_STATUS = (
-		('p', 'Article Page'),
-		('c', 'Tutorial page'),
-		('d', 'Draft Box'),
-		('r', 'Recycle Bin'),
-	)
-
-	STICK_STATUS = (
-		('y', 'Sticky'),
-		('n', 'Do not top'),
-	)
-
-	name = models.CharField ('Name', max_length = 100, unique = True)
-	role = models.CharField('Role', max_length = 200,)
-	about =  models.TextField('About')
-	cover = models.ImageField("Upload cover", upload_to = 'portfolio')
-	facebook = models.URLField("Facebook",max_length=250, blank = True)
-	twitter = models.URLField("Twitter",max_length=250, blank = True)
-	instagram = models.URLField("Instagram",max_length=250, blank = True)
-	linkedin = models.URLField("Linkedin",max_length=250, blank = True)
-	github = models.URLField("Github",max_length=250, blank = True)
-	created_time = models.DateTimeField('Creation time', auto_now = True)
-	modified_time = models.DateTimeField('Modified time', auto_now = True)
-	views = models.PositiveIntegerField('Views', default = 0)
-	words = models.PositiveIntegerField('Word count', default = 0)
-	status = models.CharField('Article status', max_length = 1, choices = PUBLISH_STATUS, default = 'p')
-	stick = models.CharField('Whether sticky', max_length = 1, choices = STICK_STATUS, default = 'n')
-
-	def __str__(self):
-		return self.name
-
-	def increase_views(self):
-		self.views += 1
-		self.save(update_fields=['views'])
-
-	def save(self, *args, **kwargs):
-		super(TeamExpert, self).save(*args, **kwargs)
-
-	class Meta:
-		verbose_name = "Add TeamExpert"
-		verbose_name_plural = verbose_name
-		ordering = ['-created_time']
-
-class Portfolio(models.Model):
-
-	PUBLISH_STATUS = (
-		('p', 'Article Page'),
-		('c', 'Tutorial page'),
-		('d', 'Draft Box'),
-		('r', 'Recycle Bin'),
-	)
-
-	STICK_STATUS = (
-		('y', 'Sticky'),
-		('n', 'Do not top'),
-	)
-
-	title = models.CharField ('Title', max_length = 100, unique = True)
-	
-	slug = models.SlugField('Slug', max_length = 200,  unique = True)
-	excerpt = models.CharField('Summary', max_length = 200, blank = True,)
-	content =  MDTextField('content')
-	cover = models.ImageField("Upload cover", upload_to = 'portfolio', blank = True)
-	created_time = models.DateTimeField('Creation time', auto_now = True)
-	modified_time = models.DateTimeField('Modified time', auto_now = True)
-	views = models.PositiveIntegerField('Views', default = 0)
-	words = models.PositiveIntegerField('Word count', default = 0)
-	author = models.ForeignKey(User, verbose_name = 'Author', on_delete = models.CASCADE)
-	status = models.CharField('Article status', max_length = 1, choices = PUBLISH_STATUS, default = 'p')
-	stick = models.CharField('Whether sticky', max_length = 1, choices = STICK_STATUS, default = 'n')
-
-	def get_absolute_url(self):
-		return reverse('mysite:portfolio-single', kwargs={'pk': self.pk,'slug': self.slug})
-
-	def __str__(self):
-		return self.title
-
-	def get_user(self):
-		return self.author
-
-	def increase_views(self):
-		self.views += 1
-		self.save(update_fields=['views'])
-
-	def save(self, *args, **kwargs):
-		
-		super(Portfolio, self).save(*args, **kwargs)
-
-	class Meta:
-		verbose_name = "Add Portfolio"
-		verbose_name_plural = verbose_name
-		ordering = ['-created_time']
-
-class Category(models.Model):
-	name = models.CharField(max_length=100, verbose_name='Category Name')
-
-	def __str__(self):
-		return self.name
-
-	class Meta:
-		verbose_name = "Article Category"
-		verbose_name_plural = verbose_name
-
-	def get_absolute_url(self):
-		return reverse('blog:category', kwargs={'pk': self.pk})
-
-
-class Tag(models.Model):
-	# name是标签名的字段
-	name = models.CharField('Label name',max_length=100)
-
-	def __str__(self):
-		return self.name
-
-	class Meta:
-		verbose_name = "Article tags"
-		verbose_name_plural = verbose_name
-
-	def get_absolute_url(self):
-		return reverse('blog:tag_list', kwargs={'pk': self.pk})
-
-
-# 创建文章的类
-class Post(models.Model):
-
-	# 发表状态
-	PUBLISH_STATUS = (
-		('p', 'Article Page'),
-		('c', 'Tutorial page'),
-		('d', 'Draft Box'),
-		('r', 'Recycle Bin'),
-	)
-
-	# 是否置顶
-	STICK_STATUS = (
-		('y', 'Sticky'),
-		('n', 'Do not top'),
-	)
-
-	title = models.CharField ('Title', max_length = 100, unique = True)
-	slug = models.SlugField('Slug', max_length = 200,  unique = True)
-	body = MDTextField('body')
-	created_time = models.DateTimeField('Creation time', auto_now = True)
-	modified_time = models.DateTimeField('Modified time', auto_now = True)
-	excerpt = models.CharField('Summary', max_length = 200, blank = True,)
-	views = models.PositiveIntegerField('Views', default = 0)
-	words = models.PositiveIntegerField('Word count', default = 0)
-	category = models.ForeignKey(Category, verbose_name = 'Article Category', on_delete = models.CASCADE)
-	tag = models.ManyToManyField(Tag, verbose_name = 'Tag type', blank = True)
-	# author = models.ForeignKey (User, verbose_name = 'Author', on_delete = models.CASCADE, default = "reborn")
-	author = models.ForeignKey(User, verbose_name = 'Author', on_delete = models.CASCADE)
-	status = models.CharField('Article status', max_length = 1, choices = PUBLISH_STATUS, default = 'p')
-	stick = models.CharField('Whether sticky', max_length = 1, choices = STICK_STATUS, default = 'n')
-
-	def get_absolute_url(self):
-		return reverse('mysite:article', kwargs={'pk': self.pk})
-
-	def __str__(self):
-		return self.title
-
-	def get_user(self):
-		return self.author
-
-	# 阅读量增加1
-	def increase_views(self):
-		self.views += 1
-		self.save(update_fields=['views'])
-
-	def save(self, *args, **kwargs):
-		if not self.excerpt:
-			self.excerpt = strip_tags(self.body).replace("&nbsp;", "").replace("#", "")[:150]
-		self.words = len(strip_tags(self.body).replace(" ", "").replace('\n', ""))
-		super(Post, self).save(*args, **kwargs)
-
-	class Meta:
-		verbose_name = "Add article"
-		verbose_name_plural = verbose_name
-		ordering = ['-created_time']
-
-
-class BookCategory(models.Model):
-	name = models.CharField(max_length=100, verbose_name="Category Name")
-
-	def __str__(self):
-		return self.name
-
-	class Meta:
-		verbose_name = "Book list classification"
-		verbose_name_plural = verbose_name
-
-
-class BookTag(models.Model):
-	name = models.CharField(max_length=100, verbose_name="label")
-
-	def __str__(self):
-		return self.name
-
-	def get_absolute_url(self):
-		return reverse('blog:book_list', kwargs={'pk': self.pk})
-
-	class Meta:
-		verbose_name = "Book list label"
-		verbose_name_plural = verbose_name
-
-
-class Book(models.Model):
-	name = models.CharField("Book Title", max_length = 100)
-	author = models.CharField("Author", max_length = 100)
-	category = models.ForeignKey(BookCategory, on_delete = models.CASCADE, verbose_name = "book category")
-	tag = models.ManyToManyField(BookTag, verbose_name = "Book Tag")
-	cover = models.ImageField("cover image", upload_to = 'books', blank = True)
-	score = models.DecimalField("Douban score", max_digits = 2, decimal_places = 1)
-	created_time = models.DateField("Add time", null = True, default = timezone.now)
-	time_consuming = models.CharField("Reading initial time", max_length = 100)
-	pid = models.CharField("Article ID", max_length = 100, blank = True)
-
-	def __str__(self):
-		return self.name
-
-	def get_absolute_url(self):
-		return reverse('blog:article', kwargs={'pk': self.pid})
-
-	class Meta:
-		verbose_name = "Add book"
-		verbose_name_plural = verbose_name
-		ordering = ['-pk']
-
-
-class MovieCategory(models.Model):
-	name = models.CharField(max_length=100, verbose_name="Movie classification")
-
-	def __str__(self):
-		return self.name
-
-	class Meta:
-		verbose_name = "Movie classification"
-		verbose_name_plural = verbose_name
-
-
-class MovieTag(models.Model):
-	name = models.CharField(max_length=100,verbose_name="Label name",blank=True)
-
-	def __str__(self):
-		return self.name
-
-	def get_absolute_url(self):
-		return reverse('blog:movie_list', kwargs={'pk': self.pk})
-
-	class Meta:
-		verbose_name = "Movie label"
-		verbose_name_plural = verbose_name
-
-
-class Movie(models.Model):
-	name = models.CharField("movie name", max_length = 100)
-	director = models.CharField("Director", max_length = 100)
-	actor = models.CharField("Starring", max_length = 100)
-	category = models.ForeignKey(MovieCategory, on_delete = models.CASCADE, verbose_name = "Movie Category")
-	tag = models.ManyToManyField(MovieTag, verbose_name = "Movie Tag")
-	cover = models.ImageField("Upload cover", upload_to = 'movies', blank = True)
-	score = models.DecimalField("Douban score", max_digits = 2, decimal_places = 1)
-	release_time = models.DateField("release time")
-	created_time = models.DateField("Add time", default = timezone.now)
-	length_time = models.PositiveIntegerField("Movie Duration", default = 0)
-	watch_time = models.DateField("watch time", default = timezone.now)
-	pid = models.CharField("Article ID", max_length = 100, blank = True)
-
-	def __str__(self):
-		return self.name
-
-	def get_absolute_url(self):
-		return reverse('blog:post', kwargs={'pk': self.pid})
-
-	class Meta:
-		verbose_name = "Add movie"
-		verbose_name_plural = verbose_name
-		ordering = ['-pk']
-
-
-class Messages(models.Model):
-	name = models.CharField(max_length=100,verbose_name="leave me a message")
-	admin = models.ForeignKey(User,verbose_name='Webmaster',on_delete=models.CASCADE,blank=True,null=True)
-
-	def get_absolute_url(self):
-		return reverse('blog:messages')
-
-	def get_user(self):
-		return self.admin
-
-	class Meta:
-		verbose_name = "Website message"
-		verbose_name_plural = verbose_name
-
-
-class MeanList(models.Model):
-
-	STATUS = (
-		('y', 'Show'),
-		('n', 'Hide'),
-	)
-
-	title = models.CharField("menu name", max_length = 100)
-	link = models.CharField("Menu Link", max_length = 100, blank = True, null = True,)
-	icon = models.CharField("menu icon", max_length = 100, blank = True, null = True,)
-	status = models.CharField('Display status', max_length = 1, choices = STATUS, default = 'y')
-
-	class Meta:
-		verbose_name = "Menu Bar"
-		verbose_name_plural = verbose_name
-
-
-class Courses(models.Model):
-	title = models.CharField("Tutorial name", max_length = 100)
-	cover = models.ImageField("Upload cover", upload_to = 'course', blank = True)
-	category = models.CharField("Tutorial Category", max_length = 100)
-	introduce = models.CharField("Tutorial Introduction", max_length = 200, blank = True)
-	status = models.CharField("Update status", max_length = 50)
-	article = models.ManyToManyField(Post, verbose_name = "tutorial article", blank = True)
-	created_time = models.DateTimeField('Creation time', null = True, default = timezone.now)
-	# author = models.ForeignKey (User, verbose_name = 'Author', on_delete = models.DO_NOTHING, default = "reborn")
-	author = models.ForeignKey(User, verbose_name = 'Author', on_delete = models.DO_NOTHING)
-	comments = models.PositiveIntegerField("Number of comments", default = 0)
-	numbers = models.PositiveIntegerField("Number of tutorials", default = 0)
-	views = models.PositiveIntegerField("Views", default = 0)
-
-	class Meta:
-		verbose_name = "List of tutorials"
-		verbose_name_plural = verbose_name
-
-	def get_absolute_url(self):
-		return reverse('blog:course', kwargs={'pk': self.pk})
+        return self.title
+
+    class Meta:
+        ordering = ['-article_order', '-pub_time']
+        verbose_name = "Article"
+        verbose_name_plural = verbose_name
+        get_latest_by = 'id'
+
+    def get_absolute_url(self):
+        return reverse('blog:detailbyid', kwargs={
+            'article_id': self.id,
+            'year': self.created_time.year,
+            'month': self.created_time.month,
+            'day': self.created_time.day
+        })
+
+    @cache_decorator(60 * 60 * 10)
+    def get_category_tree(self):
+        tree = self.category.get_category_tree()
+        names = list(map(lambda c: (c.name, c.get_absolute_url()), tree))
+
+        return names
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+
+    def viewed(self):
+        self.views += 1
+        self.save(update_fields=['views'])
+
+    def comment_list(self):
+        cache_key = 'article_comments_{id}'.format(id=self.id)
+        value = cache.get(cache_key)
+        if value:
+            logger.info('get article comments:{id}'.format(id=self.id))
+            return value
+        else:
+            comments = self.comment_set.filter(is_enable=True)
+            cache.set(cache_key, comments, 60 * 100)
+            logger.info('set article comments:{id}'.format(id=self.id))
+            return comments
+
+    def get_admin_url(self):
+        info = (self._meta.app_label, self._meta.model_name)
+        return reverse('admin:%s_%s_change' % info, args=(self.pk,))
+
+    @cache_decorator(expiration=60 * 100)
+    def next_article(self):
+        # 下一篇
+        return Article.objects.filter(id__gt=self.id, status='p').order_by('id').first()
+
+    @cache_decorator(expiration=60 * 100)
+    def prev_article(self):
+        # 前一篇
+        return Article.objects.filter(id__lt=self.id, status='p').first()
+
+
+class Category(BaseModel):
+    """文章分类"""
+    name = models.CharField('name', max_length=30, unique=True)
+    parent_category = models.ForeignKey('self', verbose_name="parent category", blank=True, null=True, on_delete=models.CASCADE)
+    slug = models.SlugField(default='no-slug', max_length=60, blank=True)
+
+    class Meta:
+        ordering = ['name']
+        verbose_name = "category"
+        verbose_name_plural = verbose_name
+
+    def get_absolute_url(self):
+        return reverse('blog:category_detail', kwargs={'category_name': self.slug})
+
+    def __str__(self):
+        return self.name
+
+    @cache_decorator(60 * 60 * 10)
+    def get_category_tree(self):
+        """
+        递归获得分类目录的父级
+        :return: 
+        """
+        categorys = []
+
+        def parse(category):
+            categorys.append(category)
+            if category.parent_category:
+                parse(category.parent_category)
+
+        parse(self)
+        return categorys
+
+    @cache_decorator(60 * 60 * 10)
+    def get_sub_categorys(self):
+        """
+        获得当前分类目录所有子集
+        :return: 
+        """
+        categorys = []
+        all_categorys = Category.objects.all()
+
+        def parse(category):
+            if category not in categorys:
+                categorys.append(category)
+            childs = all_categorys.filter(parent_category=category)
+            for child in childs:
+                if category not in categorys:
+                    categorys.append(child)
+                parse(child)
+
+        parse(self)
+        return categorys
+
+
+class Tag(BaseModel):
+    """文章标签"""
+    name = models.CharField('name', max_length=30, unique=True)
+    slug = models.SlugField(default='no-slug', max_length=60, blank=True)
+
+    def __str__(self):
+        return self.name
+
+    def get_absolute_url(self):
+        return reverse('blog:tag_detail', kwargs={'tag_name': self.slug})
+
+    @cache_decorator(60 * 60 * 10)
+    def get_article_count(self):
+        return Article.objects.filter(tags__name=self.name).distinct().count()
+
+    class Meta:
+        ordering = ['name']
+        verbose_name = "tags"
+        verbose_name_plural = verbose_name
+
+
+class Links(models.Model):
+    """友情链接"""
+
+    name = models.CharField('name', max_length=30, unique=True)
+    link = models.URLField('link')
+    sequence = models.IntegerField('sequence', unique=True)
+    is_enable = models.BooleanField('is_enable', default=True, blank=False, null=False)
+    show_type = models.CharField('show type', max_length=1, choices=LINK_SHOW_TYPE, default='i')
+    created_time = models.DateTimeField('created time', default=now)
+    last_mod_time = models.DateTimeField('modified time', default=now)
+
+    class Meta:
+        ordering = ['sequence']
+        verbose_name = 'Links'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
+
+
+class SideBar(models.Model):
+    """侧边栏,可以展示一些html内容"""
+    name = models.CharField('name', max_length=100)
+    content = models.TextField("content")
+    sequence = models.IntegerField('sequence', unique=True)
+    is_enable = models.BooleanField('is enable', default=True)
+    created_time = models.DateTimeField('created time', default=now)
+    last_mod_time = models.DateTimeField('modified time', default=now)
+
+    class Meta:
+        ordering = ['sequence']
+        verbose_name = 'Sidebar'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.name
+
+
+class BlogSettings(models.Model):
+    '''站点设置 '''
+    sitename = models.CharField("sitename", max_length=200, null=False, blank=False, default='')
+    site_description = models.TextField("site_description", max_length=1000, null=False, blank=False, default='')
+    site_seo_description = models.TextField("site_seo_description", max_length=1000, null=False, blank=False, default='')
+    site_keywords = models.TextField("site_keywords", max_length=1000, null=False, blank=False, default='')
+    article_sub_length = models.IntegerField("article_sub_length", default=300)
+    sidebar_article_count = models.IntegerField("sidebar_article_count", default=10)
+    sidebar_comment_count = models.IntegerField("sidebar_comment_count", default=5)
+    show_google_adsense = models.BooleanField('是否显示谷歌广告', default=False)
+    google_adsense_codes = models.TextField('广告内容', max_length=2000, null=True, blank=True, default='')
+    open_site_comment = models.BooleanField('是否打开网站评论功能', default=True)
+    beiancode = models.CharField('备案号', max_length=2000, null=True, blank=True, default='')
+    analyticscode = models.TextField("网站统计代码", max_length=1000, null=False, blank=False, default='')
+    show_gongan_code = models.BooleanField('是否显示公安备案号', default=False, null=False)
+    gongan_beiancode = models.TextField('公安备案号', max_length=2000, null=True, blank=True, default='')
+    resource_path = models.CharField("静态文件保存地址", max_length=300, null=False, default='/var/www/resource/')
+
+    class Meta:
+        verbose_name = '网站配置'
+        verbose_name_plural = verbose_name
+
+    def __str__(self):
+        return self.sitename
+
+    def clean(self):
+        if BlogSettings.objects.exclude(id=self.id).count():
+            raise ValidationError(_('只能有一个配置'))
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        from agrosite.utils import cache
+        cache.clear()

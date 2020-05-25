@@ -2,7 +2,7 @@ from django.apps import AppConfig
 
 
 class CommentConfig(AppConfig):
-    name = 'apps.comment'
+    name = 'comment'
     verbose_name = 'Comment management'
 
     def ready(self):

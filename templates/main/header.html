@@ -1,0 +1,62 @@
+{% load staticfiles %}
+{% load notifications_tags %}
+{% load blog_tags %}
+
+<header>
+        <!-- Header Start -->
+       <div class="header-area header-transparrent ">
+            <div class="main-header header-sticky">
+                <div class="container">
+                    <div class="row align-items-center">
+                        <!-- Logo -->
+                        <div class="col-xl-2 col-lg-2 col-md-2">
+                            <div class="logo">
+                                <a href="{% url 'home:home' %}"><img src="{% static 'app/img/logo/logo.png' %}" alt=""></a>
+                            </div>
+                        </div>
+                        <div class="col-xl-10 col-lg-10 col-md-10">
+                            <!-- Main-menu -->
+                            <div class="main-menu f-right d-none d-lg-block">
+                                <nav>
+                                    <ul id="navigation">    
+                                        {% get_meanList as means %}
+                                        <li class="current-item"><a href="{% url 'home:home' %}">Home</a></li>
+                                        <li><a href="{% url 'about:about' %}">About</a></li>
+                                        <li><a href="{% url 'blogs:blogs' %}">Blogs</a></li>
+                                        <li><a href="{% url 'services:services' %}">Services</a></li>
+                                        <li><a href="{% url 'home:portfolio' %}">Portfolio</a></li>
+                                        <li><a href="{% url 'contactus:contact' %}">Contact</a></li>
+                                        <li><a href="{% url 'careers:careers' %}">Careers</a></li>
+                                    {% for mean in means %}
+                                        {% if mean.status == 'y'%}
+                                            <li><a href="{% url 'blogs:blogs' %}{{ mean.link }}"><i class="menu-item-icon fa {{ mean.icon }}"></i>{{ mean.title }}</a></li>
+                                        {% endif%}
+                                    {% endfor %}
+                                    {% if user.is_authenticated  %}
+                                    <li class="">
+                                        {% notifications_unread as unread_count %}
+                                        <a href="{% url 'notice:my_notifications' %}"><i class="fa fa-bell" aria-hidden="true"></i>{% if unread_count %} <span class="badge">{{ unread_count }}</span>{% endif %}</a>
+                                    </li>
+
+                                    {% else %}
+                                        <li class="">
+                                            <a href="{% url 'login' %}?from={{ request.get_full_path }}">login/Register</a>
+                                        </li>
+                                    {% endif %}
+                                    </ul>
+                                    <div class="search-icon" data-toggle="modal" data-target="#searchModal">
+                                        <i class="icon_search"></i>
+                                    </div>
+                                </nav>
+                            </div>
+                        </div>
+                        <!-- Mobile Menu -->
+                        <div class="col-12">
+                            <div class="mobile_menu d-block d-lg-none"></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+       </div>
+        <!-- Header End -->
+</header>

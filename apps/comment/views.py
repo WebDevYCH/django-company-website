@@ -1,11 +1,11 @@
 from django.shortcuts import reverse,redirect
 from .models import Comment
-from apps.comment.form import CommentForm
+from comment.form import CommentForm
 
 
 # 添加评论
 def update_comment(request):
-    referer = request.META.get('HTTP_REFERER', reverse('blog:index'))
+    referer = request.META.get('HTTP_REFERER', reverse('blogs:blogs'))
     comment_form = CommentForm(request.POST, user=request.user)
 
     if comment_form.is_valid():

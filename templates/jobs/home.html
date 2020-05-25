@@ -1,0 +1,147 @@
+{% extends 'main/layout.html' %}
+
+{% load static %}
+{% block title %}
+    careers
+{% endblock %}
+{% block content %}
+    
+    <section class="job-form-section job-form-section--image" >
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mx-auto">
+                    <div class="job-form-box">
+                    
+                        <div class="job-page-tittle text-center">
+                            <h2 class="heading">Find a <span class="accent">job</span> you will
+                                <span class="accent">love</span>.
+                            </h2>
+                        </div>
+                    
+                        <form id="job-main-form" method="get" class="form-contact contact_form" action="{% url 'careers:search' %}">
+                            <div class="controls">
+                                <div class="row align-items-center">
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label for="profession">Position</label>
+                                            <input type="text" id="profession" name="position"
+                                                   placeholder="Position you are looking for" class="single-input-primary form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-5">
+                                        <div class="form-group">
+                                            <label for="location">Location</label>
+                                            <input type="text" id="location" name="location"
+                                                   placeholder="Any particular location?" class="single-input-primary form-control">
+                                        </div>
+                                    </div>
+                                    <div class="col-md-2">
+                                        <button type="submit" class="genric-btn info radius"><i class="fa fa-search"></i></button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    <section class="bg-light-gray section-padding2">
+        <div class="container">
+            <div class="job-page-tittle text-center">
+                            <h2 class="heading">Featured  <span class="accent">jobs</span> 
+                            </h2>
+                        </div>
+            <div class="row featured align-items-stretch">
+                {% for job in jobs %}
+                    <div class="col-lg-4 mb-5 mb-lg-0">
+                        <div class="box-image-text bg-visible full-height">
+                            <div class="top">
+                                <a href="{{ job.get_absolute_url }}">
+                                    <div class="image">
+                                        <img src="{% url 'blogs:blogs' %}media/{{ job.cover }}" alt="{{job.title}}" class="img-fluid">
+                                    </div>
+                                    <div class="bg"></div>
+                                    <div class="logo">
+                                        <img src="{% static 'app/img/jobs/company-1.png' %}" alt="" style="max-width: 80px;">
+                                    </div>
+                                </a>
+                            </div>
+                            <div class="content">
+                                <h5><a href="{{ job.get_absolute_url }}">{{ job.title }}</a></h5>
+                                <p class="featured__details"><i class="fa fa-map-marker job__location"></i>
+                                    {{ job.location }}
+                                    {% if job.jobtype == '1' %}
+                                        <span class="badge featured-badge badge-success">Full time</span>
+                                    {% elif job.jobtype == '2' %}
+                                        <span class="badge featured-badge badge-primary">Part time</span>
+                                    {% else %}
+                                        <span style="color: #ffffff;" class="badge featured-badge badge-warning">Internship</span>
+                                    {% endif %}
+                                </p>
+                                <p>{{ job.description |  slice:":150"}}</p>
+                            </div>
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+    <section>
+        <div class="container">
+        <div class="job-page-tittle text-center">
+                            <h2 class="heading">Trending  <span class="accent">this</span> month
+                            </h2>
+                        </div>
+            {% for trending in trendings %}
+                <div class="job-listing  job-listing--last">
+                    <div class="row">
+                        <div class="col-md-12 col-lg-6">
+                            <div class="row">
+                                <div class="col-2">
+                                    <img src="{% static 'app/img/jobs/company-1.png' %}"
+                                         alt="ShareBoardd " class="img-fluid">
+                                </div>
+                                <div class="col-10">
+                                    <h4 class="job__title">
+                                        <a href="{{ job.get_absolute_url }}">{{ trending.title }}</a>
+                                    </h4>
+                                    <p class="job__company">
+                                        {{ trending.Jobcategory }}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-10 col-md-3 col-lg-2 ml-auto"><i class="fa fa-map-marker job__location"></i>
+                            {{ trending.location }}
+                        </div>
+                        <div class="col-10 col-md-3 col-lg-3 ml-auto">
+                            <p>Posted {{ trending.created_at| timesince }} ago</p>
+                        </div>
+                        <div class="col-sm-12 col-md-2 col-lg-1">
+                            <div class="job__star">
+                                <a href="#" data-toggle="tooltip" data-placement="top"
+                                   title="Save to favourites" class="job__star__link">
+                                    <i class="fa fa-star"></i>
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    </section>
+    <section style="background-image: url({% static 'app/img/jobs/featured1.jpg' %}); " class="section-divider section-padding2">
+        <div class="overlay"></div>
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-12 text-center">
+                    <p style="color:white;">Start searching for your new job now! </p>
+                    <a href="" class="genric-btn success large">See our job offers </a>
+                </div>
+            </div>
+        </div>
+    </section>
+   
+
+{% endblock %}

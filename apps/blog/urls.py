@@ -1,30 +1,47 @@
+#!/usr/bin/env python
+# encoding: utf-8
+
+
+"""
+@version: ??
+@author: liangliangyy
+@license: MIT Licence
+@contact: liangliangyy@gmail.com
+@site: https://www.lylinux.net/
+@software: PyCharm
+@file: urls.py
+@time: 2016/11/2 下午7:15
+"""
+
 from django.urls import path
+from django.views.decorators.cache import cache_page
 from . import views
+from haystack.forms import ModelSearchForm
+from haystack.query import SearchQuerySet
+from haystack.views import SearchView
+
 app_name = "blog"
 urlpatterns = [
-    path('', views.IndexView.as_view(), name='index'),
+    path(r'', views.IndexView.as_view(), name='index'),
+    path(r'npage/<int:page>/', views.IndexView.as_view(), name='index_page'),
 
-    path('archives/', views.ArchivesView.as_view(), name='archives'),
-    path('post/<int:pk>/<slug:slug>/', views.article, name='post'),
+    path(r'narticle/<int:year>/<int:month>/<int:day>/<int:article_id>.html',
+         views.ArticleDetailView.as_view(),
+         name='detailbyid'),
 
-    path('categories/', views.Categories.as_view(), name='categories'),
-    path('category/<int:pk>/', views.CategoryView.as_view(), name='category'),
+    path(r'ncategory/<slug:category_name>.html', views.CategoryDetailView.as_view(), name='category_detail'),
+    path(r'ncategory/<slug:category_name>/<int:page>.html', views.CategoryDetailView.as_view(),
+         name='category_detail_page'),
 
-    path('tags/', views.TagsView.as_view(), name='tags'),
-    path('tag/<int:pk>/', views.TagListView.as_view(), name='tag_list'),
+    path(r'nauthor/<author_name>.html', views.AuthorDetailView.as_view(), name='author_detail'),
+    path(r'nauthor/<author_name>/<int:page>.html', views.AuthorDetailView.as_view(),
+         name='author_detail_page'),
 
-    path('books/', views.BooksView.as_view(), name='books'),
-    path('book_list/<int:pk>', views.BookListView.as_view(), name='book_list'),
+    path(r'ntag/<slug:tag_name>.html', views.TagDetailView.as_view(), name='tag_detail'),
+    path(r'ntag/<slug:tag_name>/<int:page>.html', views.TagDetailView.as_view(), name='tag_detail_page'),
+    path('archives.html', cache_page(60 * 60)(views.ArchivesView.as_view()), name='archives'),
+    path('links.html', views.LinkListView.as_view(), name='links'),
+    path(r'nupload', views.fileupload, name='upload'),
+    path(r'nrefresh', views.refresh_memcache, name='refresh')
 
-    path('movies/', views.MoviesView.as_view(), name='movies'),
-    path('movie_list/<int:pk>', views.MovieListView.as_view(), name='movie_list'),
-
-    path('messages/', views.messages, name='messages'),
-
-    path('download/', views.file_test, name='download'),
-
-
-    # path('courses/', views.CoursesView.as_view(), name='courses'),
-    # path('course/<int:pk>', views.course, name='course'),
-    # path('course/article/<int:pk>', views.course_article, name='course_article'),
 ]

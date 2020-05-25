@@ -1,0 +1,12 @@
+{% load blog_tags %}
+<aside class="single_sidebar_widget tag_cloud_widget">
+                            <h4 class="widget_title">Popular tags</h4>
+                            <ul class="list">
+                            {% get_posts_tags as tags %}
+                            {% for tag in tags %}
+                                <li>
+                                    <a href="{{ tag.get_absolute_url  }}">{{ tag.name }}</a>
+                                </li>
+                            {% endfor %}
+                            </ul>
+                        </aside>

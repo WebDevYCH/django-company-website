@@ -1,4 +1,4 @@
-{% extends 'mysite/blogs/blogs.html' %}
+{% extends 'blogs/blogs.html' %}
 {% load highlight %}
 {% load staticfiles %}
 {% load blog_tags %}
@@ -6,46 +6,53 @@
     {% if query %}
         <div class="row">
             {% for post in page.object_list%}
-            <div class="col-lg-6">
-                    <div class="single-blog-post bg-img mb-80" style="background-image: url(./static/app/img/bg-img/8.jpg);">
-                        <!-- Post Content -->
-                        <div class="post-content">
-                            <span class="post-date"><span>{{ post.object.id }}</span> {{ post.object.created_time|timesince }}</span><span>Category: {{post.object.category}} </span>
-                            <span> Read :({{post.object.views}})</span>
-                            <span>comment:({% get_comment_count post.object %})</span>
-                            <a href="{{ post.object.get_absolute_url }}" title="{{ post.object.title }}" class="post-title">{% highlight post.object.title with query %}</a>
-                            <p>{% highlight post.object.excerpt with query %}....</p>
-                            <a href="{{ post.object.get_absolute_url }}" class="read-more-btn">Read More <i class="arrow_carrot-2right"></i></a>
-                        </div>
-                    </div>
-                </div>
+                        <article class="blog_item">
+                                    <div class="blog_item_img">
+                                        <img class="card-img rounded-0" src="{% static 'app/img/blog/single_blog_1.png' %}' %}" alt="">
+                                        <a href="#" class="blog_item_date">
+                                            <h3>15</h3>
+                                            <p>Jan</p>
+                                        </a>
+                                    </div>
+
+                                    <div class="blog_details">
+                                        <a class="d-inline-block" href="{{ post.get_absolute_url }}">
+                                            <h2>{{ post.title }}</h2>
+                                        </a>
+                                        <p>{{ post.excerpt | slice:":70"}}...</p>
+                                        <ul class="blog-info-link">
+                                            <li><a href="#"><i class="fa fa-user"></i> Travel, Lifestyle</a></li>
+                                            <li><a href="#"><i class="fa fa-comments"></i> 03 Comments</a></li>
+                                        </ul>
+                                    </div>
+                                </article>
                 
-            {% empty %}
-                <div class="django-panel django-panel-padding">
-                    <p>Sorry......No results found!</p>
-                    <p>Please enter <strong> complete and meaningful search keywords </strong>, such as: django</p>
-                </div>
+                {% empty %}
+                    <div class="django-panel django-panel-padding">
+                        <p>Sorry......No results found!</p>
+                        <p>Please enter <strong> complete and meaningful search keywords </strong>, such as: django</p>
+                    </div>
             {% endfor %}
         </div>
-        <nav class="Page navigation conatiner">
-            <ul class="pagination justify-content-center">
-                <li><a href="?q={{ query }}&amp;?page=1" class="page-link"><span class="fa fa-step-backward" aria-hidden="true"></span></a></li>
+        <nav class="blog-pagination justify-content-center d-flex">
+            <ul class="pagination">
+                <li class="page-item"><a href="?q={{ query }}&amp;?page=1" class="page-link"><span class="fa fa-step-backward" aria-hidden="true"></span></a></li>
 
                     {% if page.has_previous%}
-                         <li><a href="?q={{ query }}&amp;page={{page.previous_page_number }}" class="page-link"><span class="fa fa-chevron-left" aria-hidden="true"></span></a></li>
+                         <li class="page-item"><a href="?q={{ query }}&amp;page={{page.previous_page_number }}" class="page-link"><span class="fa fa-chevron-left" aria-hidden="true"></span></a></li>
                     {% else %}
-                        <li><a href="" class="page-link"><span class="fa fa-chevron-left" aria-hidden="true"></span></a></li>
+                        <li class="page-item"><a href="" class="page-link"><span class="fa fa-chevron-left" aria-hidden="true"></span></a></li>
                     {% endif %}
 
-                        <li><span class="page-link" >{{ page.number }} of {{ page.paginator.num_pages }}</span></li>
+                        <li class="page-item"><span class="page-link" >{{ page.number }} of {{ page.paginator.num_pages }}</span></li>
 
                     {% if page.has_next %}
-                        <li><a class="page-link" href="?q={{ query }}&amp;page={{ page.next_page_number }}" ><span class="fa fa-chevron-right" aria-hidden="true"></span></a></li>
+                        <li class="page-item"><a class="page-link" href="?q={{ query }}&amp;page={{ page.next_page_number }}" ><span class="fa fa-chevron-right" aria-hidden="true"></span></a></li>
                     {% else %}
-                        <li><span class="page-link"><span class="fa fa-chevron-right" aria-hidden="true"></span></span></li>
+                        <li class="page-item"><span class="page-link"><span class="fa fa-chevron-right" aria-hidden="true"></span></span></li>
                     {% endif %}
 
-                    <li><a class="page-link" href="?q={{ query }}&amp;page={{ page.paginator.num_pages }}"><span class="fa fa-step-forward" aria-hidden="true"></span></a></li>
+                    <li class="page-item"><a class="page-link" href="?q={{ query }}&amp;page={{ page.paginator.num_pages }}"><span class="fa fa-step-forward" aria-hidden="true"></span></a></li>
                 </ul>
             </nav>
         

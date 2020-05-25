@@ -1,4 +1,4 @@
-{% extends "base.html" %}
+{% extends "main/layout.html" %}
 {% load blog_tags %}
 
 
@@ -6,21 +6,27 @@
 <title>My message</title>
 {% endblock %}
 
-{% block content_left %}
-    <div class="django-panel django-panel-padding">
-        <div class="messages">
-            <a class="btn btn-primary" href="{% url 'notifications:mark_all_as_read'%}?next={% url 'notice:my_notifications' %}">Make all read</a>
-            <a class="btn btn-danger" href="{% url 'notice:delete_my_read_notifications' %}">Delete read message</a><br>
-            {% for notification in request.user.notifications.all %}
-                <ul class="notification">
-                    <li class="{% if not notification.unread %}read{% endif %}">
-                        ({{ notification.timesince }}prior to)
-                        <a href="{% url 'notice:my_notification'  notification.pk %}">{{ notification.verb }}</a>
-                    </li>
-                </ul>
-            {% empty %}
-                <li class="notification">No news for the moment</li>
-            {% endfor %}
+{% block content %}
+    <section class="service-area services-padding">
+        <div class="container">
+            <div class="row d-flex ">
+                <div class="col-lg-6">
+                    <div class="notification-btns">
+                        <a class="genric-btn info" href="{% url 'notifications:mark_all_as_read'%}?next={% url 'notice:my_notifications' %}">Make all read</a>
+                        <a class="genric-btn danger" href="{% url 'notice:delete_my_read_notifications' %}">Delete read message</a><br>
+                    </div>
+                    {% for notification in request.user.notifications.all %}
+                        <ul class="notification">
+                            <li class="{% if not notification.unread %}read{% endif %}">
+                                ({{ notification.timesince }}prior to)
+                                <a href="{% url 'notice:my_notification'  notification.pk %}">{{ notification.verb }}</a>
+                            </li>
+                        </ul>
+                    {% empty %}
+                        <li class="notification">No news for the moment</li>
+                    {% endfor %}
+                </div>
+            </div>
         </div>
-    </div>
+    </section>
 {% endblock %}

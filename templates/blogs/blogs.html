@@ -1,0 +1,64 @@
+{% extends "main/layout.html" %}
+{% load staticfiles %}
+{% block meta %}
+{% load blog_tags %}
+{% get_seo_info as seo_info %}
+    <title>{{ seo_info.title }}—{{ seo_info.sub_title }}</title>
+    <meta name="description" content="{{ seo_info.description }}"/>
+    <meta name="keywords" content="{{ seo_info.keywords }}" />
+{% endblock %}
+{% block scripts %}
+<script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+<script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+{% endblock %}
+{% block content %}
+    
+<div class="services-area">
+        <div class="container">
+            <!-- Section-tittle -->
+            <div class="row d-flex justify-content-center">
+                <div class="col-lg-8">
+                    <div class="job-page-tittle text-center mb-80">
+                        <h2 class="heading">Our <span class="accent">Latest</span> Blogs.
+                        </h2>
+                    </div>
+                </div>
+                <div class="col-lg-4 blog_right_sidebar">
+                {% include 'blogs/blogs_search.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- ***** Blog Area Start ***** -->
+    <section class="blog_area section-paddingr single-post-area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-8 mb-5 mb-lg-0">
+                    <div class="blog_left_sidebar">
+                        {% block content_left %}
+                        
+                        {% endblock %}
+            
+                    </div>
+                </div>
+                <div class="col-lg-4">
+                    <div class="blog_right_sidebar">
+                        
+                        {% block sidebar %}
+                            {% block toc_sidebar %}{% endblock %}
+
+                            {% include 'blogs/category_sidebar.html' %}
+
+                            {% block recent_post %}{% endblock %}
+
+                            {% include 'blogs/tag_sidebar.html' %}
+                        {% endblock %}
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </section>
+    <!-- ***** Blog Area End ***** -->
+
+    
+{%endblock%}

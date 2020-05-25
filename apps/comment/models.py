@@ -4,7 +4,6 @@ from django.contrib.contenttypes.models import ContentType
 from django.contrib.auth.models import User
 from ckeditor.fields import RichTextField
 
-
 class Comment(models.Model):
     content_type = models.ForeignKey(ContentType, on_delete = models.CASCADE, verbose_name = "comment source")
     object_id = models.PositiveIntegerField("Comment Object")
@@ -20,6 +19,6 @@ class Comment(models.Model):
         return self.text
 
     class Meta:
-        verbose_name = "my comment"
+        verbose_name = "comment"
         verbose_name_plural = verbose_name
         ordering = ['-comment_time']
