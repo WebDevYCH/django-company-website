@@ -14,20 +14,19 @@ from mdeditor.fields import MDTextField
 
 logger = logging.getLogger(__name__)
 
-LINK_SHOW_TYPE = (
-    ('i', '首页'),
-    ('l', '列表页'),
-    ('p', '文章页面'),
-    ('a', '全站'),
-    ('s', '友情链接页面'),
+LINK_SHOW_TYPE =(
+    ('i', 'Home'),
+    ('l', 'List page'),
+    ('p', 'Article page'),
+    ('a', 'Total Station'),
+    ('s', 'Friendly Link Page'),
 )
 
 
 class BaseModel(models.Model):
     id = models.AutoField(primary_key=True)
-    created_time = models.DateTimeField('创建时间', default=now)
-    last_mod_time = models.DateTimeField('修改时间', default=now)
-
+    created_time = models.DateTimeField('create time', default = now)
+    last_mod_time = models.DateTimeField('modified time', default = now)
     def save(self, *args, **kwargs):
         is_update_views = isinstance(self, Article) and 'update_fields' in kwargs and kwargs['update_fields'] == [
             'views']
@@ -53,18 +52,18 @@ class BaseModel(models.Model):
 
 
 class Article(BaseModel):
-    """文章"""
-    STATUS_CHOICES = (
-        ('d', '草稿'),
-        ('p', '发表'),
+    """article"""
+    STATUS_CHOICES =(
+        ('d', 'Draft'),
+        ('p', 'Publish'),
     )
-    COMMENT_STATUS = (
-        ('o', '打开'),
-        ('c', '关闭'),
+    COMMENT_STATUS =(
+        ('o', 'Open'),
+        ('c', 'Close'),
     )
-    TYPE = (
-        ('a', 'article'),
-        ('p', 'page'),
+    TYPE =(
+       ('a', 'article'),
+       ('p', 'page'),
     )
     title = models.CharField('title', max_length=200, unique=True)
     body = MDTextField('content')
@@ -92,17 +91,20 @@ class Article(BaseModel):
         get_latest_by = 'id'
 
     def get_absolute_url(self):
+        slug = getattr(self, 'title') if 'title' in self.__dict__ else getattr(self, 'name')
+        route_slug = slugify(slug)
         return reverse('blog:detailbyid', kwargs={
             'article_id': self.id,
             'year': self.created_time.year,
             'month': self.created_time.month,
-            'day': self.created_time.day
+            'day': self.created_time.day,
+            'slug': route_slug
         })
 
     @cache_decorator(60 * 60 * 10)
     def get_category_tree(self):
         tree = self.category.get_category_tree()
-        names = list(map(lambda c: (c.name, c.get_absolute_url()), tree))
+        names = list(map(lambda c:(c.name, c.get_absolute_url()), tree))
 
         return names
 
@@ -119,29 +121,25 @@ class Article(BaseModel):
         if value:
             logger.info('get article comments:{id}'.format(id=self.id))
             return value
-        else:
-            comments = self.comment_set.filter(is_enable=True)
-            cache.set(cache_key, comments, 60 * 100)
-            logger.info('set article comments:{id}'.format(id=self.id))
-            return comments
+        
 
     def get_admin_url(self):
-        info = (self._meta.app_label, self._meta.model_name)
+        info =(self._meta.app_label, self._meta.model_name)
         return reverse('admin:%s_%s_change' % info, args=(self.pk,))
 
     @cache_decorator(expiration=60 * 100)
     def next_article(self):
-        # 下一篇
+        # Next
         return Article.objects.filter(id__gt=self.id, status='p').order_by('id').first()
 
     @cache_decorator(expiration=60 * 100)
     def prev_article(self):
-        # 前一篇
+        # previous
         return Article.objects.filter(id__lt=self.id, status='p').first()
 
 
 class Category(BaseModel):
-    """文章分类"""
+    """Article Classification"""
     name = models.CharField('name', max_length=30, unique=True)
     parent_category = models.ForeignKey('self', verbose_name="parent category", blank=True, null=True, on_delete=models.CASCADE)
     slug = models.SlugField(default='no-slug', max_length=60, blank=True)
@@ -160,7 +158,7 @@ class Category(BaseModel):
     @cache_decorator(60 * 60 * 10)
     def get_category_tree(self):
         """
-        递归获得分类目录的父级
+        Recursively get the parent of the catalog
         :return: 
         """
         categorys = []
@@ -176,7 +174,7 @@ class Category(BaseModel):
     @cache_decorator(60 * 60 * 10)
     def get_sub_categorys(self):
         """
-        获得当前分类目录所有子集
+        Get all subsets of the current catalog
         :return: 
         """
         categorys = []
@@ -194,9 +192,8 @@ class Category(BaseModel):
         parse(self)
         return categorys
 
-
 class Tag(BaseModel):
-    """文章标签"""
+    """Article Label"""
     name = models.CharField('name', max_length=30, unique=True)
     slug = models.SlugField(default='no-slug', max_length=60, blank=True)
 
@@ -217,7 +214,7 @@ class Tag(BaseModel):
 
 
 class Links(models.Model):
-    """友情链接"""
+    """Links"""
 
     name = models.CharField('name', max_length=30, unique=True)
     link = models.URLField('link')
@@ -237,7 +234,7 @@ class Links(models.Model):
 
 
 class SideBar(models.Model):
-    """侧边栏,可以展示一些html内容"""
+    """Sidebar, you can display some html content"""
     name = models.CharField('name', max_length=100)
     content = models.TextField("content")
     sequence = models.IntegerField('sequence', unique=True)
@@ -255,25 +252,24 @@ class SideBar(models.Model):
 
 
 class BlogSettings(models.Model):
-    '''站点设置 '''
+    '' 'Site Settings' ''
     sitename = models.CharField("sitename", max_length=200, null=False, blank=False, default='')
     site_description = models.TextField("site_description", max_length=1000, null=False, blank=False, default='')
     site_seo_description = models.TextField("site_seo_description", max_length=1000, null=False, blank=False, default='')
     site_keywords = models.TextField("site_keywords", max_length=1000, null=False, blank=False, default='')
-    article_sub_length = models.IntegerField("article_sub_length", default=300)
+    article_sub_length = models.IntegerField("article_sub_length", default=200)
     sidebar_article_count = models.IntegerField("sidebar_article_count", default=10)
     sidebar_comment_count = models.IntegerField("sidebar_comment_count", default=5)
-    show_google_adsense = models.BooleanField('是否显示谷歌广告', default=False)
-    google_adsense_codes = models.TextField('广告内容', max_length=2000, null=True, blank=True, default='')
-    open_site_comment = models.BooleanField('是否打开网站评论功能', default=True)
-    beiancode = models.CharField('备案号', max_length=2000, null=True, blank=True, default='')
-    analyticscode = models.TextField("网站统计代码", max_length=1000, null=False, blank=False, default='')
-    show_gongan_code = models.BooleanField('是否显示公安备案号', default=False, null=False)
-    gongan_beiancode = models.TextField('公安备案号', max_length=2000, null=True, blank=True, default='')
-    resource_path = models.CharField("静态文件保存地址", max_length=300, null=False, default='/var/www/resource/')
-
+    show_google_adsense = models.BooleanField('Whether to display Google ads', default = False)
+    google_adsense_codes = models.TextField('advertising content', max_length = 2000, null = True, blank = True, default = '')
+    open_site_comment = models.BooleanField('Whether to open the website comment function', default = True)
+    beiancode = models.CharField('Record number', max_length = 2000, null = True, blank = True, default = '')
+    analyticscode = models.TextField("Site Statistics Code", max_length = 1000, null = False, blank = False, default = '')
+    show_gongan_code = models.BooleanField('Whether to display the public security record number', default = False, null = False)
+    gongan_beiancode = models.TextField('Public Security Record Number', max_length = 2000, null = True, blank = True, default = '')
+    resource_path = models.CharField("static file save address", max_length = 300, null = False, default = '/var/www/resource/')
     class Meta:
-        verbose_name = '网站配置'
+        verbose_name = 'Website configuration'
         verbose_name_plural = verbose_name
 
     def __str__(self):
@@ -281,7 +277,7 @@ class BlogSettings(models.Model):
 
     def clean(self):
         if BlogSettings.objects.exclude(id=self.id).count():
-            raise ValidationError(_('只能有一个配置'))
+            raise ValidationError(_('There can only be one configuration'))
 
     def save(self, *args, **kwargs):
         super().save(*args, **kwargs)

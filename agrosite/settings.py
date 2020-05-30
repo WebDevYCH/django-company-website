@@ -74,7 +74,7 @@ USE_TZ = True
 HAYSTACK_SEARCH_RESULTS_PER_PAGE = 7
 INSTALLED_APPS = [
     # Extend the INSTALLED_APPS setting by listing additional applications here
-    
+    'django.contrib.sites',
     "django.contrib.admin",
     "django.contrib.auth",
     "django.contrib.contenttypes",
@@ -116,7 +116,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'django_nose',
 ]
-
+SITE_ID = 1
 DEBUG = environment_checker.is_debug()
 IS_PRODUCTION = environment_checker.is_production()
 IS_BUILD = environment_checker.is_build()
@@ -142,9 +142,10 @@ MIDDLEWARE = [
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
-    'agrosite.middleware.TimezoneMiddleware'
+    'agrosite.middleware.TimezoneMiddleware',
     'blog.middleware.OnlineMiddleware'
 ]
+
 
 CKEDITOR_CONFIGS = {
     'comment_ckeditor': {
@@ -181,10 +182,17 @@ CKEDITOR_CONFIGS = {
         'resize_enabled': False,
     }
 }
+
+ELASTICSEARCH_DSL = {
+    'default': {
+        'hosts': '127.0.0.1:9200'
+    },
+}
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'agrosite.whoosh_cn_backend.WhooshEngine',
-        'PATH': os.path.join(BASE_DIR, 'whoosh_index'),
+        'ENGINE': 'agrosite.elasticsearch_backend.ElasticSearchEngine',
+        'URL': 'http://127.0.0.1:9200/',
+        'INDEX_NAME': 'haystack',
     },
 }
 
@@ -193,8 +201,9 @@ HAYSTACK_SIGNAL_PROCESSOR = 'haystack.signals.RealtimeSignalProcessor'
 DJANGO_NOTIFICATIONS_CONFIG = {
     'USE_JSONFIELD': True
 }
-
-
+PAGINATE_BY = 10
+TIME_FORMAT = '%Y-%m-%d %H:%M:%S'
+DATE_TIME_FORMAT = '%Y-%m-%d'
 SILENCED_SYSTEM_CHECKS = ['mysql.E001']
 
 ROOT_URLCONF = "agrosite.urls"
@@ -213,6 +222,7 @@ TEMPLATES = [
                 "django.template.context_processors.request",
                 "django.contrib.auth.context_processors.auth",
                 "django.contrib.messages.context_processors.messages",
+                'blog.context_processors.seo_processor',
             ]
         },
     }
@@ -264,6 +274,7 @@ else:
     }
 
     DATABASES = {
+        
         'default': writer_db_config,
         'Reader': {
             'ENGINE': 'django.db.backends.postgresql_psycopg2',
@@ -272,7 +283,9 @@ else:
             'PASSWORD': RDS_PASSWORD,
             'HOST': RDS_HOSTNAME_READER,
             'PORT': RDS_PORT,
-        }
+        },
+        'slave':writer_db_config,
+        
     }
     
     # DATABASES = {
@@ -283,12 +296,13 @@ else:
 # }
     DATABASE_ROUTERS = ['django_replicated.router.ReplicationRouter']
 
-    REPLICATED_DATABASE_SLAVES = ['Reader', ]
+    REPLICATED_DATABASE_SLAVES = ['slave','Reader', ]
 
     MIDDLEWARE.append('django_replicated.middleware.ReplicationMiddleware')
 
     REPLICATED_VIEWS_OVERRIDES = {
         '/admin/*': 'master',
+        '/article/*': 'master',
     }
 
 AUTH_PASSWORD_VALIDATORS = [

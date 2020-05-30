@@ -1,7 +1,7 @@
 from django.test import Client, RequestFactory, TestCase
 from blog.models import Article, Category, Tag, SideBar, Links
 from django.contrib.auth import get_user_model
-from DjangoBlog.utils import get_current_site, get_md5
+from agrosite.utils import get_current_site, get_md5
 from blog.forms import BlogSearchForm
 from django.core.paginator import Paginator
 from blog.templatetags.blog_tags import load_pagination_info, load_articletags
@@ -75,7 +75,7 @@ class ArticleTest(TestCase):
             article.save()
         response = self.client.get(article.get_absolute_url())
         self.assertEqual(response.status_code, 200)
-        from DjangoBlog.spider_notify import SpiderNotify
+        from agrosite.spider_notify import SpiderNotify
         SpiderNotify.notify(article.get_absolute_url())
         response = self.client.get(tag.get_absolute_url())
         self.assertEqual(response.status_code, 200)
@@ -113,7 +113,7 @@ class ArticleTest(TestCase):
         f = BlogSearchForm()
         f.search()
         self.client.login(username='liangliangyy', password='liangliangyy')
-        from DjangoBlog.spider_notify import SpiderNotify
+        from agrosite.spider_notify import SpiderNotify
         SpiderNotify.baidu_notify([article.get_full_url()])
 
         from blog.templatetags.blog_tags import gravatar_url, gravatar
@@ -170,7 +170,7 @@ class ArticleTest(TestCase):
             rsp = self.client.post('/upload?sign=' + sign, form_data, follow=True)
 
             self.assertEqual(rsp.status_code, 200)
-        from DjangoBlog.utils import save_user_avatar, send_email
+        from agrosite.utils import save_user_avatar, send_email
         send_email(['qq@qq.com'], 'testTitle', 'testContent')
         save_user_avatar('https://www.python.org/static/img/python-logo@2x.png')
         """

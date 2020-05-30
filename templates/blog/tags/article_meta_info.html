@@ -1,51 +1,32 @@
-{% load blog_tags %}
+{% load blogs_info %}
 {% load cache %}
 {% with article.id|add:user.is_authenticated as cachekey %}
-    {% cache 36000 metainfo cachekey %}
-        <footer class="entry-meta">
-            本条目发布于<a href="{{ article.get_absolute_url }}" title="{% datetimeformat article.pub_time %}"
-                     itemprop="datePublished" content="{% datetimeformat article.pub_time %}"
-                     rel="bookmark">
-
-            <time class="entry-date updated"
+    {% cache 36000 articlefooter cachekey %}
+        
+            <li><i class="fas fa-eye"></i> {{ article.views }}</li>
+                <li><a href="{{ article.get_absolute_url }}" title="{% datetimeformat article.pub_time %}"
+                    itemprop="datePublished" content="{% datetimeformat article.pub_time %}" rel="bookmark"><time class="entry-date updated"
                   datetime="{{ article.pub_time }}">
-                {% datetimeformat article.pub_time %}</time>
-        </a>
-            {% if article.type == 'a' %}
-                。属于<a href="{{ article.category.get_absolute_url }}" rel="category tag">{{ article.category.name }}</a>
-                分类，
-                {% if article.tags.all %}
-                    被贴了
-
-                    {% for t in article.tags.all %}
-                        <a href="{{ t.get_absolute_url }}" rel="tag">{{ t.name }}</a>
-                        {% if t != article.tags.all.last %}
-                            ，
+                <i class="fas fa-upload"></i> {{ article.pub_time|timesince }} ago</time></a></li>
+                <li>{% if article.type == 'a' %}
+                        <a href="{{ article.category.get_absolute_url }}" rel="category tag" title="View all articles categorised by {{ article.category.name }}"><i class="fas fa-filter"></i> {{ article.category.name }} </a>
+                        {% if article.tags.all %}
+                        | <i class="fa fa-tags"></i>
+                            {% for t in article.tags.all %}
+                                <a href="{{ t.get_absolute_url }}" rel="tag" title="View all articles tagged with {{ t.name }}"> {{ t.name }}</a>
+                                {% if t != article.tags.all.last %}
+                                    ，
+                                {% endif %}
+                            {% endfor %}
                         {% endif %}
-                    {% endfor %}
+                        
+                    {% endif %} 
+                </li>
+                <li><a href="{{ article.author.get_absolute_url }}" title="View all articles published by {{article.author.username}}"
+                rel="author"><i class="fa fa-user"></i><span itemprop="author" itemscope itemtype="http://schema.org/Person">
 
-                    标签。
-                {% endif %}
-            {% endif %}
-            <span class="by-author">作者是
-        <span class="author vcard">
-            <a class="url fn n" href="{{ article.author.get_absolute_url }}"
-               title="查看所有由{{ article.author.username }}发布的文章"
-               rel="author">
-            <span itemprop="author" itemscope itemtype="http://schema.org/Person">
-
-            <span itemprop="name" itemprop="publisher">
-
-            {{ article.author.username }}
-        </span>
-            </span>
-    </a>
-        </span>。
-                {% if user.is_superuser %}
-                    <a href="{{ article.get_admin_url }}">编辑</a>
-                {% endif %}
-    </span>
-        </footer><!-- .entry-meta -->
-
+                <span itemprop="name" itemprop="publisher"> {{ article.author.username }}</span>
+            </span></a></li>
+        <!-- .entry-meta -->
     {% endcache %}
 {% endwith %}

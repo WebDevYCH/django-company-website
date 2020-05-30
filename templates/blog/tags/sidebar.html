@@ -1,14 +1,15 @@
-{% load blog_tags %}
+{% load blogs_info %}
+{% load staticfiles %}
+{% block compress_css %}
+<style>
+    .post_item img {
+        width:120px;
+        height:100px;
+    }
+</style>
+
+{% endblock %}
 <div id="secondary" class="widget-area" role="complementary">
-    <aside id="search-2" class="widget widget_search">
-        <form role="search" method="get" id="searchform" class="searchform" action="/search">
-            <div>
-                <label class="screen-reader-text" for="s">搜索：</label>
-                <input type="text" value="" name="q" id="q"/>
-                <input type="submit" id="searchsubmit" value="搜索"/>
-            </div>
-        </form>
-    </aside>
     {% if extra_sidebars %}
         {% for sidebar in extra_sidebars %}
 
@@ -21,29 +22,42 @@
         {% endfor %}
     {% endif %}
     {% if most_read_articles %}
-
-        <aside id="views-4" class="widget widget_views"><h3 class="widget-title">Views</h3>
-            <ul>
-                {% for a in most_read_articles %}
-                    <li>
-                        <a href="{{ a.get_absolute_url }}" title="{{ a.title }}">
-                            {{ a.title }}
-                        </a> - {{ a.views }} views
-                    </li>
-                {% endfor %}
-            </ul>
-
-        </aside>
+        <aside class="single_sidebar_widget popular_post_widget" id="recent-posts-2">
+                            <h3 class="widget_title">Most Read Posts</h3>
+                            {% for a in most_read_articles %}
+                            <div class="media post_item">
+                                {% markdown_images a.body as imgs %}
+                                {% if imgs %}
+                                    <img src="{{ imgs.0 }}" alt="{{ a.title }}">
+                                {% endif %}
+                                <div class="media-body">
+                                    <a href="{{ a.get_absolute_url }}" title="{{ a.title }}">
+                                        <h3>{{ a.title }}...</h3>
+                                    </a>
+                                    <p>{{ a.body|custom_markdown|escape|truncate|slice:80 }}...</p>
+                                    <p class="mt-3"><i class="fas fa-eye"></i> {{ a.views }}</p>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            
+                        </aside>
+        
     {% endif %}
     {% if sidebar_categorys %}
-        <aside id="su_siloed_terms-2" class="widget widget_su_siloed_terms"><h3 class="widget-title">分类目录</h3>
-            <ul>
-                {% for c in sidebar_categorys %}
-                    <li class="cat-item cat-item-184"><a href={{ c.get_absolute_url }}>{{ c.name }}</a>
-                    </li>
-                {% endfor %}
-            </ul>
-        </aside>
+    <aside class="single_sidebar_widget post_category_widget">
+                            <h4 class="widget_title">Category</h4>
+                            <ul class="list cat-list">
+                            {% for c in sidebar_categorys %}
+                                <li>
+                                    <a href="{{ c.get_absolute_url }}" class="d-flex">
+                                        <p>{{ c.name }}</p>
+                                    </a>
+                                </li>
+                                
+                                {% endfor %}
+                            </ul>
+                        </aside>
+        
     {% endif %}
     {% if sidebar_comments and  open_site_comment %}
         <aside id="ds-recent-comments-4" class="widget ds-widget-recent-comments"><h3 class="widget-title">近期评论</h3>
@@ -62,16 +76,26 @@
         </aside>
     {% endif %}
     {% if recent_articles %}
-        <aside id="recent-posts-2" class="widget widget_recent_entries"><h3 class="widget-title">近期文章</h3>
-            <ul>
-
-                {% for a in  recent_articles %}
-                    <li><a href="{{ a.get_absolute_url }}" title="{{ a.title }}">
-                        {{ a.title }}
-                    </a></li>
-                {% endfor %}
-            </ul>
-        </aside>
+    <aside class="single_sidebar_widget popular_post_widget" id="recent-posts-2">
+                            <h3 class="widget_title">Recent Post</h3>
+                            {% for a in  recent_articles %}
+                            <div class="media post_item">
+                                {% markdown_images a.body as imgs %}
+                                {% if imgs %}
+                                    <img src="{{ imgs.0 }}" alt="{{ a.title }}">
+                                {% endif %}
+                                <div class="media-body">
+                                    <a href="{{ a.get_absolute_url }}" title="{{ a.title }}">
+                                        <h3>{{ a.title }}...</h3>
+                                    </a>
+                                    <p>{{ a.body|custom_markdown|escape|truncate|slice:70 }}...</p>
+                                    <p class="mt-3"><i class="fas fa-upload"></i> {{ a.pub_time|timesince }} ago</p>
+                                </div>
+                            </div>
+                            {% endfor %}
+                            
+                        </aside>
+       
     {% endif %}
     {% if sidabar_links %}
         <aside id="linkcat-0" class="widget widget_links"><h3 class="widget-title">书签</h3>
@@ -93,43 +117,34 @@
         </aside>
     {% endif %}
     {% if sidebar_tags %}
-        <aside id="tag_cloud-2" class="widget widget_tag_cloud"><h3 class="widget-title">标签云</h3>
-            <div class="tagcloud">
-                {% for tag,count,size in sidebar_tags %}
-                    <a href="{{ tag.get_absolute_url }}"
-                       class="tag-link-{{ tag.id }} tag-link-position-{{ tag.id }}"
-                       style="font-size: {{ size }}pt;" title="{{ count }}个话题"> {{ tag.name }}
-                    </a>
-                {% endfor %}
-            </div>
-        </aside>
+    <aside class="single_sidebar_widget tag_cloud_widget">
+                            <h4 class="widget_title">Popular tags</h4>
+                            <ul class="list">
+                            
+                            {% for tag,count,size in sidebar_tags %}
+                                <li>
+                                    <a href="{{ tag.get_absolute_url }}" title="{{ count }} {{ tag.name }}">{{ tag.name }} ({{ count }})</a>
+                                </li>
+                            {% endfor %}
+                            </ul>
+                        </aside>
+        
     {% endif %}
-    <aside id="text-2" class="widget widget_text"><h3 class="widget-title">欢迎您star或者fork本站源代码</h3>
-        <div class="textwidget">
-
-            <p><a href="https://github.com/liangliangyy/DjangoBlog" rel="nofollow"><img
-                    src="https://resource.lylinux.net/img.shields.io/github/stars/liangliangyy/djangoblog.svg?style=social&amp;label=Star"
-                    alt="GitHub stars"></a> <a href="https://github.com/liangliangyy/DjangoBlog" rel="nofollow"><img
-                    src="https://resource.lylinux.net/img.shields.io/github/forks/liangliangyy/djangoblog.svg?style=social&amp;label=Fork"
-                    alt="GitHub forks"></a></p>
-        </div>
-    </aside>
-    <aside id="meta-2" class="widget widget_meta"><h3 class="widget-title">功能</h3>
-        <ul>
-            <li><a href="/admin/" rel="nofollow">管理站点</a></li>
-            {% if user.is_authenticated %}
-                <li><a href="{% url "account:logout" %}" rel="nofollow">登出</a>
-                </li>
-
-            {% else %}
-                <li><a href="{% url "account:login" %}" rel="nofollow">登录</a>
-            {% endif %}
-            {% if user.is_superuser %}
-                <li><a href="{% url "blog:refresh" %}" target="_blank">刷新缓存</a></li>
-                <li><a href="{% url 'owntracks:show_dates' %}" target="_blank">运动轨迹记录</a></li>
-            {% endif %}
-            <li><a href="http://gitbook.lylinux.net" target="_blank" rel="nofollow">GitBook</a></li>
-        </ul>
-    </aside>
-    <div id="rocket" class="show" title="点我返回顶部"></div>
+    <aside class="single_sidebar_widget post_category_widget">
+                            <h4 class="widget_title">Category</h4>
+                            <ul class="list cat-list">
+                            <li><a href="/admin/" class="d-flex" rel="nofollow">Admin</a></li>
+                            {% if user.is_authenticated %}
+                                <li><a href="" class="d-flex" rel="nofollow">Sign out</a>
+                                </li>
+                            {% else %}
+                                <li><a href="" class="d-flex" rel="nofollow">log in</a>
+                            {% endif %}
+                            {% if user.is_superuser %}
+                                <li><a href="{% url "blog:refresh" %}" class="d-flex" target="_blank">Refresh the cache</a></li>
+                    
+                            {% endif %}
+                            </ul>
+                        </aside>
+    
 </div><!-- #secondary -->
