@@ -25,8 +25,8 @@ from datetime import datetime
 class AgrositeFeed(Feed):
     feed_type = Rss201rev2Feed
 
-    description = '大巧无工,重剑无锋.'
-    title = "且听风吟 大巧无工,重剑无锋. "
+    description = 'Daqiao without work, Epee without edge.'
+    title = "And listen to Fengyin, great skill without work, great sword without edge."
     link = "/feed/"
 
     def author_name(self):

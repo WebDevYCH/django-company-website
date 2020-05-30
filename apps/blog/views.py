@@ -10,10 +10,10 @@ from django import forms
 from django.http import HttpResponse, HttpResponseRedirect, HttpResponseForbidden
 from django.views.decorators.csrf import csrf_exempt
 from django.contrib.auth.decorators import login_required
-from DjangoBlog.utils import cache, get_md5, get_blog_setting
+from agrosite.utils import cache, get_md5, get_blog_setting
 from django.shortcuts import get_object_or_404
 from blog.models import Article, Category, Tag, Links
-from comments.forms import CommentForm
+from comment.form import CommentForm
 import logging
 
 logger = logging.getLogger(__name__)
@@ -21,7 +21,7 @@ logger = logging.getLogger(__name__)
 
 class ArticleListView(ListView):
 
-    template_name = 'blog/article_index.html'
+    template_name = 'blog/blogs.html'
 
     context_object_name = 'article_list'
 
@@ -116,14 +116,7 @@ class ArticleDetailView(DetailView):
         articleid = int(self.kwargs[self.pk_url_kwarg])
         comment_form = CommentForm()
         user = self.request.user
-        # 如果用户已经登录，则隐藏邮件和用户名输入框
-        if user.is_authenticated and not user.is_anonymous and user.email and user.username:
-            comment_form.fields.update({
-                'email': forms.CharField(widget=forms.HiddenInput()),
-                'name': forms.CharField(widget=forms.HiddenInput()),
-            })
-            comment_form.fields["email"].initial = user.email
-            comment_form.fields["name"].initial = user.username
+        
 
         article_comments = self.object.comment_list()
 
@@ -139,9 +132,9 @@ class ArticleDetailView(DetailView):
 
 class CategoryDetailView(ArticleListView):
     '''
-    分类目录列表
+    Category List
     '''
-    page_type = "分类目录归档"
+    page_type = "Catalog archive"
 
     def get_queryset_data(self):
         slug = self.kwargs['category_name']
@@ -175,9 +168,9 @@ class CategoryDetailView(ArticleListView):
 
 class AuthorDetailView(ArticleListView):
     '''
-    作者详情页
+    Author details page
     '''
-    page_type = '作者文章归档'
+    page_type = 'Author Article Archive'
 
     def get_queryset_cache_key(self):
         author_name = self.kwargs['author_name']
@@ -198,9 +191,9 @@ class AuthorDetailView(ArticleListView):
 
 class TagDetailView(ArticleListView):
     '''
-    标签列表页面
+    Label list page
     '''
-    page_type = '分类标签归档'
+    page_type = 'Category tag archive'
 
     def get_queryset_data(self):
         slug = self.kwargs['tag_name']
@@ -228,9 +221,9 @@ class TagDetailView(ArticleListView):
 
 class ArchivesView(ArticleListView):
     '''
-    文章归档页面
+    Article archive page
     '''
-    page_type = '文章归档'
+    page_type = 'Article Archive'
     paginate_by = None
     page_kwarg = None
     template_name = 'blog/article_archives.html'
@@ -254,7 +247,7 @@ class LinkListView(ListView):
 @csrf_exempt
 def fileupload(request):
     """
-    该方法需自己写调用端来上传图片，该方法仅提供图床功能
+    This method requires you to write the calling end to upload pictures. This method only provides the picture bed function.
     :param request:
     :return:
     """
@@ -300,7 +293,7 @@ def refresh_memcache(request):
     try:
 
         if request.user.is_superuser:
-            from DjangoBlog.utils import cache
+            from agrosite.utils import cache
             if cache and cache is not None:
                 cache.clear()
             return HttpResponse("ok")
@@ -316,16 +309,16 @@ def page_not_found_view(request, exception, template_name='blog/error_page.html'
         logger.error(exception)
     url = request.get_full_path()
     return render(request, template_name,
-                  {'message': '哎呀，您访问的地址 ' + url + ' 是一个未知的地方。请点击首页看看别的？', 'statuscode': '404'}, status=404)
+                  {'message': 'Oh, the address you visited' + url + 'is an unknown place. Please click on the homepage to see something else? ',' statuscode ':' 404 '}, status = 404)
 
 
 def server_error_view(request, template_name='blog/error_page.html'):
     return render(request, template_name,
-                  {'message': '哎呀，出错了，我已经收集到了错误信息，之后会抓紧抢修，请点击首页看看别的？', 'statuscode': '500'}, status=500)
+                  {'message': 'Oops, something went wrong, I have collected the error information, and I will hurry to repair it later, please click on the homepage to see something else? ',' statuscode ':' 500 '}, status = 500)
 
 
 def permission_denied_view(request, exception, template_name='blog/error_page.html'):
     if exception:
         logger.error(exception)
     return render(request, template_name,
-                  {'message': '哎呀，您没有权限访问此页面，请点击首页看看别的？', 'statuscode': '403'}, status=403)
+                  {'message': 'Oh, you don\'t have permission to access this page, please click on the homepage to see something else? ',' statuscode ':' 403 '}, status = 403)

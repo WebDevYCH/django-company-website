@@ -38,6 +38,7 @@ urlpatterns = [
     path('', include('about.urls')),
     path('', include('careers.urls')),
     path('', include('services.urls')),
+    url(r'', include('blog.urls', namespace='blog')),
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': sitemaps},
         name='django.contrib.sitemaps.views.sitemap'),
     path('feed/', AgrositeFeed()),
@@ -46,7 +47,7 @@ urlpatterns = [
     path('notifications/', include('notifications.urls', namespace='notifications')),
     path('login/', views.login, name='login'),
     path('register/', views.register, name='register'),
-    path('search/', include('haystack.urls')),
+    path('search/', include('haystack.urls'), name='search'),
     path('api/', include([
         path('', include('careers.api.urls')),
     ])),

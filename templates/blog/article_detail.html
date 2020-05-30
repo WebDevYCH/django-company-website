@@ -1,5 +1,6 @@
-{% extends 'blog/blogs.html' %}
-{% load blog_tags %}
+{% extends "main/layout.html" %}
+{% load staticfiles %}
+{% load blogs_info %}
 {% load cache %}
 {% block meta %}
     <title>{{ article.title }} | {{ SITE_DESCRIPTION }}</title>
@@ -26,54 +27,187 @@
     {% endif %}
 
 {% endblock %}
+{% block scripts %}
+<script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
+<script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
+{% endblock %}
+
+{% block compress_css %}
+<style>
+    h1 a img {
+        width:100%;
+    }
+
+    
+.blog_details p {
+    font-size: 1.125rem;
+    line-height: 1.61111em;
+    font-weight: 500;
+    margin-top: 1em;
+    margin-bottom: 1em;
+}
+
+.blog_details a {
+    color: #0091ae;
+    font-weight: 600;
+    text-decoration: none;
+}
+
+.blog_details a:hover {
+    text-decoration: underline;
+}
+@media (min-width: 768px)
+.blog_details p {
+    font-weight: 400;
+}
+   
+</style>
+
+{% endblock %}
 {% block content %}
-    <div id="primary" class="site-content">
-        <div id="content" role="main">
-            {% load_article_detail article False user %}
 
-            {% if article.type == 'a' %}
-                <nav class="nav-single">
-                    <h3 class="assistive-text">文章导航</h3>
-                    {% if next_article %}
-
-                        <span class="nav-previous"><a href="{{ next_article.get_absolute_url }}" rel="prev"><span
-                                class="meta-nav">&larr;</span> {{ next_article.title }}</a></span>
-                    {% endif %}
-                    {% if prev_article %}
-                        <span class="nav-next"><a href="{{ prev_article.get_absolute_url }}"
-                                                  rel="next">{{ prev_article.title }} <span
-                                class="meta-nav">&rarr;</span></a></span>
-                    {% endif %}
-                </nav><!-- .nav-single -->
-            {% endif %}
-
-        </div><!-- #content -->
-        {% if article.comment_status == "o" and OPEN_SITE_COMMENT %}
-
-
-            
-            {% if user.is_authenticated %}
-                
-            {% else %}
-                <div class="comments-area">
-                    <h3 class="comment-meta">您还没有登录，请您<a
-                            href="{% url "account:login" %}?next={{ request.get_full_path }}" rel="nofollow">登录</a>后发表评论。
-                    </h3>
-
-                    {% load oauth_tags %}
-                    {% load_oauth_applications request %}
-
+<div class="services-area">
+        <div class="container">
+            <!-- Section-tittle -->
+            <div class="row d-flex justify-content-center">
+                <div class="col-lg-8">
+                    <div class="section-tittle text-center mb-80">
+                        <h2>{{ article.title }}</h2>
+                    </div>
                 </div>
-            {% endif %}
-        {% endif %}
-    </div><!-- #primary -->
+                <div class="col-lg-4 blog_right_sidebar">
+                    {% include 'blog/tags/search.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+        <!-- ***** Blog Details Area Start ***** -->
+    <section class="blog_area single-post-area">
+        <div class="container">
+            <div class="row">
+                
+                <div class="col-lg-8 posts-list">
+                    <div class="blog-author">
+                        <div class="media align-items-center">
+                            <img src="{% static 'app/img/blog/author.png' %}" alt="">
+                            <div class="media-body">
+                                <a href="{{article.author.get_full_url}}">
+                                <h4>{{article.author.username}}</h4>
+                                </a>
+                                <p>Second divided from form fish beast made. Every of seas all gathered use saying you're, he
+                                our dominion twon Second divided from</p>
+                            </div>
+                        </div>
+                    </div>
+                    {% load_article_detail_info article True user %}
+                    <div class="navigation-top">
+                        <div class="d-sm-flex justify-content-between text-center">
+                            <p class="like-info"><span class="align-middle"><i class="fa fa-heart"></i></span> Lily and 4
+                                people like this</p>
+                            <div class="col-sm-4 text-center my-2 my-sm-0">
+                                <!-- <p class="comment-count"><span class="align-middle"><i class="fa fa-comment"></i></span> 06 Comments</p> -->
+                            </div>
+                            <ul class="social-icons">
+                                <li><a href="#"><i class="fab fa-facebook-f"></i></a></li>
+                                <li><a href="#"><i class="fab fa-twitter"></i></a></li>
+                                <li><a href="#"><i class="fab fa-dribbble"></i></a></li>
+                                <li><a href="#"><i class="fab fa-behance"></i></a></li>
+                            </ul>
+                        </div>
+                        {% if article.type == 'a' %}
+                            <div class="navigation-area">
+                                <div class="row">
+                                {% if next_article %}
+                                    <div class="col-lg-6 col-md-6 col-12 nav-left flex-row d-flex justify-content-start align-items-center">
+                                    <div class="thumb">
+                                        <a href="{{ next_article.get_absolute_url }}">
+                                            <img class="img-fluid" src="{% static 'app/img/post/preview.png' %}" alt="">
+                                        </a>
+                                    </div>
+                                    <div class="arrow">
+                                        <a href="{{ next_article.get_absolute_url }}">
+                                            <span class="lnr text-white ti-arrow-left"></span>
+                                        </a>
+                                    </div>
+                                    <div class="detials">
+                                        <p>Prev Post</p>
+                                        <a href="{{ next_article.get_absolute_url }}">
+                                            <h4>{{ next_article.title }}</h4>
+                                        </a>
+                                    </div>
+                                    </div>
+                                {% endif %}
+                                {% if prev_article %}
+                                    <div class="col-lg-6 col-md-6 col-12 nav-right flex-row d-flex justify-content-end align-items-center">
+                                    <div class="detials">
+                                        <p>Next Post</p>
+                                        <a href="{{ prev_article.get_absolute_url }}">
+                                            <h4>{{ prev_article.title }}</h4>
+                                        </a>
+                                    </div>
+                                    <div class="arrow">
+                                        <a href="{{ prev_article.get_absolute_url }}">
+                                            <span class="lnr text-white ti-arrow-right"></span>
+                                        </a>
+                                    </div>
+                                    <div class="thumb">
+                                        <a href="{{ prev_article.get_absolute_url }}">
+                                            <img class="img-fluid" src="{% static 'app/img/post/next.png' %}" alt="">
+                                        </a>
+                                    </div>
+                                    </div>
+                                {% endif %}
+                                </div>
+                            </div>
+                        {% endif %}
+                    </div>
+                    
+                    
+                    {% load_comments_list article  %}
+                    {% load_comment_form article  %}
+                </div>
+                <div class="col-lg-4">
+                    <div class="blog_right_sidebar">
+                            {% block sidebar %}
+                                {% with request.user.username as cachekey %}
+                                    {% cache 36000 asidebar cachekey %}
+                                        {% load_sidebar user linktype %}
+                                    {% endcache %}
+                                {% endwith %}
+                            {% endblock %}
+                        </div>
+                    </div>
+            </div>
+        </div>
+    </section>
+    <!-- ***** Blog Details Area End ***** -->
 
+
+{% endblock content %}
+    <!-- ***** Footer Area Start ***** -->
+    
+{% block script_extends %}
+    <script type="text/javascript">
+            function reply(reply_comment_id){
+            // 设置值
+            $('#reply_comment_id').val(reply_comment_id);
+            var html = $("#comment_" + reply_comment_id).html();
+            $('#reply_content').html(html);
+            $('#reply_content_container').show();
+            $('html').animate({scrollTop: $('#comment_form').offset().top - 60}, 300, function(){
+                CKEDITOR.instances['id_text'].focus();
+            });
+        }
+
+        $("#comment_form").submit(function(){
+            $("#comment_error").text('');
+            if(CKEDITOR.instances['id_text'].document.getBody().getText().trim() === ''){
+                $("#comment_error").text('Comment content cannot be empty');
+                return false;``
+            }
+        });
+
+    </script>
 {% endblock %}
 
-{% block sidebar %}
-    {% with request.user.username|add:'p' as cachekey %}
-        {% cache 36000 sidebar cachekey %}
-            {% load_sidebar user 'p' %}
-        {% endcache %}
-    {% endwith %}
-{% endblock %}
+

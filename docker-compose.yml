@@ -63,11 +63,34 @@ services:
       - redisdb:/bitnami/redis/data
     networks:
       - djangonetwork
+  
+  esearch1:
+    restart: always
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.7.0
+    container_name: esearch1
+    environment:
+      - node.name=esearch1
+      - cluster.name=es-docker-cluster
+      - discovery.seed_hosts=esearch1
+      - cluster.initial_master_nodes=esearch1
+      - bootstrap.memory_lock=true
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+    volumes:
+      - data01:/usr/share/elasticsearch/data
+    ports:
+      - 9200:9200
+    networks:
+      - djangonetwork
+  
 
 volumes:
   postgresdb:
   postgresdb_backup:
   redisdb:
+  data01:
 
 networks:
   djangonetwork:

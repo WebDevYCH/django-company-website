@@ -1,9 +1,9 @@
 {% extends 'blog/blogs.html' %}
-{% load blog_tags %}
+{% load blogs_info %}
 {% load cache %}
 {% block meta %}
 
-    <title>友情链接 | {{ SITE_DESCRIPTION }}</title>
+    <title>links | {{ SITE_DESCRIPTION }}</title>
 
     <meta name="description" content="{{ SITE_SEO_DESCRIPTION }}"/>
     <meta name="keywords" content="{{ SITE_KEYWORDS }}"/>

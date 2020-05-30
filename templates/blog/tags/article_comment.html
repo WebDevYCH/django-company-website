@@ -1,0 +1,81 @@
+{% load blogs_info %}
+{% load staticfiles %}
+    <div class="comment_area mb-50 clearfix">
+									
+            <h5 class="title" id="comment">{{ total_comments }} comments</h5>
+            <ol>
+                
+                <li class="single_comment_area" id="comment_list">
+                        <!-- Comment Content -->
+                        
+                        {% for comment in comments %} 
+                        <div  class="comment-content d-flex comment"  id="root_{{ comment.pk }}">
+                            <!-- Comment Author -->
+                            {% ifequal comment.user.username 'reborn' %}
+                            <div class="comment-author">
+                                <img src="{% static 'blog/image/touxiang.jpg' %}" alt="{{ comment.user.username }}">
+                            </div>
+                            {% else %}
+                            <div class="comment-author">
+                                <img src="{% static 'blog/image/touxiang.jpg' %}" alt="{{ comment.user.username }}">
+                            </div>
+                            {% endifequal %}
+                            <!-- Comment Meta -->
+                            <div class="comment-meta" id="comment_{{ comment.pk }}">
+                                <a href="#" class="post-date">{{ comment.comment_time| timesince}} ago</a>
+                                {% ifequal reply.user.username 'reborn' %}
+                                <h5>Blogger</h5>
+                                {% else %}
+                                <h5>{{ comment.user.username }}</h5>
+                                {% endifequal %}
+                                <p>{{ comment.text|safe }}</p>
+                                <a href="#" class="like">Like</a>
+                                <a href="javascript:reply({{ comment.pk }})" class="reply">Reply</a>
+                            </div>
+                        </div>
+                        {% if reply.user.username is  null %}
+                        <ol class="children">
+                        {% for reply in comment.root_comment.all %}
+                            <li class="single_comment_area">
+                                <!-- Comment Content -->
+                                <div class="comment-content d-flex">
+                                    <!-- Comment Author -->
+                                    {% ifequal reply.user.username 'reborn' %}
+                                    <div class="comment-author">
+                                        <img src="{% static 'blog/image/touxiang.jpg' %}" alt="{{ reply.user.username }}">
+                                    </div>
+                                    {% else %}
+                                    <div class="comment-author">
+                                        <img src="{% static 'blog/image/touxiang.jpg' %}" alt="{{ reply.user.username }}">
+                                    </div>
+                                    {% endifequal %}
+                                    <!-- Comment Meta -->
+                                    <div class="comment-meta">
+                                        <a href="#" class="post-date">{{ reply.comment_time|date:'Y-m-d H:i:s'}}</a>
+                                        {% ifequal reply.user.username 'reborn' %}
+                                        <h5>Blogger</h5>
+                                        {% else %}
+                                        <h5>{{ reply.user.username }}-
+                                            {% ifequal reply.reply_to.username 'reborn' %}
+                                            Blogger
+                                            {% else %}
+                                            {{ reply.reply_to.username }}
+                                            {% endifequal %}
+                                        </h5>
+                                        {% endifequal %}
+                                        <p id="comment_{{ reply.pk }}">{{ reply.text|safe }}</p>
+                                        <a href="#" class="like">Like</a>
+                                        <a href="javascript:reply({{ reply.pk }})" class="reply">Reply</a>
+                                    </div>
+                                </div>
+                            </li>
+                            {% endfor %}
+                            </ol>
+                        {% endif %}
+
+                    {% empty %}
+                    There are no comments for this article. Just say a few words!
+                    {% endfor %}  
+                    </li>
+                </ol>
+            </div>

@@ -1,5 +1,9 @@
+# -*- coding:utf-8 -*-
+import xadmin
+from .models import *
+from xadmin import views
+from xadmin.filters import MultiSelectFieldListFilter
 from django.contrib import admin
-# Register your models here.
 from .models import Article, Category, Tag, Links, SideBar, BlogSettings
 from django import forms
 from django.contrib.auth import get_user_model
@@ -7,22 +11,6 @@ from django.utils.translation import ugettext_lazy as _
 from django.urls import reverse
 from django.utils.html import format_html
 
-
-class ArticleListFilter(admin.SimpleListFilter):
-    title = _("作者")
-    parameter_name = 'author'
-
-    def lookups(self, request, model_admin):
-        authors = list(set(map(lambda x: x.author, Article.objects.all())))
-        for author in authors:
-            yield (author.id, _(author.username))
-
-    def queryset(self, request, queryset):
-        id = self.value()
-        if id:
-            return queryset.filter(author__id__exact=id)
-        else:
-            return queryset
 
 
 class ArticleForm(forms.ModelForm):
@@ -49,20 +37,20 @@ def open_article_commentstatus(modeladmin, request, queryset):
     queryset.update(comment_status='o')
 
 
-makr_article_publish.short_description = '发布选中文章'
-draft_article.short_description = '选中文章设置为草稿'
-close_article_commentstatus.short_description = '关闭文章评论'
-open_article_commentstatus.short_description = '打开文章评论'
+makr_article_publish.short_description = 'Publish selected article'
+draft_article.short_description = 'Selected article is set as draft'
+close_article_commentstatus.short_description = 'Close article comment'
+open_article_commentstatus.short_description = 'Open article comment'
 
 
-class ArticlelAdmin(admin.ModelAdmin):
+class ArticlelAdmin(object):
     list_per_page = 20
     search_fields = ('body', 'title')
     form = ArticleForm
     list_display = (
         'id', 'title', 'author', 'link_to_category', 'created_time', 'views', 'status', 'type', 'article_order')
     list_display_links = ('id', 'title')
-    list_filter = (ArticleListFilter, 'status', 'type', 'category', 'tags')
+    list_filter = ( 'status', 'type', 'category', 'tags')
     filter_horizontal = ('tags',)
     exclude = ('created_time', 'last_mod_time')
     view_on_site = True
@@ -73,7 +61,7 @@ class ArticlelAdmin(admin.ModelAdmin):
         link = reverse('admin:%s_%s_change' % info, args=(obj.category.id,))
         return format_html(u'<a href="%s">%s</a>' % (link, obj.category.name))
 
-    link_to_category.short_description = '分类目录'
+    link_to_category.short_description = 'Categories'
 
     def get_form(self, request, obj=None, **kwargs):
         form = super(ArticlelAdmin, self).get_form(request, obj, **kwargs)
@@ -93,22 +81,28 @@ class ArticlelAdmin(admin.ModelAdmin):
             return site
 
 
-class TagAdmin(admin.ModelAdmin):
+class TagAdmin(object):
     exclude = ('slug', 'last_mod_time', 'created_time')
 
 
-class CategoryAdmin(admin.ModelAdmin):
+class CategoryAdmin(object):
     exclude = ('slug', 'last_mod_time', 'created_time')
 
 
-class LinksAdmin(admin.ModelAdmin):
+class LinksAdmin(object):
     exclude = ('last_mod_time', 'created_time')
 
 
-class SideBarAdmin(admin.ModelAdmin):
+class SideBarAdmin(object):
     list_display = ('name', 'content', 'is_enable', 'sequence')
     exclude = ('last_mod_time', 'created_time')
 
 
-class BlogSettingsAdmin(admin.ModelAdmin):
+class BlogSettingsAdmin(object):
     pass
+xadmin.site.register(Article, ArticlelAdmin)
+xadmin.site.register(Category, CategoryAdmin)
+xadmin.site.register(Tag, TagAdmin)
+xadmin.site.register(Links, LinksAdmin)
+xadmin.site.register(SideBar, SideBarAdmin)
+xadmin.site.register(BlogSettings, BlogSettingsAdmin)

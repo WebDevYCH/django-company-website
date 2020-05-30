@@ -1,5 +1,5 @@
 from django.test import Client, RequestFactory, TestCase
-from DjangoBlog.utils import get_current_site
+from agrosite.utils import get_current_site
 from .models import commands
 import datetime
 from accounts.models import BlogUser

@@ -1,12 +1,22 @@
 {% extends "main/layout.html" %}
 {% load staticfiles %}
-{% load blog_tags %}
+{% load blogs_info %}
+{% load cache %}
 {% block meta %}
-    {% get_seo_info as seo_info %}
-        <title>{{ seo_info.title }}—{{ seo_info.sub_title }}</title>
-        <meta name="description" content="{{ seo_info.description }}"/>
-        <meta name="keywords" content="{{ seo_info.keywords }}" />
-    {% endblock %}
+    {% if tag_name %}
+        <title>{{ page_type }}:{{ tag_name }} | {{ SITE_DESCRIPTION }}</title>
+        {% comment %}<meta name="description" content="{{ page_type }}:{{ tag_name }}"/>{% endcomment %}
+    {% else %}
+        <title>{{ SITE_NAME }} | {{ SITE_DESCRIPTION }}</title>
+    {% endif %}
+    <meta name="description" content="{{ SITE_SEO_DESCRIPTION }}"/>
+    <meta name="keywords" content="{{ SITE_KEYWORDS }}"/>
+    <meta property="og:type" content="blog"/>
+    <meta property="og:title" content="{{ SITE_NAME }}"/>
+    <meta property="og:description" content="{{ SITE_DESCRIPTION }}"/>
+    <meta property="og:url" content="{{ SITE_BASE_URL }}"/>
+    <meta property="og:site_name" content="{{ SITE_NAME }}"/>
+{% endblock %}
 {% block content %}
     <!-- ***** Welcome Area Start ***** -->
 
@@ -263,7 +273,6 @@
                         </div>
                          {% endfor %}
 
-                   
                 </div>
             </div>
         </div>
@@ -357,29 +366,9 @@
             <div class="container">
                 <div class="row">
                     <div class="app-active owl-carousel"> 
-                        {% for post in home.blogs %}
-                                 <article class="blog_item">
-                                    <div class="blog_item_img">
-                                        <img class="card-img rounded-0" src="{% static 'app/img/blog/single_blog_1.png' %}' %}" alt="">
-                                        <a href="#" class="blog_item_date">
-                                            <h3>15</h3>
-                                            <p>Jan</p>
-                                        </a>
-                                    </div>
-
-                                    <div class="blog_details">
-                                        <a class="d-inline-block" href="{{ post.get_absolute_url }}">
-                                            <h2>{{ post.title }}</h2>
-                                        </a>
-                                        <p>{{ post.excerpt | slice:":70"}}...</p>
-                                        <ul class="blog-info-link">
-                                            <li><a href="#"><i class="fa fa-user"></i> Travel, Lifestyle</a></li>
-                                            <li><a href="#"><i class="fa fa-comments"></i> 03 Comments</a></li>
-                                        </ul>
-                                    </div>
-                                </article>
-                            {% endfor %}
-                            
+                       {% for article in article_list %}
+                            {% load_article_detail article True user %}
+                        {% endfor %}
                     </div>
                 </div>
             </div>

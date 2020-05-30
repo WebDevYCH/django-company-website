@@ -10,7 +10,7 @@ def login(request):
         if login_form.is_valid():
             user = login_form.cleaned_data['user']
             auth.login(request, user)
-            return redirect(request.GET.get('from',reverse('mysite:home')))  
+            return redirect(request.GET.get('from',reverse('home:home')))  
     else:
         login_form = LoginForm()
     context = {}
@@ -36,7 +36,7 @@ def register(request):
             user = auth.authenticate(username=username,password=password)
             auth.login(request, user)
 
-            return redirect(request.GET.get('from',reverse('mysite:home')))  
+            return redirect(request.GET.get('from',reverse('home:home')))  
 
     else:
         reg_form = RegForm()

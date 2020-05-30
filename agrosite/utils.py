@@ -165,7 +165,7 @@ class CommonMarkdown():
 
 
 def send_email(emailto, title, content):
-    from DjangoBlog.blog_signals import send_email_signal
+    from agrosite.blog_signals import send_email_signal
     send_email_signal.send(
         send_email.__class__,
         emailto=emailto,
@@ -192,7 +192,7 @@ def get_blog_setting():
             setting.site_description = 'This is the description of this site'
             setting.site_seo_description = 'This is the seo description of this site'
             setting.site_keywords = 'agrosite,farm,agriculture,agrohelp,farmer,vegetables,agroapp'
-            setting.article_sub_length = 300
+            setting.article_sub_length = 200
             setting.sidebar_article_count = 10
             setting.sidebar_comment_count = 5
             setting.show_google_adsense = False
