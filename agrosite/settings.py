@@ -381,7 +381,7 @@ STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
 
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'agrosite/static')
 
 PROXY_URL = os.environ.get('PROXY_URL', '')
 
