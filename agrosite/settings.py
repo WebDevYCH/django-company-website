@@ -188,11 +188,11 @@ CKEDITOR_CONFIGS = {
     }
 }
 
-ELASTICSEARCH_DSL = {
-    'default': {
-        'hosts': 'esearch1:9200'
-    },
-}
+# ELASTICSEARCH_DSL = {
+#     'default': {
+#         'hosts': 'esearch1:9200'
+#     },
+# }
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'agrosite.whoosh_cn_backend.WhooshEngine',
