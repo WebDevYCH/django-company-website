@@ -306,12 +306,15 @@ def get_comment_count(article):
 @register.inclusion_tag('blog/tags/article_comment_form.html')
 def load_comment_form(article):
     content_type = ContentType.objects.get_for_model(article)
-    form = CommentForm(initial={'content_type': content_type.model, 'object_id': article.pk, 'reply_comment_id': '0'})
-    return {
-        'form': form,
-    }
+    comment_form = CommentForm(initial={'content_type': content_type.model, 'object_id': article.pk, 'reply_comment_id': '0'})
+    return  {'comment_form':comment_form}
+    
 
-
+@register.simple_tag
+def get_comment_form(obj):
+    content_type = ContentType.objects.get_for_model(obj)
+    form = CommentForm(initial={'content_type': content_type.model, 'object_id': obj.pk, 'reply_comment_id': '0'})
+    return form
 
 @register.inclusion_tag('blog/tags/article_comment.html')
 def load_comments_list(article):

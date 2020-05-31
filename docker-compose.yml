@@ -18,6 +18,7 @@ services:
       - db
       - redis
       - nginx
+      - esearch1
     command: /usr/local/bin/gunicorn agrosite.wsgi:application -w 2 -b :8000
     env_file:
       - .env
@@ -50,6 +51,7 @@ services:
       - .db.env
     networks:
       - djangonetwork
+      
   redis:
     restart: always
     image: bitnami/redis:latest
@@ -64,8 +66,8 @@ services:
     networks:
       - djangonetwork
   
+
   esearch1:
-    restart: always
     image: docker.elastic.co/elasticsearch/elasticsearch:7.7.0
     container_name: esearch1
     environment:
@@ -74,6 +76,7 @@ services:
       - discovery.seed_hosts=esearch1
       - cluster.initial_master_nodes=esearch1
       - bootstrap.memory_lock=true
+      - "ES_JAVA_OPTS=-Xms512m -Xmx512m"
     ulimits:
       memlock:
         soft: -1
@@ -82,6 +85,19 @@ services:
       - data01:/usr/share/elasticsearch/data
     ports:
       - 9200:9200
+      - 9300:9300
+    networks:
+      - djangonetwork
+
+  elasticsearch:
+    restart: always
+    image: launcher.gcr.io/google/elasticsearch2
+    container_name: esearch
+    volumes:
+      - datasearch:/usr/share/elasticsearch/datasearch
+    ports:
+      - 9200:9200
+      - 9300:9300
     networks:
       - djangonetwork
   
@@ -90,6 +106,7 @@ volumes:
   postgresdb:
   postgresdb_backup:
   redisdb:
+  datasearch:
   data01:
 
 networks:

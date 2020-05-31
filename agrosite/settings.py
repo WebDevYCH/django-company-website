@@ -115,6 +115,11 @@ INSTALLED_APPS = [
     'cacheops',
     'django_extensions',
     'django_nose',
+    # Django Elasticsearch integration
+    'django_elasticsearch_dsl',
+
+    # Django REST framework Elasticsearch integration (this package)
+    'django_elasticsearch_dsl_drf',
 ]
 SITE_ID = 1
 DEBUG = environment_checker.is_debug()
@@ -185,14 +190,13 @@ CKEDITOR_CONFIGS = {
 
 ELASTICSEARCH_DSL = {
     'default': {
-        'hosts': '127.0.0.1:9200'
+        'hosts': 'esearch1:9200'
     },
 }
 HAYSTACK_CONNECTIONS = {
     'default': {
-        'ENGINE': 'agrosite.elasticsearch_backend.ElasticSearchEngine',
-        'URL': 'http://127.0.0.1:9200/',
-        'INDEX_NAME': 'haystack',
+        'ENGINE': 'agrosite.whoosh_cn_backend.WhooshEngine',
+        'PATH': os.path.join(os.path.dirname(__file__), 'whoosh_index'),
     },
 }
 
