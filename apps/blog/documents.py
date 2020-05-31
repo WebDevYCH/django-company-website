@@ -11,7 +11,7 @@
 @time: 2019-04-05 13:05
 """
 import time
-from blog.models import Article, Category, Tag
+from .models import Article, Category, Tag
 from elasticsearch_dsl import Document, Date, Integer, Keyword, Text, Object, Boolean
 
 from django.conf import settings
@@ -58,7 +58,7 @@ class ArticleDocument(Document):
     body = Text(analyzer='ik_max_word', search_analyzer='ik_smart')
     title = Text(analyzer='ik_max_word', search_analyzer='ik_smart')
     author = Object(properties={
-        'nickname': Text(analyzer='ik_max_word', search_analyzer='ik_smart'),
+        'username': Text(analyzer='ik_max_word', search_analyzer='ik_smart'),
         'id': Integer()
     })
     category = Object(properties={
@@ -105,7 +105,7 @@ class ArticleDocumentManager():
     def convert_to_doc(self, articles):
         return [ArticleDocument(meta={'id': article.id}, body=article.body, title=article.title,
                                 author={
-                                    'nikename': article.author.username,
+                                    'username': article.author.username,
                                     'id': article.author.id
                                 },
                                 category={

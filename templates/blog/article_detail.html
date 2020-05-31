@@ -164,7 +164,35 @@
                     
                     
                     {% load_comments_list article  %}
-                    {% load_comment_form article  %}
+                    <div class="comment-form">
+                        <h2 class="mb-4">Leave A Comment</h2>
+                        {% if user.is_authenticated %}
+                        <form id = "comment_form" action="{% url 'comment:update_comment' %}" class="form-contact comment_form" method="POST">
+
+                            <div id="reply_content_container" style="display:none;">
+                                <p id="reply_title">Reply：</p>
+                                <div id="reply_content"></div>
+                            </div>
+
+                            {% csrf_token %}
+                            {% get_comment_form article as comment_form%}
+                            {% for field in comment_form %}
+                                {{ field }}
+                            {% endfor %}
+
+                            <span id="comment_error" class="text-danger pull-left"></span>
+                            <div class="form-group">
+                                <button type="submit" class="button button-contactForm btn_1 boxed-btn" value="comment">Comment</button>
+                            </div>
+                        </form>
+                    {% else %}
+                        Please login and comment
+                        <a class = "btn btn-primary" href="{% url 'login' %}?from={{ request.get_full_path }}">log in</a>
+                        <span> or </span>
+                    {% endif %}
+                                        
+                </div>
+                    
                 </div>
                 <div class="col-lg-4">
                     <div class="blog_right_sidebar">

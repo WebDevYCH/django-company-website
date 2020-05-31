@@ -96,8 +96,9 @@
     <script src="{% static 'app/js/main.js' %}"></script>
     
     
-    {% block scripts %}{% endblock %}
-    {% block script_extends %} {% endblock %}
+    
+    {% block script_extends %}{% endblock %}
 {% endcompress %}
+{% block scripts %}{% endblock %}
 </body>
 </html>

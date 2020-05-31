@@ -13,18 +13,16 @@
                         {% if article.tags.all %}
                         | <i class="fa fa-tags"></i>
                             {% for t in article.tags.all %}
-                                <a href="{{ t.get_absolute_url }}" rel="tag" title="View all articles tagged with {{ t.name }}"> {{ t.name }}</a>
+                                <a href="{{ t.get_absolute_url }}" rel="tag" title="View all articles tagged with {{ t.name }}">{{ t.name }}</a>
                                 {% if t != article.tags.all.last %}
-                                    ，
+                                ，
                                 {% endif %}
                             {% endfor %}
                         {% endif %}
-                        
-                    {% endif %} 
+                    {% endif %}
                 </li>
                 <li><a href="{{ article.author.get_absolute_url }}" title="View all articles published by {{article.author.username}}"
                 rel="author"><i class="fa fa-user"></i><span itemprop="author" itemscope itemtype="http://schema.org/Person">
-
                 <span itemprop="name" itemprop="publisher"> {{ article.author.username }}</span>
             </span></a></li>
         <!-- .entry-meta -->

@@ -1,36 +1,44 @@
 {% load blogs_info %}
 {% load staticfiles %}
-    <div class="comment_area mb-50 clearfix">
+    <div class="comments-area">
 									
-            <h5 class="title" id="comment">{{ total_comments }} comments</h5>
+            <h2 class="title" id="comment">{{ total_comments }} comments</h2>
             <ol>
                 
                 <li class="single_comment_area" id="comment_list">
                         <!-- Comment Content -->
                         
                         {% for comment in comments %} 
-                        <div  class="comment-content d-flex comment"  id="root_{{ comment.pk }}">
+                        <div  class="user d-flex mb-4 mt-4"  id="root_{{ comment.pk }}">
                             <!-- Comment Author -->
                             {% ifequal comment.user.username 'reborn' %}
-                            <div class="comment-author">
-                                <img src="{% static 'blog/image/touxiang.jpg' %}" alt="{{ comment.user.username }}">
+                            <div class="thumb">
+                                <img src="{% static 'app/img/comment/comment_2.png' %}" alt="{{ comment.user.username }}">
                             </div>
                             {% else %}
-                            <div class="comment-author">
-                                <img src="{% static 'blog/image/touxiang.jpg' %}" alt="{{ comment.user.username }}">
+                            <div class="thumb">
+                                <img src="{% static 'app/img/comment/comment_2.png' %}" alt="{{ comment.user.username }}">
                             </div>
                             {% endifequal %}
                             <!-- Comment Meta -->
-                            <div class="comment-meta" id="comment_{{ comment.pk }}">
-                                <a href="#" class="post-date">{{ comment.comment_time| timesince}} ago</a>
+                            <div class="desc" id="comment_{{ comment.pk }}">
                                 {% ifequal reply.user.username 'reborn' %}
                                 <h5>Blogger</h5>
                                 {% else %}
                                 <h5>{{ comment.user.username }}</h5>
                                 {% endifequal %}
-                                <p>{{ comment.text|safe }}</p>
-                                <a href="#" class="like">Like</a>
-                                <a href="javascript:reply({{ comment.pk }})" class="reply">Reply</a>
+                                <p class="comment">{{ comment.text|safe }}</p>
+                                <div class="d-flex justify-content-between">
+                                 <div class="d-flex align-items-center">
+                                    <p class="date">{{ comment.comment_time| timesince}} ago </p>
+                                 </div>
+                                 <div class="reply-btn">
+                                    <a href="#" class="btn-reply text-uppercase">like</a>
+                                 </div>
+                                 <div class="reply-btn">
+                                    <a href="javascript:reply({{ comment.pk }})" class="btn-reply text-uppercase">reply</a>
+                                 </div>
+                              </div>
                             </div>
                         </div>
                         {% if reply.user.username is  null %}
@@ -38,20 +46,19 @@
                         {% for reply in comment.root_comment.all %}
                             <li class="single_comment_area">
                                 <!-- Comment Content -->
-                                <div class="comment-content d-flex">
+                                <div class="user d-flex d-flex mb-4">
                                     <!-- Comment Author -->
                                     {% ifequal reply.user.username 'reborn' %}
-                                    <div class="comment-author">
-                                        <img src="{% static 'blog/image/touxiang.jpg' %}" alt="{{ reply.user.username }}">
+                                    <div class="thumb">
+                                        <img src="{% static 'app/img/comment/comment_2.png' %}" alt="{{ reply.user.username }}">
                                     </div>
                                     {% else %}
-                                    <div class="comment-author">
-                                        <img src="{% static 'blog/image/touxiang.jpg' %}" alt="{{ reply.user.username }}">
+                                    <div class="thumb">
+                                        <img src="{% static 'app/img/comment/comment_2.png' %}" alt="{{ reply.user.username }}">
                                     </div>
                                     {% endifequal %}
                                     <!-- Comment Meta -->
-                                    <div class="comment-meta">
-                                        <a href="#" class="post-date">{{ reply.comment_time|date:'Y-m-d H:i:s'}}</a>
+                                    <div class="desc" id="comment_{{ reply.pk }}">
                                         {% ifequal reply.user.username 'reborn' %}
                                         <h5>Blogger</h5>
                                         {% else %}
@@ -63,9 +70,18 @@
                                             {% endifequal %}
                                         </h5>
                                         {% endifequal %}
-                                        <p id="comment_{{ reply.pk }}">{{ reply.text|safe }}</p>
-                                        <a href="#" class="like">Like</a>
-                                        <a href="javascript:reply({{ reply.pk }})" class="reply">Reply</a>
+                                        <p id="comment_{{ reply.pk }}" class="comment">{{ reply.text|safe }}</p>
+                                        <div class="d-flex justify-content-between">
+                                            <div class="d-flex align-items-center">
+                                                <p class="date">{{ reply.comment_time| timesince}} ago </p>
+                                            </div>
+                                            <div class="reply-btn">
+                                                <a href="#" class="btn-reply text-uppercase">like</a>
+                                            </div>
+                                            <div class="reply-btn">
+                                                <a href="javascript:reply({{ reply.pk }})" class="btn-reply text-uppercase">reply</a>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </li>
