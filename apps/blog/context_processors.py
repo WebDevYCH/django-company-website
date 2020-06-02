@@ -39,7 +39,7 @@ def seo_processor(requests):
             'SITE_BASE_URL': requests.scheme + '://' + requests.get_host() + '/',
             'ARTICLE_SUB_LENGTH': setting.article_sub_length,
             'nav_category_list': Category.objects.all(),
-            'nav_pages': Article.objects.filter(type='p', status='p'),
+            'nav_pages': Article.objects.filter(type='p', status='p', is_removed=False),
             'OPEN_SITE_COMMENT': setting.open_site_comment,
             'BEIAN_CODE': setting.beiancode,
             'ANALYTICS_CODE': setting.analyticscode,

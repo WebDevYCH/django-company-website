@@ -142,10 +142,10 @@ def load_sidebar(user, linktype):
     logger.info('load sidebar')
     from agrosite.utils import get_blog_setting
     blogsetting = get_blog_setting()
-    recent_articles = Article.objects.filter(status='p')[:blogsetting.sidebar_article_count]
+    recent_articles = Article.objects.filter(status='p', is_removed=False)[:blogsetting.sidebar_article_count]
     sidebar_categorys = Category.objects.all()
     extra_sidebars = SideBar.objects.filter(is_enable=True).order_by('sequence')
-    most_read_articles = Article.objects.filter(status='p').order_by('-views')[:blogsetting.sidebar_article_count]
+    most_read_articles = Article.objects.filter(status='p', is_removed=False).order_by('-views')[:blogsetting.sidebar_article_count]
     dates = Article.objects.datetimes('created_time', 'month', order='DESC')
     links = Links.objects.filter(is_enable=True).filter(Q(show_type=str(linktype)) | Q(show_type='a'))
     commment_list = Comment.objects.filter().order_by('-id')[:blogsetting.sidebar_comment_count]

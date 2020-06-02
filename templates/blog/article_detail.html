@@ -32,38 +32,6 @@
 <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
 {% endblock %}
 
-{% block compress_css %}
-<style>
-    h1 a img {
-        width:100%;
-    }
-
-    
-.blog_details p {
-    font-size: 1.125rem;
-    line-height: 1.61111em;
-    font-weight: 500;
-    margin-top: 1em;
-    margin-bottom: 1em;
-}
-
-.blog_details a {
-    color: #0091ae;
-    font-weight: 600;
-    text-decoration: none;
-}
-
-.blog_details a:hover {
-    text-decoration: underline;
-}
-@media (min-width: 768px)
-.blog_details p {
-    font-weight: 400;
-}
-   
-</style>
-
-{% endblock %}
 {% block content %}
 
 <div class="services-area">
@@ -187,7 +155,7 @@
                         </form>
                     {% else %}
                         Please login and comment
-                        <a class = "btn btn-primary" href="{% url 'login' %}?from={{ request.get_full_path }}">log in</a>
+                        <a class = "btn btn-primary" href="{% url 'account:login' %}?from={{ request.get_full_path }}">log in</a>
                         <span> or </span>
                     {% endif %}
                                         

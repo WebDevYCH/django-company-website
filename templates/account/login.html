@@ -1,0 +1,57 @@
+{% extends "main/layout.html" %}
+{% load staticfiles %}
+{% load blogs_info %}
+{% block meta %}
+    {% if tag_name %}
+        <title>{{ page_type }}:{{ tag_name }} | {{ SITE_DESCRIPTION }}</title>
+        {% comment %}<meta name="description" content="{{ page_type }}:{{ tag_name }}"/>{% endcomment %}
+    {% else %}
+        <title>{{ SITE_NAME }} | {{ SITE_DESCRIPTION }}</title>
+    {% endif %}
+    <meta name="description" content="{{ SITE_SEO_DESCRIPTION }}"/>
+    <meta name="keywords" content="{{ SITE_KEYWORDS }}"/>
+    <meta property="og:type" content="blog"/>
+    <meta property="og:title" content="{{ SITE_NAME }}"/>
+    <meta property="og:description" content="{{ SITE_DESCRIPTION }}"/>
+    <meta property="og:url" content="{{ SITE_BASE_URL }}"/>
+    <meta property="og:site_name" content="{{ SITE_NAME }}"/>
+{% endblock %}
+{% block content %}
+    <!-- ***** Welcome Area Start ***** -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-offset-3 col-md-6">
+        <img class="img-circle profile-img" src="{% static 'app/img/avatar.png' %}" alt="">
+            <form class="form-horizontal" action="{% url 'account:login' %}" method="POST">
+                <span class="heading">User login</span>
+                {% csrf_token %}
+                {% comment %}<label for="inputEmail" class="sr-only">Email address</label>
+                <input type="email" id="inputEmail" class="form-control" placeholder="Email" required autofocus>
+                <label for="inputPassword" class="sr-only">Password</label>
+                <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>{% endcomment %}
+                {{ form.non_field_errors }}
+                {% for field in form %}
+                    {{ field }}
+                    {{ field.errors }}
+                {% endfor %}
+
+                <input type="hidden" name="next" value="{{ redirect_to }}">
+                <button class="btn btn-lg btn-primary btn-block" type="submit">Sign in</button>
+
+                <div class="checkbox">
+                    {% comment %}<a class="pull-right">Need help?</a>{% endcomment %}
+                    <label>
+                        <input type="checkbox" value="remember-me"> Stay signed in
+                    </label>
+                </div>
+            </form>
+            <div class="form-horizontal_register">
+                No account yet?<a href="{% url 'account:register' %}"><button type="submit" class="btn btn-default btn-danger">Register</button></a>
+            </div>
+                
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+

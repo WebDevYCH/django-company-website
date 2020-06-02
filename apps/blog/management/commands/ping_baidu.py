@@ -38,7 +38,7 @@ class Command(BaseCommand):
 
         urls = []
         if type == 'article' or type == 'all':
-            for article in Article.objects.filter(status='p'):
+            for article in Article.objects.filter(status='p', is_removed=False):
                 urls.append(article.get_full_url())
         if type == 'tag' or type == 'all':
             for tag in Tag.objects.all():

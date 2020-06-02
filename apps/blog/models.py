@@ -27,6 +27,8 @@ class BaseModel(models.Model):
     id = models.AutoField(primary_key=True)
     created_time = models.DateTimeField('create time', default = now)
     last_mod_time = models.DateTimeField('modified time', default = now)
+    is_removed = models.BooleanField('Is Removed', default=False)
+    
     def save(self, *args, **kwargs):
         is_update_views = isinstance(self, Article) and 'update_fields' in kwargs and kwargs['update_fields'] == [
             'views']
@@ -66,7 +68,7 @@ class Article(BaseModel):
        ('p', 'page'),
     )
     title = models.CharField('title', max_length=200, unique=True)
-    body = MDTextField('content')
+    body = models.TextField('content')
     pub_time = models.DateTimeField('publish time', blank=False, null=False, default=now)
     status = models.CharField('status', max_length=1, choices=STATUS_CHOICES, default='p')
     comment_status = models.CharField('comment_status', max_length=1, choices=COMMENT_STATUS, default='o')
@@ -130,12 +132,12 @@ class Article(BaseModel):
     @cache_decorator(expiration=60 * 100)
     def next_article(self):
         # Next
-        return Article.objects.filter(id__gt=self.id, status='p').order_by('id').first()
+        return Article.objects.filter(id__gt=self.id, status='p', is_removed=False).order_by('id').first()
 
     @cache_decorator(expiration=60 * 100)
     def prev_article(self):
         # previous
-        return Article.objects.filter(id__lt=self.id, status='p').first()
+        return Article.objects.filter(id__lt=self.id, status='p', is_removed=False).first()
 
 
 class Category(BaseModel):
@@ -205,7 +207,7 @@ class Tag(BaseModel):
 
     @cache_decorator(60 * 60 * 10)
     def get_article_count(self):
-        return Article.objects.filter(tags__name=self.name).distinct().count()
+        return Article.objects.filter(tags__name=self.name, is_removed=False).distinct().count()
 
     class Meta:
         ordering = ['name']

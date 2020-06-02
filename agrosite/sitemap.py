@@ -35,7 +35,7 @@ class ArticleSiteMap(Sitemap):
     priority = "0.6"
 
     def items(self):
-        return Article.objects.filter(status='p')
+        return Article.objects.filter(status='p', is_removed=False)
 
     def lastmod(self, obj):
         return obj.last_mod_time
