@@ -10,12 +10,12 @@ from django.contrib.auth import get_user_model
 from django.utils.translation import ugettext_lazy as _
 from django.urls import reverse
 from django.utils.html import format_html
-
+from django_summernote.widgets import SummernoteWidget
 
 
 class ArticleForm(forms.ModelForm):
     # body = forms.CharField(widget=AdminPagedownWidget())
-
+    body = forms.CharField(widget=SummernoteWidget())
     class Meta:
         model = Article
         fields = '__all__'

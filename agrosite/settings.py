@@ -188,11 +188,11 @@ CKEDITOR_CONFIGS = {
     }
 }
 
-# ELASTICSEARCH_DSL = {
-#     'default': {
-#         'hosts': 'esearch1:9200'
-#     },
-# }
+ELASTICSEARCH_DSL = {
+    'default': {
+        'hosts': 'esearch1:9200'
+    },
+}
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'agrosite.whoosh_cn_backend.WhooshEngine',
@@ -238,7 +238,6 @@ from sentry_sdk.integrations.rq import RqIntegration
 
 
 WSGI_APPLICATION = "agrosite.wsgi.application"
-
 
 # Database
 # https://docs.djangoproject.com/en/2.0/ref/settings/#databases
@@ -335,7 +334,9 @@ OS_TRANSLATION_CONFIG = {
     }
 }
 
-
+AUTHENTICATION_BACKENDS = ['accounts.user_login_backend.EmailOrUsernameModelBackend']
+AUTH_USER_MODEL = 'accounts.Employer'
+LOGIN_URL = '/login/'
 
 LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),

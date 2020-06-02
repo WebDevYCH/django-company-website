@@ -1,0 +1,36 @@
+{% extends "main/layout.html" %}
+{% load staticfiles %}
+{% load blogs_info %}
+{% block meta %}
+    {% if tag_name %}
+        <title>{{ page_type }}:{{ tag_name }} | {{ SITE_DESCRIPTION }}</title>
+        {% comment %}<meta name="description" content="{{ page_type }}:{{ tag_name }}"/>{% endcomment %}
+    {% else %}
+        <title>{{ SITE_NAME }} | {{ SITE_DESCRIPTION }}</title>
+    {% endif %}
+    <meta name="description" content="{{ SITE_SEO_DESCRIPTION }}"/>
+    <meta name="keywords" content="{{ SITE_KEYWORDS }}"/>
+    <meta property="og:type" content="blog"/>
+    <meta property="og:title" content="{{ SITE_NAME }}"/>
+    <meta property="og:description" content="{{ SITE_DESCRIPTION }}"/>
+    <meta property="og:url" content="{{ SITE_BASE_URL }}"/>
+    <meta property="og:site_name" content="{{ SITE_NAME }}"/>
+{% endblock %}
+{% block content %}
+    <div id="primary" class="site-content">
+        <div id="content" role="main">
+
+            <header class="archive-header">
+
+                <h2 class="archive-title"> {{ content }}</h2>
+            </header><!-- .archive-header -->
+            <br/>
+            <header class="archive-header" style="text-align: center">
+
+                <a href="{% url "account:login" %}">登录</a>
+                |
+                <a href="/">回到首页</a>
+            </header><!-- .archive-header -->
+        </div>
+    </div>
+{% endblock %}
