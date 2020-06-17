@@ -1,0 +1,47 @@
+{% load blogs_info %}
+{% load static %}
+            
+                            <div class="col-lg-12 col-md-12">
+                                <div class="single_jobs white-bg d-flex justify-content-between">
+                                    <div class="jobs_left d-flex align-items-center">
+                                        <div class="thumb">
+                                            <a href="{{ job.get_absolute_url }}">
+                                                <img src="{{job.cover.url}}" height=60 width=60 alt="job.title">
+                                            </a>
+                                        </div>
+                                        <div class="jobs_conetent">
+                                            <a href="{{ job.get_absolute_url }}"><h4>{{ job.title }}</h4></a>
+                                            <div class="links_locat d-flex align-items-center">
+                                                <div class="location">
+                                                    <p> <i class="fa fa-map-marker"></i> {{ job.location }}</p>
+                                                </div>
+                                                <div class="location">
+                                                    {% if job.jobtype == '1' %}
+                                                        <span class="badge featured-badge badge-success">Full time</span>
+                                                    {% elif job.jobtype == '2' %}
+                                                        <span class="badge featured-badge badge-primary">Part time</span>
+                                                    {% else %}
+                                                        <span style="color: #ffffff;" class="badge featured-badge badge-warning">Internship</span>
+                                                    {% endif %}
+                                                </div>
+                                                <div class="location">
+                                                    <p>RS {% if job.salary > 0 %} {{ job.salary }}{% else %} Negotiable {% endif %}</p>
+                                                </div>
+
+                                            
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="jobs_right">
+                                        <div class="apply_now">
+                                            <a class="heart_mark" href="#"> <i class="fa fa-heart"></i> </a>
+                                            {% if not isdetail %}
+                                                <a href="{{ job.get_absolute_url }}" class="boxed-btn3">View Details </a>
+                                            {% endif %}
+                                        </div>
+                                        <div class="date">
+                                            <p>Last Date:{{ job.last_date|date }}</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>

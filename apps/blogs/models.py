@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.urls import reverse
 from django.utils.html import strip_tags
 from mdeditor.fields import MDTextField
-
-
+from django.contrib.auth import get_user_model
+User = get_user_model()
 class Category(models.Model):
 	name = models.CharField(max_length=100, verbose_name='Category Name')
 

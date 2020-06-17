@@ -1,89 +1,128 @@
 {% extends 'main/layout.html' %}
 {% load static %}
-{% load blog_tags %}
-{% block title %}
-    Job details
+{% load blogs_info %}
+{% load job_tags %}
+{% block meta %}
+    <title>{{ job.title }} | {{ SITE_DESCRIPTION }}</title>
+    
+    <meta property="og:type" content="article"/>
+    <meta property="og:title" content="{{ job.title }}"/>
+
+    <meta property="og:description" content="{{ job.description|custom_markdown|striptags|truncatewords:8 }}"/>
+    <meta property="og:url"
+          content="{{ job.get_full_url }}"/>
+    <meta property="article:published_time" content="{% datetimeformat job.created_at %}"/>
+    <meta property="article:modified_time" content="{% datetimeformat job.modified_at %}"/>
+    <meta property="article:author" content="{{ job.user.get_full_url }}"/>
+    <meta property="article:section" content="{{ job.jobcategory.name }}"/>
+    
+    <meta property="og:site_name" content="{{ SITE_NAME }}"/>
+
+    <meta name="description" content="{{ job.description|custom_markdown|striptags|truncatewords:8 }}"/>
+    
+    <meta name="keywords" content="{{ SITE_KEYWORDS }}"/>
+    
+    <meta property="og:image" content="{{ job.cover }}" />
+    
+    <meta property="og:image:alt" content="{{ job.title }}" />
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="{{ SITE_NAME }}">
+    <meta name="twitter:title" content="{{ job.title }}">
+    <meta name="twitter:description" content="{{ job.description|custom_markdown|striptags|truncatewords:8 }}">
+    <meta name="twitter:creator" content="{{ SITE_NAME }}">
+    
+    <meta name="twitter:image:src" content="{{ job.cover }}">
+    
+    <meta name="twitter:image:alt" content="{{ job.title }}" />
+    <meta name="twitter:domain" content="www.agrowdev.com">
+{% endblock %}
+{% block compress_css %}
+    <link rel="stylesheet" href="{% static 'app/css/job-styles.css' %}">
 {% endblock %}
 {% block content %}
-    <section class="bg-light-gray">
-        <div class="container">
-            <h1 class="heading">{{ job.title }}<br>
-                <small>at <a href="#"> {{ job.jobcategory }}</a></small>
-            </h1>
-            <div class="job-detail-description"><i class="fa fa-map-marker job__location"> </i>
-                {{ job.location }} | Posted {{ job.created_at|timesince }} |
-                {% if job.type == '1' %}
-                    <span class="badge featured-badge badge-success">Full time</span>
-                {% elif job.type == '2' %}
-                    <span class="badge featured-badge badge-primary">Part time</span>
-                {% else %}
-                    <span style="color: #ffffff;" class="badge featured-badge badge-warning">Internship</span>
-                {% endif %}
-            </div>
-        </div>
-    </section>
-    <section class="negative-margin-140">
+
+    <section class="job_details_area mt-5 ">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8">
-                    <h3>Category: {{ job.jobcategory }}</h3>
-                    <h5>Last date: {{ job.last_date|date }}</h5>
-                    <h5 class="text-info">Salary: {% if job.salary > 0 %} {{ job.salary }}/Monthly {% else %} Negotiable {% endif %} </h5>
-                    <p>{{ job.description| markdown | safe}}</p>
-                    
-                    <div class="job-detail__apply-bottom">
-                        {% if request.user.is_authenticated %}
-                            {% is_already_applied job request.user as is_applied %}
-                            {% if is_applied %}
-                                <input type="button" class="btn btn-outline-white-primary" value="Already applied"/>
-                            {% else %}
-                                <form action="{% url 'careers:apply-job' job.id %}" method="post">
-                                    {% csrf_token %}
-                                    <input type="hidden" name="job" value="{{ job.id }}">
-                                    <input type="submit" class="btn btn-outline-white-primary"
-                                           value="Apply for this job"/>
-                                </form>
-                            {% endif %}
-                        {% else %}
-                            <form action="{% url 'careers:apply-job' job.id %}" method="post">
-                                {% csrf_token %}
-                                <input type="hidden" name="job" value="{{ job.id }}">
-                                <input type="submit" class="btn btn-outline-white-primary"
-                                       value="Apply for this job"/>
-                            </form>
-                        {% endif %}
+                
+                  <div class="job_details_header mb-5">
+                        {% load_jobs_baseinfo job user True %}
+                    </div>
+                    {% load_job_detail_info job user %}
+                    <div class="apply_job_form white-bg">
+                        <h4>Apply for the job</h4>
+                        <form action="#">
+                            <div class="row">
+                                <div class="col-md-6">
+                                    <div class="input_field">
+                                        <input type="text" placeholder="Your name">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input_field">
+                                        <input type="text" placeholder="Email">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="input_field">
+                                        <input type="text" placeholder="Website/Portfolio link">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                          <button type="button" id="inputGroupFileAddon03"><i class="fa fa-cloud-upload" aria-hidden="true"></i>
+                                          </button>
+                                        </div>
+                                        <div class="custom-file">
+                                          <input type="file" class="custom-file-input" id="inputGroupFile03" aria-describedby="inputGroupFileAddon03">
+                                          <label class="custom-file-label" for="inputGroupFile03">Upload CV</label>
+                                        </div>
+                                      </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="input_field">
+                                        <textarea name="#" id="" cols="30" rows="10" placeholder="Coverletter"></textarea>
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="submit_btn">
+                                        <button class="boxed-btn3 w-100" type="submit">Apply Now</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
                     </div>
                 </div>
-                <div class="col-lg-1"></div>
-                <div class="col-lg-3">
-                    <h4>About {{ job.jobcategory }}</h4>
-                    <p class="job-detail__company-description">description</p>
-                    <p class="job-detail__social social social--outline">
-                        <a href="{{ job.get_absolute_url }}" data-toggle="tooltip" data-placement="top" title="Website"
-                           class="link">
-                            <i class="fa fa-link"></i>
-                        </a>
-                        <a href="#" data-toggle="tooltip" data-placement="top" title="Twitter" class="twitter">
-                            <i class="fa fa-twitter"></i>
-                        </a>
-                        <a href="#" data-toggle="tooltip" data-placement="top" title="Facebook" class="facebook">
-                            <i class="fa fa-facebook"></i>
-                        </a>
-                    </p>
-                    <div class="job-detail__apply-top">
-                        {% if is_applied %}
-                            <input type="button" class="btn btn-outline-white-primary" value="Already applied"/>
-                        {% else %}
-                            <form action="{% url 'careers:apply-job' job.id %}" method="post">
-                                {% csrf_token %}
-                                <input type="hidden" name="job" value="{{ job.id }}">
-                                <input type="submit" class="btn btn-outline-white-primary" value="Apply for this job"/>
-                            </form>
-                        {% endif %}
-                    </div>
+                <div class="col-lg-4">
+                    <div class="post-details3  mb-50">
+                            <!-- Small Section Tittle -->
+                           <div class="small-section-tittle">
+                               <h4>Job Overview</h4>
+                           </div>
+                          <ul>
+                              <li>Posted date : <span>{{job.created_at|date}}</span></li>
+                              <li>Location : <span>{{job.location}}</span></li>
+                              <li>Vacancy : <span>02</span></li>
+                              <li>Job nature : <span>{% if job.jobtype == '1' %}
+                                                        Full time
+                                                    {% elif job.jobtype == '2' %}
+                                                        Part time
+                                                    {% else %}
+                                                        Internship
+                                                    {% endif %}</span></li>
+                              <li>Salary :  <span>{{job.salary}} Monthly</span></li>
+                              <li>Application date : <span>{{job.last_date|date}}</span></li>
+                          </ul>
+                         <div class="apply-btn2">
+                            <a href="{% url 'careers:job_apply' job_id=job.id %}" class="boxed-btn3 ">Apply Now</a>
+                         </div>
+                       </div>
+                    
                 </div>
             </div>
         </div>
     </section>
-
+    
 {% endblock %}

@@ -3,13 +3,13 @@ from .models import Comment
 from comment.form import CommentForm
 
 
-# 添加评论
+# add comment
 def update_comment(request):
     referer = request.META.get('HTTP_REFERER', reverse('blogs:blogs'))
     comment_form = CommentForm(request.POST, user=request.user)
 
     if comment_form.is_valid():
-        # 检查通过，保存数据
+        # Check passed, save data
         comment = Comment()
         comment.user = comment_form.cleaned_data['user']
         comment.text = comment_form.cleaned_data['text']
@@ -22,8 +22,8 @@ def update_comment(request):
             comment.reply_to = parent.user
         comment.save()
 
-        # # 发送站内通知
-        # # 判断评论的是博客还是
+        # # Send notification
+        # # Determine whether the comment is a blog or
         # if comment.reply_to is None:
         #     # 接受者是文章
         #     recipient = comment.content_object.get_user()

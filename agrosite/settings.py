@@ -90,11 +90,12 @@ INSTALLED_APPS = [
     'notifications',
     'myzone',
     'home',
-    'accounts',
+    
     'careers',
     'contactus',
     'about',
     'services',
+    'accounts',
     
     'xadmin',
     'haystack',
@@ -116,10 +117,10 @@ INSTALLED_APPS = [
     'django_extensions',
     'django_nose',
     # Django Elasticsearch integration
-    'django_elasticsearch_dsl',
+    # 'django_elasticsearch_dsl',
 
-    # Django REST framework Elasticsearch integration (this package)
-    'django_elasticsearch_dsl_drf',
+    # # Django REST framework Elasticsearch integration (this package)
+    # 'django_elasticsearch_dsl_drf',
 ]
 SITE_ID = 1
 DEBUG = environment_checker.is_debug()
@@ -132,7 +133,6 @@ if IS_PRODUCTION:
     if not ALLOWED_HOSTS:
         raise NameError('ALLOWED_HOSTS environment variable is required when running on a production environment')
     ALLOWED_HOSTS = [allowed_host.strip() for allowed_host in ALLOWED_HOSTS.split(',')]
-    
 else:
     if ALLOWED_HOSTS:
         logger.info('ALLOWED_HOSTS environment variable ignored.')
@@ -188,11 +188,11 @@ CKEDITOR_CONFIGS = {
     }
 }
 
-ELASTICSEARCH_DSL = {
-    'default': {
-        'hosts': 'esearch1:9200'
-    },
-}
+# ELASTICSEARCH_DSL = {
+#     'default': {
+#         'hosts': 'esearch1:9200'
+#     },
+# }
 HAYSTACK_CONNECTIONS = {
     'default': {
         'ENGINE': 'agrosite.whoosh_cn_backend.WhooshEngine',
@@ -307,6 +307,8 @@ else:
         '/admin/*': 'master',
         '/article/*': 'master',
         '/': 'master',
+        '/careers/*': 'master',
+        '/logout/':'master'
     }
 
 AUTH_PASSWORD_VALIDATORS = [
@@ -333,9 +335,8 @@ OS_TRANSLATION_CONFIG = {
         'DEFAULT_TRANSLATION_LANGUAGE_CODE': 'en'
     }
 }
-
-AUTHENTICATION_BACKENDS = ['accounts.user_login_backend.EmailOrUsernameModelBackend']
 AUTH_USER_MODEL = 'accounts.Employer'
+AUTHENTICATION_BACKENDS = ['accounts.user_login_backend.EmailOrUsernameModelBackend']
 LOGIN_URL = '/login/'
 
 LOCALE_PATHS = (

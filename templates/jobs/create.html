@@ -1,0 +1,273 @@
+{% extends 'main/layout.html' %}
+{% load staticfiles %}
+{% block title %}
+    {{ title }}
+{% endblock %}
+
+{% block compress_css %}
+    <link rel="stylesheet" href="{% static 'app/css/job-styles.css' %}">
+{% endblock %}
+
+{% block content %}
+
+    <div class="services-area">
+        <div class="container">
+            <!-- Section-tittle -->
+            <div class="row d-flex justify-content-center">
+                <div class="col-lg-8">
+                    <div class="section-tittle text-center mb-80">
+                        <h2 class="heading">Apply for <span class="accent">Job</span> you like
+                        </h2>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <section class="job_details_area">
+        <div class="container">
+            <div class="row">
+                <div class="col-lg-10 mx-auto ">
+                    {% if form.errors %}
+                        {% for field in form %}
+                            {% for error in field.errors %}
+                                <div class="alert alert-danger alert-dismissable">
+                                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                    <strong>{{ field.label }}: {{ error|escape }}</strong>
+                                </div>
+                            {% endfor %}
+                        {% endfor %}
+                    {% endif %}
+                    <form id="job-main-form" method="post" action="" class="apply_job_form" enctype="multipart/form-data">
+                        {% csrf_token %}
+                        <div class="row">
+                            <div class="col-lg-12">
+                                <h4>Job details</h4>
+                                <p class="text-muted text-small">Some additional info for this screen about validity of
+                                    the ads, etc. Pellentesque habitant morbi tristique senectus et netus et malesuada
+                                    fames ac turpis egestas. Vestibulum tortor quam, feugiat vitae, ultricies eget,
+                                    tempor sit amet, ante. Donec eu libero sit amet quam egestas semper. Aenean
+                                    ultricies mi vitae est. Mauris placerat eleifend leo. Quisque sit amet est et sapien
+                                    ullamcorper pharetra. </p>
+                                <hr>
+                            </div>
+                        </div>
+                        <input type="hidden"
+                               class="form-control"
+                               name="{{form.job.name}}"
+                               id="id_{{form.job.name}}"
+                               placeholder="Enter your job"
+                               value="{{ form.job.value|default_if_none:"" }}">
+                        <div class="row">
+                            <div class="col-md-6">
+                                    <div class="input_field">
+                                    <label for="{{form.fullname.name}}">{{form.fullname.label}}</label>
+                                        <input type="text" 
+                                        class="single-input-accent"
+                                        name="{{form.fullname.name}}"
+                                        id="id_{{form.fullname.name}}"
+                                        placeholder="Enter your fullname"
+                                        value="{{ form.fullname.value|default_if_none:"" }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input_field">
+                                    <label for="{{form.email.name}}">{{form.email.label}}</label>
+                                        <input type="text"
+                                        class="single-input-danger form-control"
+                                        name="{{form.email.name}}"
+                                        id="id_{{form.email.name}}"
+                                        placeholder="Enter your email"
+                                        value="{{ form.email.value|default_if_none:"" }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-4">
+                                    <div class="input-group">
+                                        <div class="input-group-prepend">
+                                          <button type="button" id="{{form.cover.name}}"><i class="fa fa-upload" aria-hidden="true"></i>
+                                          </button>
+                                        </div>
+                                        <div class="custom-file">
+                                          <input type="file" class="custom-file-input" 
+                                            name="{{form.cover.name}}"
+                                            id="id_{{form.cover.name}}"
+                                            placeholder="Upload image"
+                                            value="{{ form.cover.value|default_if_none:"" }}" aria-describedby="inputGroupFileAddon03">
+                                          <label class="custom-file-label" for="inputGroupFile03">Upload Cover Image</label>
+                                        </div>
+                                      </div>
+                                </div>
+                                <div class="col-md-12">
+                                    <div class="input_field">
+                                    <label for="{{form.phone.name}}">{{form.phone.label}}</label>
+                                        <input type="text"
+                                        class="single-input-danger form-control"
+                                            name="{{form.phone.name}}"
+                                            id="id_{{form.phone.name}}"
+                                            placeholder="Enter your phone number"
+                                            value="{{ form.phone.value|default_if_none:"" }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6 ">
+                                    <div class="input_field">
+                                    <label for="{{form.tenth_percent.name}}">{{form.tenth_percent.label}}</label>
+                                        <input type="text"
+                                        class="single-input-danger form-control"
+                                            name="{{form.tenth_percent.name}}"
+                                            id="id_{{form.tenth_percent.name}}"
+                                            placeholder="Enter your tenth percentage"
+                                            value="{{ form.tenth_percent.value|default_if_none:"" }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-12">
+                                <label for="{{form.puc_or_diploma.name}}">{{form.puc_or_diploma.label}}</label>
+                                    <div class="input_field">
+                                        <select id="{{form.puc_or_diploma.name}}" name="{{form.puc_or_diploma.name}}" placeholder="Choose puc or form.puc_or_diploma">
+                                            <option value="p" {% if form.puc_or_diploma.value == "p" %} selected {% endif %}>PUC</option>
+                                            <option value="d" {% if form.puc_or_diploma.value == "d" %} selected {% endif %}>DIPLOMA</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mt-5">
+                                    <div class="input_field">
+                                    <label for="{{form.puc_or_diploma_marks.name}}">{{form.puc_or_diploma_marks.label}}</label>
+                                        <input type="text"
+                                        class="single-input-danger form-control"
+                                            name="{{form.puc_or_diploma_marks.name}}"
+                                            id="id_{{form.puc_or_diploma_marks.name}}"
+                                            placeholder="Enter your {{form.puc_or_diploma_marks.label}} "
+                                            value="{{ form.puc_or_diploma_marks.value|default_if_none:"" }}">
+                                    </div>
+                                </div>
+                        
+                                <div class="col-md-6">
+                                    <div class="input_field">
+                                    <label for="{{form.board.name}}">{{form.board.label}}</label>
+                                        <input type="text"
+                                        class="single-input-danger form-control"
+                                            name="{{form.board.name}}"
+                                            id="id_{{form.board.name}}"
+                                            placeholder="Enter  {{form.board.label}} "
+                                            value="{{ form.board.value|default_if_none:"" }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input_field">
+                                    <label for="{{form.degree_college.name}}">{{form.degree_college.label}}</label>
+                                        <input type="text"
+                                        class="single-input-danger form-control"
+                                            name="{{form.degree_college.name}}"
+                                            id="id_{{form.degree_college.name}}"
+                                            placeholder="Enter  {{form.degree_college.label}} "
+                                            value="{{ form.degree_college.value|default_if_none:"" }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input_field">
+                                    <label for="{{form.location.name}}">{{form.location.label}}</label>
+                                        <input type="text"
+                                        class="single-input-danger form-control"
+                                            name="{{form.location.name}}"
+                                            id="id_{{form.location.name}}"
+                                            placeholder="Enter college {{form.location.label}} "
+                                            value="{{ form.location.value|default_if_none:"" }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input_field">
+                                    <label for="{{form.university.name}}">{{form.university.label}}</label>
+                                        <input type="text"
+                                        class="single-input-danger form-control"
+                                            name="{{form.university.name}}"
+                                            id="id_{{form.university.name}}"
+                                            placeholder="Enter your {{form.university.label}} "
+                                            value="{{ form.university.value|default_if_none:"" }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input_field">
+                                    <label for="{{form.branch.name}}">{{form.branch.label}}</label>
+                                        <input type="text"
+                                        class="single-input-danger form-control"
+                                            name="{{form.branch.name}}"
+                                            id="id_{{form.branch.name}}"
+                                            placeholder="Enter  {{form.branch.label}} "
+                                            value="{{ form.branch.value|default_if_none:"" }}">
+                                    </div>
+                                </div>
+
+                                <div class="col-md-12">
+                                    <label for="{{form.grade_or_percent.name}}">{{form.grade_or_percent.label}}</label>
+                                    <div class="input_field">
+                                        <select id="{{form.grade_or_percent.name}}" name="{{form.grade_or_percent.name}}" placeholder="Choose puc or form.puc_or_diploma">
+                                            <option value="p" {% if form.grade_or_percent.value == "p" %} selected {% endif %}>PERCENT</option>
+                                            <option value="g" {% if form.grade_or_percent.value == "g" %} selected {% endif %}>GRADE</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="col-md-12 mt-5">
+                                    <div class="input_field">
+                                    <label for="{{form.degree_marks.name}}">{{form.degree_marks.label}}</label>
+                                        <input type="text"
+                                        class="single-input-danger form-control"
+                                            name="{{form.degree_marks.name}}"
+                                            id="id_{{form.degree_marks.name}}"
+                                            placeholder="Enter your {{form.degree_marks.label}} "
+                                            value="{{ form.degree_marks.value|default_if_none:"" }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input_field">
+                                    <label for=">{{form.github.name}}">{{form.github.label}} <span
+                                        class="note">(Your github link)</span></label>
+                                        <input type="url"
+                                        class="single-input-danger form-control"
+                                            name="{{form.github.name}}"
+                                            id="id_{{form.github.name}}"
+                                            placeholder="Enter your {{form.github.label}}"
+                                            value="{{ form.github.value|default_if_none:"" }}">
+                                    </div>
+                                </div>
+                                <div class="col-md-6">
+                                    <div class="input_field">
+                                    <label for="{{form.linkedin.name}}">{{form.linkedin.label}}</label>
+                                        <input type="url"
+                                        class="single-input-danger form-control"
+                                            name="{{form.linkedin.name}}"
+                                            id="id_{{form.linkedin.name}}"
+                                            placeholder="Enter your {{form.linkedin.label}} "
+                                            value="{{ form.linkedin.value|default_if_none:"" }}">
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-md-12">
+                                        <div class="input-group">
+                                            <div class="input-group-prepend">
+                                            <button type="button" id="{{form.resume.name}}"><i class="fa fa-upload" aria-hidden="true"></i>
+                                            </button>
+                                            </div>
+                                            <div class="custom-file">
+                                            <input type="file" class="custom-file-input"
+                                            class="single-input-danger form-control" 
+                                                name="{{form.resume.name}}"
+                                                id="id_{{form.resume.name}}"
+                                                placeholder="Upload image"
+                                                value="{{ form.resume.value|default_if_none:"" }}" aria-describedby="inputGroupFileAddon03">
+                                            <label class="custom-file-label" for="{{form.resume.name}}">Upload Resume</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                            </div>
+                            <div class="col-md-12">
+                                <div class="submit_btn">
+                                    <button class="boxed-btn3 w-100" type="submit"><i class="fa fa-magic"></i> Apply Now</button>
+                                </div>
+                            </div>
+                        
+                       
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+{% endblock %}

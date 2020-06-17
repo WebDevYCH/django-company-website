@@ -1,11 +1,11 @@
-<div class="breadcrumb">
+<div class="breadcrumb mb-5">
+    
+        
     {% for name,url in names %}
         <div itemscope itemtype="http://data-vocabulary.org/Breadcrumb">
 
             <a href="{{ url }}" itemprop="url">
-
                 <span itemprop="title"> {{ name }}</span>
-
             </a>&nbsp;&rsaquo;
 
         </div>

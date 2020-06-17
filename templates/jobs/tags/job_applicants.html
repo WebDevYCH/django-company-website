@@ -1,0 +1,38 @@
+            <div class="col-md-4">
+                        <div class="single-team-slide">
+                            <img height="350" src="{{ applicant.cover.url }}" alt="{{ applicant.fullnamename }}">
+                            <!-- Overlay Effect -->
+                            <div class="overlay-effect">
+                                <h6>{{ applicant.job.title }}</h6>
+                                <h4>{{ applicant.fullname }}</h4>
+                                <p>
+                                <span class="badge badge-info">Applied {{ applicant.created_at.astimezone }}</span>
+                                </p>
+                                <p>{{ applicant.degree_college }}<br>{{ applicant.location }}
+                                <br>{{ applicant.university }}<br>{{ applicant.degree_marks }}</p>
+                                
+                            </div>
+                            <!-- Social Info -->
+                            <div class="team-social-info">
+                                {% if applicant.facebook %}
+                                    <a href="{{ applicant.facebook }}" class="facebook" data-toggle="tooltip" data-placement="top" title="Facebook"><i class="fa ti-facebook"></i></a>
+                                {% endif %}
+                                {% if applicant.twitter %}
+                                    <a href="{{ applicant.twitter }}" class="twitter" data-toggle="tooltip" data-placement="top" title="Twitter"><i class="fa ti-twitter"></i></a>
+                                {% endif %}
+        
+                                {% if applicant.instagram %}
+                                    <a href="{{ applicant.instagram }}" class="instagram" data-toggle="tooltip" data-placement="top" title="Instagram"><i class="fa ti-instagram"></i></a>
+                                {% endif %}
+                                {% if applicant.github %}
+                                    <a href="{{ applicant.github }}" class="github" data-toggle="tooltip" data-placement="top" title="GitHub"><i class="fa ti-github"></i></a>
+                                {% endif %}
+                                {% if applicant.linkedin %}
+                                    <a href="{{ applicant.linkedin }}" class="twitter" data-toggle="tooltip" data-placement="top" title="linkedin"><i class="fa ti-linkedin"></i></a>
+                                {% endif %}
+                                
+                                <a href="{{ applicant.get_absolute_url }}" class="genric-btn info circle float-right" ><i class="fa fa-long-arrow-right "></i>View More</a>
+                                
+                            </div>
+                        </div>
+                    </div>

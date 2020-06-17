@@ -6,7 +6,7 @@
     <title>{{ article.title }} | {{ SITE_DESCRIPTION }}</title>
     <meta property="og:type" content="article"/>
     <meta property="og:title" content="{{ article.title }}"/>
-
+    <meta name="robots" content="index, follow">
     <meta property="og:description" content="{{ article.body|custom_markdown|striptags|truncatewords:1 }}"/>
     <meta property="og:url"
           content="{{ article.get_full_url }}"/>
@@ -19,42 +19,77 @@
     {% endfor %}
     <meta property="og:site_name" content="{{ SITE_NAME }}"/>
 
-    <meta name="description" content="{{ article.body|custom_markdown|striptags|truncatewords:1 }}"/>
+    <meta name="description" content="{{ article.body|custom_markdown|striptags|truncatewords:8 }}"/>
     {% if article.tags %}
         <meta name="keywords" content="{{ article.tags.all|join:"," }}"/>
     {% else %}
         <meta name="keywords" content="{{ SITE_KEYWORDS }}"/>
     {% endif %}
-
+    {% markdown_images article.body as imgs %}
+    {% if imgs %}
+        <meta property="og:image" content="{{ imgs.0 }}" />
+    {% endif %}
+    <meta property="og:image:alt" content="{{ article.title }}" />
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="{{ SITE_NAME }}">
+    <meta name="twitter:title" content="{{ article.title }}">
+    <meta name="twitter:description" content="{{ article.body|custom_markdown|striptags|truncatewords:8 }}">
+    <meta name="twitter:creator" content="{{ SITE_NAME }}">
+    {% if imgs %}
+        <meta name="twitter:image:src" content="{{ imgs.0 }}">
+    {% endif %}
+    <meta name="twitter:image:alt" content="{{ article.title }}" />
+    <meta name="twitter:domain" content="www.agrowdev.com">
 {% endblock %}
 {% block scripts %}
 <script type="text/javascript" src="{% static 'ckeditor/ckeditor-init.js' %}"></script>
 <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
 {% endblock %}
+{% block compress_css %}
+<style>
+.breadcrumb-list {
+  display: flex;
+  flex-wrap: wrap;
+  padding: 0;
+  margin: 1rem 0 0 0;
+  list-style: none;
+  li {
+    font-size: 0.85rem;
+    letter-spacing: 0.125rem;
+    text-transform: uppercase;
+  }
+}
 
+.breadcrumb-item {
+  &.active {
+    color: $black;
+  }
+  + .breadcrumb-item {
+    &::before {
+      content: '/';
+      display: inline-block;
+      padding: 0 0.5rem;
+      color: $lightergray;
+    }
+  }
+}
+
+</style>
+{% endblock %}
 {% block content %}
 
 <div class="services-area">
         <div class="container">
             <!-- Section-tittle -->
+            {% if article.type == 'a' %}
+                    {% if not isindex %}
+                        {% cache 36000 breadcrumb article.pk %}
+                            {% load_breadcrumb article %}
+                        {% endcache %}
+                    {% endif %}
+                {% endif %}
             <div class="row d-flex justify-content-center">
                 <div class="col-lg-8">
-                    <div class="section-tittle text-center mb-80">
-                        <h2>{{ article.title }}</h2>
-                    </div>
-                </div>
-                <div class="col-lg-4 blog_right_sidebar">
-                    {% include 'blog/tags/search.html' %}
-                </div>
-            </div>
-        </div>
-    </div>
-        <!-- ***** Blog Details Area Start ***** -->
-    <section class="blog_area single-post-area">
-        <div class="container">
-            <div class="row">
-                
-                <div class="col-lg-8 posts-list">
                     <div class="blog-author">
                         <div class="media align-items-center">
                             <img src="{% static 'app/img/blog/author.png' %}" alt="">
@@ -67,6 +102,21 @@
                             </div>
                         </div>
                     </div>
+                </div>
+                <div class="col-lg-4 blog_right_sidebar">
+                    {% include 'blog/tags/search.html' %}
+                </div>
+            </div>
+        </div>
+    </div>
+        <!-- ***** Blog Details Area Start ***** -->
+    <section class="blog_area single-post-area">
+        <div class="container">
+        
+            <div class="row">
+                
+                <div class="col-lg-8 posts-list">
+                    
                     {% load_article_detail_info article True user %}
                     <div class="navigation-top">
                         <div class="d-sm-flex justify-content-between text-center">
