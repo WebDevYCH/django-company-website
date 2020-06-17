@@ -1,7 +1,7 @@
 # <INSTALLED_ADDONS>  # Warning: text inside the INSTALLED_ADDONS tags is auto-generated. Manual changes will be overwritten.
 django==2.2.11
 gunicorn==19.7.1
-psycopg2-binary==2.8.4
+psycopg2-binary==2.8.5
 django-storages==1.8
 django-amazon-ses==2.1.1
 django-heroku==0.3.1
@@ -30,6 +30,7 @@ django-summernote==0.8.11.6
 django-uuslug==1.2.0
 mistune==0.8.4
 django-ipware==2.1.0
+beautifulsoup4==4.9.1
 
 asn1crypto==0.24.0
 bleach==3.1.0

@@ -11,7 +11,8 @@ from agrosite.utils import get_current_site
 from agrosite.utils import cache_decorator, cache
 from django.utils.timezone import now
 from mdeditor.fields import MDTextField
-
+from django.contrib.auth import get_user_model
+User = get_user_model()
 logger = logging.getLogger(__name__)
 
 LINK_SHOW_TYPE =(
@@ -74,7 +75,7 @@ class Article(BaseModel):
     comment_status = models.CharField('comment_status', max_length=1, choices=COMMENT_STATUS, default='o')
     type = models.CharField('type', max_length=1, choices=TYPE, default='a')
     views = models.PositiveIntegerField('views', default=0)
-    author = models.ForeignKey(settings.AUTH_USER_MODEL, verbose_name='author', blank=False, null=False,
+    author = models.ForeignKey(User, verbose_name='author', blank=False, null=False,
                                on_delete=models.CASCADE)
     article_order = models.IntegerField('article order', blank=False, null=False, default=0)
     category = models.ForeignKey('Category', verbose_name='category', on_delete=models.CASCADE, blank=False, null=False)

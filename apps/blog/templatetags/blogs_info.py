@@ -38,6 +38,7 @@ logger = logging.getLogger(__name__)
 
 register = template.Library()
 
+from bs4 import BeautifulSoup as BS
 
 @register.simple_tag
 def timeformat(data):
@@ -51,9 +52,13 @@ def timeformat(data):
 
 @register.simple_tag
 def markdown_images(content):
-    import re
-    imgs = re.findall(r'(?:http\:|https\:)?\/\/.*\.(?:png|jpg)', content)
-    return imgs
+    lst_images = list()
+    soup = BS(content, "html.parser")
+    for imgtag in soup.find_all('img'):
+        if '.jpg' in imgtag['src'] or '.png' in imgtag['src']:
+            lst_images.append(imgtag['src'])
+    
+    return lst_images
 
 @register.simple_tag
 def datetimeformat(data):

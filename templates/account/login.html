@@ -16,11 +16,14 @@
     <meta property="og:url" content="{{ SITE_BASE_URL }}"/>
     <meta property="og:site_name" content="{{ SITE_NAME }}"/>
 {% endblock %}
+{% block compress_css %}
+    <link rel="stylesheet" href="{% static 'app/css/job-styles.css' %}">
+{% endblock %}
 {% block content %}
     <!-- ***** Welcome Area Start ***** -->
 <div class="container">
     <div class="row">
-        <div class="col-md-offset-3 col-md-6">
+        <div class="col-md-offset-3 col-md-4">
         <img class="img-circle profile-img" src="{% static 'app/img/avatar.png' %}" alt="">
             <form class="form-horizontal" action="{% url 'account:login' %}" method="POST">
                 <span class="heading">User login</span>
@@ -31,7 +34,10 @@
                 <input type="password" id="inputPassword" class="form-control" placeholder="Password" required>{% endcomment %}
                 {{ form.non_field_errors }}
                 {% for field in form %}
-                    {{ field }}
+                    <div class="form-group">
+                        <label for="id_{{ field.name }}">{{ field.label }}</label>
+                         {{ field}}
+                    </div>
                     {{ field.errors }}
                 {% endfor %}
 
@@ -46,12 +52,4 @@
                 </div>
             </form>
             <div class="form-horizontal_register">
-                No account yet?<a href="{% url 'account:register' %}"><button type="submit" class="btn btn-default btn-danger">Register</button></a>
-            </div>
-                
-        </div>
-    </div>
-</div>
-{% endblock %}
-
-
+                No account yet?<a href="{% url 'account:register' %}"><button type="submit" class="btn btn-default btn-danger">R

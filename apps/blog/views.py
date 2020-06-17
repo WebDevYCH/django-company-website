@@ -41,20 +41,20 @@ class ArticleListView(ListView):
 
     def get_queryset_cache_key(self):
         """
-        子类重写.获得queryset的缓存key
+        Subclass rewriting. Obtain the cache key of queryset
         """
         raise NotImplementedError()
 
     def get_queryset_data(self):
         """
-        子类重写.获取queryset的数据
+        Subclass rewrite. Get data from queryset
         """
         raise NotImplementedError()
 
     def get_queryset_from_cache(self, cache_key):
         '''
-        缓存页面数据
-        :param cache_key: 缓存key
+        Cache page data
+        :param cache_key: cache key
         :return:
         '''
         value = cache.get(cache_key)
@@ -69,7 +69,7 @@ class ArticleListView(ListView):
 
     def get_queryset(self):
         '''
-        重写默认，从缓存获取数据
+        Rewrite the default, get data from the cache
         :return:
         '''
         key = self.get_queryset_cache_key()
@@ -83,9 +83,9 @@ class ArticleListView(ListView):
 
 class IndexView(ArticleListView):
     '''
-    首页
+    Home
     '''
-    # 友情链接类型
+    # Friendly link type
     link_type = 'i'
 
     def get_queryset_data(self):
@@ -99,7 +99,7 @@ class IndexView(ArticleListView):
 
 class ArticleDetailView(DetailView):
     '''
-    文章详情页面
+    Article details page
     '''
     template_name = 'blog/article_detail.html'
     model = Article

@@ -149,6 +149,7 @@
         ]
     });
 
+    
     /* 4. Testimonial Active*/
     var testimonial = $('.h1-testimonial-active');
     if (testimonial.length) {

@@ -1,8 +1,10 @@
 from django.db import models
-from django.contrib.auth.models import User
+from django.conf import settings
 from django.urls import reverse
 from mdeditor.fields import MDTextField
 # Create your models here.
+from django.contrib.auth import get_user_model
+User = get_user_model()
 class Messages(models.Model):
 	name = models.CharField(max_length=100,verbose_name="leave me a message")
 	admin = models.ForeignKey(User,verbose_name='Webmaster',on_delete=models.CASCADE,blank=True,null=True)

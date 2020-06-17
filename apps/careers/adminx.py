@@ -2,11 +2,21 @@
 import xadmin
 from .models import *
 from xadmin import views
+from django_summernote.widgets import SummernoteWidget
+from django import forms
+
+class JobForm(forms.ModelForm):
+    # body = forms.CharField(widget=AdminPagedownWidget())
+    description = forms.CharField(widget=SummernoteWidget())
+    class Meta:
+        model = Job
+        fields = '__all__'
 
 class JobAdmin(object):
 
-    list_display = ['id', 'user', 'title','slug','last_date','location']
-    search_fields = ['name','role','title','location']
+    form = JobForm
+    list_display = ['id', 'user', 'title','last_date','location']
+    search_fields = ['name','role','title','location','description']
     list_filter = ['id', 'title', 'created_at', 'status','last_date',]
     
     model_icon = 'fa fa-user'
@@ -25,6 +35,11 @@ class JobCategoryAdmin(object):
     search_fields = ['name']
     model_icon = 'fa fa-file-text'
 
+class ApplicantDetailsAdmin(object):
+    list_display = ['fullname','email','phone']
+    search_fields = ['fullname','email']
+    model_icon = 'fa fa-file-text'
+
 class ApplicantAdmin(object):
     list_display = ['id','user','job']
     search_fields = ['job']
@@ -33,3 +48,4 @@ class ApplicantAdmin(object):
 xadmin.site.register(Applicant,ApplicantAdmin)
 xadmin.site.register(JobCategory,JobCategoryAdmin)
 xadmin.site.register(Job,JobAdmin)
+xadmin.site.register(ApplicantDetails,ApplicantDetailsAdmin)

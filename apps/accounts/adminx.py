@@ -5,16 +5,26 @@ from django.contrib.auth.forms import UserCreationForm, UserChangeForm
 from django.contrib.auth.forms import ReadOnlyPasswordHashField
 # Register your models here.
 from .models import Employer
+from agrosite.utils import get_current_site
 from django.utils.translation import gettext, gettext_lazy as _
 from django.contrib.auth.forms import UsernameField
 
 import xadmin
 from xadmin import views
-
+from xadmin.sites import AdminSite
 from django.contrib.sites.admin import SiteAdmin
 from django.contrib.admin.models import LogEntry
 from django.contrib.sites.models import Site
 from agrosite.logentryadmin import LogEntryAdmin
+
+class AgrositeAdminSite(AdminSite):
+    site_header = 'DjangoBlog administration'
+    site_title = 'DjangoBlog site admin'
+
+    def __init__(self, name='admin'):
+        super().__init__(name)
+
+
 
 class EmployerCreationForm(forms.ModelForm):
     password1 = forms.CharField(label='enter password', widget=forms.PasswordInput)
@@ -69,7 +79,7 @@ class EmployerAdmin(UserAdmin):
     list_display_links = ('id', 'username')
     ordering = ('-id',)
 
-
-xadmin.site.register(Site, SiteAdmin)
-xadmin.site.register(LogEntry, LogEntryAdmin)
-xadmin.site.register(Employer, EmployerAdmin)
+admin_site = AgrositeAdminSite(name='admin')
+admin_site.register(Employer, EmployerAdmin)
+admin_site.register(Site, SiteAdmin)
+admin_site.register(LogEntry, LogEntryAdmin)

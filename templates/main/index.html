@@ -1,6 +1,6 @@
 {% extends "main/layout.html" %}
-{% load staticfiles %}
 {% load blogs_info %}
+{% load staticfiles %}
 {% load cache %}
 {% block meta %}
     {% if tag_name %}
@@ -346,35 +346,36 @@
     </section>
     <!-- ***** Portfolio Area End ***** -->
     <!-- Slider Area Start-->
-    <div class="services-area">
-        <div class="container">
-            <!-- Section-tittle -->
-            <div class="row d-flex justify-content-center">
-                <div class="col-lg-8">
-                    <div class="section-tittle text-center mb-80">
-                        <h2 class="heading">Our <span class="accent">Latest</span> Blogs .
-                        </h2>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <!-- Slider Area End-->
-     <!--================Blog Area =================-->
-    <section class="blog_area section-paddingr">
-        <div class="col-md-12">
+    {% if recent_articles %}
+        <div class="services-area">
             <div class="container">
-                <div class="row">
-                    <div class="app-active owl-carousel"> 
-                       {% for article in article_list %}
-                            {% load_article_detail article True user %}
-                        {% endfor %}
+                <!-- Section-tittle -->
+                <div class="row d-flex justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="section-tittle text-center mb-80">
+                            <h2 class="heading">Our <span class="accent">Latest</span> Blogs .
+                            </h2>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-    <!--================Blog Area =================-->
-    
+        <!-- Slider Area End-->
+        <!--================Blog Area =================-->
+        <section class="blog_area section-paddingr">
+            <div class="col-md-12">
+                <div class="container">
+                    <div class="row">
+                        <div class="app-active owl-carousel"> 
+                        {% for article in recent_articles %}
+                                {% load_article_detail article True user %}
+                            {% endfor %}
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <!--================Blog Area =================-->
+    {% endif %}
 
 {% endblock  %}
