@@ -6,7 +6,6 @@ from django.utils.timezone import now
 
 
 # Create your models here.
-
 class Employer(AbstractUser):
     nickname = models.CharField('nickname', max_length=100, blank=True)
     created_time = models.DateTimeField('created_time', default=now)

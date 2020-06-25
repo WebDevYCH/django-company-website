@@ -50,12 +50,15 @@
   
 {% include 'main/load-search.html' %}  
 <main>
-{% block content %}
     
-{% endblock %}
-{% include 'main/connectus.html' %}
+    {% block content %}{% endblock %}
+    
+    {% include 'main/connectus.html' %}
+    
 </main>
-{% include 'main/footer.html' %}
+<div id="colorlib-main">
+    {% include 'main/footer.html' %}
+</div>
 {% compress js %}
     <!-- ******* All JS Files ******* -->
     <!-- jQuery js -->

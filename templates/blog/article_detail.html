@@ -46,61 +46,17 @@
 <script type="text/javascript" src="{% static 'ckeditor/ckeditor/ckeditor.js' %}"></script>
 {% endblock %}
 {% block compress_css %}
-<style>
-.breadcrumb-list {
-  display: flex;
-  flex-wrap: wrap;
-  padding: 0;
-  margin: 1rem 0 0 0;
-  list-style: none;
-  li {
-    font-size: 0.85rem;
-    letter-spacing: 0.125rem;
-    text-transform: uppercase;
-  }
-}
-
-.breadcrumb-item {
-  &.active {
-    color: $black;
-  }
-  + .breadcrumb-item {
-    &::before {
-      content: '/';
-      display: inline-block;
-      padding: 0 0.5rem;
-      color: $lightergray;
-    }
-  }
-}
-
-</style>
+<link rel="stylesheet" href="{% static 'app/css/blog-styles.css' %}">
 {% endblock %}
 {% block content %}
 
 <div class="services-area">
         <div class="container">
-            <!-- Section-tittle -->
-            {% if article.type == 'a' %}
-                    {% if not isindex %}
-                        {% cache 36000 breadcrumb article.pk %}
-                            {% load_breadcrumb article %}
-                        {% endcache %}
-                    {% endif %}
-                {% endif %}
             <div class="row d-flex justify-content-center">
                 <div class="col-lg-8">
-                    <div class="blog-author">
-                        <div class="media align-items-center">
-                            <img src="{% static 'app/img/blog/author.png' %}" alt="">
-                            <div class="media-body">
-                                <a href="{{article.author.get_full_url}}">
-                                <h4>{{article.author.username}}</h4>
-                                </a>
-                                <p>Second divided from form fish beast made. Every of seas all gathered use saying you're, he
-                                our dominion twon Second divided from</p>
-                            </div>
-                        </div>
+                    <div class="job-page-tittle text-center mb-80">
+                        <h2 class="heading">{{article.title}}
+                        </h2>
                     </div>
                 </div>
                 <div class="col-lg-4 blog_right_sidebar">
@@ -113,11 +69,12 @@
     <section class="blog_area single-post-area">
         <div class="container">
         
-            <div class="row">
+            <div class="row ">
                 
                 <div class="col-lg-8 posts-list">
-                    
-                    {% load_article_detail_info article True user %}
+                    <div class="page-container">
+                        {% load_article_detail_info article True user %}
+                    </div>
                     <div class="navigation-top">
                         <div class="d-sm-flex justify-content-between text-center">
                             <p class="like-info"><span class="align-middle"><i class="fa fa-heart"></i></span> Lily and 4
@@ -203,11 +160,11 @@
                                 <button type="submit" class="button button-contactForm btn_1 boxed-btn" value="comment">Comment</button>
                             </div>
                         </form>
-                    {% else %}
-                        Please login and comment
-                        <a class = "btn btn-primary" href="{% url 'account:login' %}?from={{ request.get_full_path }}">log in</a>
-                        <span> or </span>
-                    {% endif %}
+                        {% else %}
+                            Please login and comment
+                            <a class = "btn btn-primary" href="{% url 'accounts:login' %}?from={{ request.get_full_path }}">log in</a>
+                            <span> or </span>
+                        {% endif %}
                                         
                 </div>
                     

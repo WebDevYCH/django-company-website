@@ -1,13 +1,13 @@
-{% load blogs_info %}            
+{% load blogs_info %}
+{% load job_tags %}
 <p>{{ job.description| custom_markdown | safe}}</p>
-{% if request.user.is_authenticated %}
-     {% is_already_applied job request.user as is_applied %}
-     {% if is_applied %}
-        <a href="" class="genric-btn info large"> Already Applied</a>
-     {% else %}
-        <div class="job-detail__apply-bottom">
-                <a href="{% url 'careers:job_apply' job_id=job.id %}" class="genric-btn info large"> Apply for this job</a>
-        </div>
-     {% endif %}
-{% endif %}     
-                                
+ {% if user.is_authenticated %}
+                        {% is_already_applied job user as is_applied %}
+                        {% if is_applied %}
+                            <a href="" class="genric-btn info large"> Already Applied</a>
+                        {% else %}
+                            <div class="job-detail__apply-bottom">
+                                    <a href="{% url 'careers:job_apply' job_id=job.id %}" class="genric-btn info large"> Apply for this job</a>
+                            </div>
+                        {% endif %}
+                    {% endif %}

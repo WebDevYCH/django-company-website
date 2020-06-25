@@ -3,6 +3,38 @@
 {% load cache %}
 
 {% block article %}
+<style>
+@media only screen and (max-width: 350px) {
+  .card-img {
+   height:155px;
+  }
+}
+@media only screen and (max-width: 476px) {
+  .card-img {
+   height:220px;
+  }
+}
+@media only screen and (max-width: 760px) {
+  .card-img {
+   height:260px;
+  }
+}
+@media only screen and (max-width: 980px) {
+  .card-img {
+   height:350px;
+  }
+}
+@media only screen and (max-width: 1800px) {
+  .card-img {
+   height:350px;
+  }
+}
+.card-img {
+    width: 100%;
+    border-radius: calc(.25rem - 1px);
+}
+</style>
+
     <article class="blog_item post-{{ article.pk }}" id="post-{{ article.pk }} ">
         {% markdown_images article.body as imgs %}
         {% if imgs %}
@@ -10,7 +42,7 @@
                 <div class="h1-testimonial-active owl-carousel">
                     {%  for img in imgs  %}
                         <div class="single-cases-img">
-                            <img class="card-img rounded-0" src= '{{ img }}' alt="{{ article.title }}">
+                            <img class="card-img rounded-0" src= '{{ img }}'  alt="{{ article.title }}">
                         </div>
                     {% endfor %}
                 </div>
@@ -23,15 +55,18 @@
     
         <div class="blog_details">
             <a class="d-inline-block" href="{{ article.get_absolute_url }}">
-                <h2>{{ article.title }}</h2>
+                <h3>{{ article.title }}</h3>
             </a>
+            <p>
+            {% if article.type == 'a' %}
+                <a href="{{ article.category.get_absolute_url }}" rel="category tag" title="View all articles categorised by {{ article.category.name }}"><i class="fas fa-filter"></i> {{ article.category.name }} </a>
+            {% endif %}
+            </p>
             <p class="card-text">{{ article.body|custom_markdown|escape|truncate }}...</p>
-            <p class='read-more'><a
-                        href=' {{ article.get_absolute_url }}'>Read more</a></p>
-            <ul class="blog-info-link">
-                {% load_article_metas article user %}
-            </ul>
+            {% load_article_metas article user False %}
+            <p class='read-more' style="margin-bottom:6rem;">
+                <a href='{{ article.get_absolute_url }}' class="genric-btn info-border circle arrow">Continue Reading</a>
+            </p>
         </div>
-
     </article>
 {% endblock %}

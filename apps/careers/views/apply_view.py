@@ -54,18 +54,26 @@ class JobApplyView(CreateView):
             })
 
     def post(self, request, *args, **kwargs):
-        form = self.form_class(request.POST, request.FILES, initial={'job': self.kwargs['job_id']} )
+        job = get_object_or_404(Job, pk=self.kwargs['job_id'])
+        form = self.form_class(job, request.user,request.POST, request.FILES)
         self.object = None
         
         form = self.get_form()
         if form.is_valid():
+
             messages.info(self.request, 'Successfully applied for the job!')
             return self.form_valid(form)
         
         return render(request, 'jobs/create.html', {'form': form})
 
     def get_form_kwargs(self, *args, **kwargs):
+        job = get_object_or_404(Job, pk=self.kwargs['job_id'])
         kwargs = super(JobApplyView, self).get_form_kwargs(*args, **kwargs)
         #kwargs['job'] = self.kwargs['job_id']
-        kwargs.update({'job': self.kwargs['job_id']})
+        kwargs.update({'job': job,'user': self.request.user})
         return kwargs
+    
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['job'] = get_object_or_404(Job, pk=self.kwargs['job_id'])
+        return context

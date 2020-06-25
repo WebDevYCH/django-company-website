@@ -184,7 +184,7 @@ class ApplicantDetails(BaseModel):
         slug = getattr(self, 'fullname') if 'fullname' in self.__dict__ else getattr(self, 'fullname')
         route_slug = slugify(slug)
         return reverse('careers:job_applicant_details', kwargs={
-            'job_id': self.job.id,
+            'applicant_id':self.id,
             'slug': route_slug,
         })
     
