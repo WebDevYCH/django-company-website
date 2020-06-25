@@ -27,14 +27,13 @@ class ApplicantsDetailsView(PermissionRequiredMixin, LogoutIfNotStaffMixin, Deta
     model = ApplicantDetails
     template_name = 'jobs/admin/applicant_details.html'
     context_object_name = 'applicant'
-    pk_url_kwarg = 'ApplicantDetails_id'
+    pk_url_kwarg = 'applicant_id'
 
     def get_object(self, queryset=None):
         obj = super(ApplicantsDetailsView, self).get_object(queryset=queryset)
         if obj is None:
             raise Http404("Job doesn't exists")
         else:
-            obj.viewed()
             self.object = obj
         return obj
 
@@ -45,11 +44,8 @@ class ApplicantsDetailsView(PermissionRequiredMixin, LogoutIfNotStaffMixin, Deta
     #     return obj
 
     def get_context_data(self, **kwargs):
-        ApplicantDetails_id = int(self.kwargs[self.pk_url_kwarg])
-        user = self.request.user
-        
-        kwargs['next_Applicant'] = self.object.next_job
-        kwargs['prev_Applicant'] = self.object.prev_job
+        # kwargs['next_Applicant'] = self.object.next_job
+        # kwargs['prev_Applicant'] = self.object.prev_job
 
         return super(ApplicantsDetailsView, self).get_context_data(**kwargs)
 

@@ -37,7 +37,7 @@ from django.contrib.contenttypes.models import ContentType
 logger = logging.getLogger(__name__)
 
 register = template.Library()
-
+from django.core.files.images import get_image_dimensions
 from bs4 import BeautifulSoup as BS
 
 @register.simple_tag
@@ -52,11 +52,12 @@ def timeformat(data):
 
 @register.simple_tag
 def markdown_images(content):
+    
     lst_images = list()
     soup = BS(content, "html.parser")
     for imgtag in soup.find_all('img'):
         if '.jpg' in imgtag['src'] or '.png' in imgtag['src']:
-            lst_images.append(imgtag['src'])
+                lst_images.append(imgtag['src'])
     
     return lst_images
 
@@ -185,15 +186,17 @@ def load_sidebar(user, linktype):
 
 
 @register.inclusion_tag('blog/tags/article_meta_info.html')
-def load_article_metas(article, user):
+def load_article_metas(article, user, is_detail):
     """
     Get article meta information
     :param article:
     :return:
     """
     return {
+        
         'article': article,
-        'user': user
+        'user': user,
+        'is_detail' : is_detail
     }
 
 

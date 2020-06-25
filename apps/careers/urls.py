@@ -18,8 +18,7 @@ urlpatterns = [
             path('mark-filled/<int:job_id>', filled, name='job-mark-filled'),
         ])),
         path('admin/', include([
-            path(r'applicant/list.html', ApplicantsListView.as_view(), name='applicants_list'),
-            path(r'applicant/<int:job_id>/<slug:slug>.html', ApplicantsDetailsView.as_view(), name='job_applicant_details'),
+            path('applicant/<int:applicant_id>/<slug:slug>', ApplicantsDetailsView.as_view(), name='job_applicant_details'),
         ])),
     ])),
     # path('apply-job/<int:job_id>', careers.views.ApplyJobView.as_view(), name='apply-job'),

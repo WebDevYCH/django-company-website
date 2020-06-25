@@ -111,7 +111,27 @@ class Article(BaseModel):
 
         return names
 
+    
     def save(self, *args, **kwargs):
+        # from bs4 import BeautifulSoup as BS
+        # import urllib
+        # from PIL import Image
+        # import io
+        # import re
+        
+
+        # soup = BS(self.body, "html.parser")
+        # for imgtag in soup.find_all('img'):
+        #     if '.jpg' in imgtag['src'] or '.png' in imgtag['src']:
+        #         fd = urllib.request.urlopen(imgtag['src'])
+        #         image_file = io.BytesIO(fd.read())
+        #         image = Image.open(image_file)
+        #         img_width ,img_height = image.size
+        #         if img_width >= 750 and img_height >= 375:
+        #             new_html = re.sub('<img src="(.*?)"', '<img src="" ', self.body)
+        #             imgtag['width']='750'
+        #             imgtag['height']='375'
+                    
         super().save(*args, **kwargs)
 
     def viewed(self):

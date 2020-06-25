@@ -10,20 +10,21 @@ class ApplyJobForm(forms.ModelForm):
         fields = ('job',)
 
 class ApplicantDetailsForm(forms.ModelForm):
-    def __init__(self, *args, **kwargs):
-        self.job = None
-        if 'job' in kwargs:
-            self.job = kwargs.pop('job')
+    def __init__(self, job, user, *args, **kwargs):
+        # self.job = None
+        # if 'job' in kwargs:
+        #     self.job = kwargs.pop('job')
         #     logger.info(self.job)
             # initial = kwargs.get('initial', {'job': kwargs.pop('job')})
             # data = {**initial, **data}
+        self.job = job
+        self.user = user
         super(ApplicantDetailsForm, self).__init__(*args, **kwargs)
-        logger.info(self.job)
-        self.fields['job'].initial = self.job
+        # logger.info(self.job)
+        # self.fields['job'].initial = self.job
     class Meta:
         model = ApplicantDetails
-        exclude = ('created_at',)
-        
+        exclude = ('job','user','created_at',)
         labels = {
             "tenth_percent": "Tenth Percent",
             "puc_or_diploma": "Select Puc or Diplamo",
@@ -43,6 +44,9 @@ class ApplicantDetailsForm(forms.ModelForm):
 
     def save(self, commit=True):
         applicant = super(ApplicantDetailsForm, self).save(commit=False)
+        
         if commit:
+            applicant.user = self.user
+            applicant.job = self.job
             applicant.save()
         return applicant

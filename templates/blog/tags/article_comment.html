@@ -21,13 +21,15 @@
                             </div>
                             {% endifequal %}
                             <!-- Comment Meta -->
-                            <div class="desc" id="comment_{{ comment.pk }}">
+                            <div class="desc page-container" id="comment_{{ comment.pk }}">
                                 {% ifequal reply.user.username 'reborn' %}
                                 <h5>Blogger</h5>
                                 {% else %}
                                 <h5>{{ comment.user.username }}</h5>
                                 {% endifequal %}
-                                <p class="comment">{{ comment.text|safe }}</p>
+                                <div class="">
+                                    <p class="comment">{{ comment.text|safe }}</p>
+                                </div>
                                 <div class="d-flex justify-content-between">
                                  <div class="d-flex align-items-center">
                                     <p class="date">{{ comment.comment_time| timesince}} ago </p>
@@ -58,7 +60,7 @@
                                     </div>
                                     {% endifequal %}
                                     <!-- Comment Meta -->
-                                    <div class="desc" id="comment_{{ reply.pk }}">
+                                    <div class="desc page-container" id="comment_{{ reply.pk }}">
                                         {% ifequal reply.user.username 'reborn' %}
                                         <h5>Blogger</h5>
                                         {% else %}
@@ -70,7 +72,9 @@
                                             {% endifequal %}
                                         </h5>
                                         {% endifequal %}
-                                        <p id="comment_{{ reply.pk }}" class="comment">{{ reply.text|safe }}</p>
+                                        <div class="">
+                                            <p id="comment_{{ reply.pk }}" class="comment">{{ reply.text|safe }}</p>
+                                        </div>
                                         <div class="d-flex justify-content-between">
                                             <div class="d-flex align-items-center">
                                                 <p class="date">{{ reply.comment_time| timesince}} ago </p>

@@ -12,12 +12,12 @@ class HomeListView(ListView):
         'title':'Home Page',
         'year':datetime.now().year,
     }
-    
-    def get_queryset(self):
-        queryset = {'blogs': Post.objects.filter(status='p'), 
-                    'portfolio': Portfolio.objects.all().filter()}
-        return queryset
-    
+    def get_context_data (self, ** kwargs):
+        context = super (). get_context_data (** kwargs)
+        context ['blogs'] = Post.objects.filter(status='p')
+        context ['portfolios'] = Portfolio.objects.all().filter()
+        return context
+
     
 class HomeView(HomeListView):
     pass

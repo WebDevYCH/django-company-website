@@ -1,5 +1,4 @@
 
-import xadmin
 from django.conf.urls.static import static
 from django.conf import settings
 from django.urls import path,include
@@ -11,10 +10,10 @@ from django.contrib.sitemaps.views import sitemap
 from agrosite.sitemap import StaticViewSitemap, ArticleSiteMap, CategorySiteMap, TagSiteMap, UserSiteMap
 from agrosite.feeds import AgrositeFeed
 from django.views.decorators.cache import cache_page
-
+import xadmin
+xadmin.autodiscover()
 
 sitemaps = {
-
     'blog': ArticleSiteMap,
     'Category': CategorySiteMap,
     'Tag': TagSiteMap,

@@ -1,13 +1,13 @@
 {% load blogs_info %}
 {% load staticfiles %}
 {% load cache %}
+
 <div class="single-post">
    <div class="blog_details">
-      <h2>{{ article.title }}</h2>
       <ul class="blog-info-link mt-3 mb-4">
-         {% load_article_metas article user %}
+         {% load_article_metas article user True %}
      </ul>
-      <p class="excert">
+      <p class="excert  ">
         {{ article.body|custom_markdown }}
       </p>
    </div>
