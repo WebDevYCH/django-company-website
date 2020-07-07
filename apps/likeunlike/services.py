@@ -13,7 +13,6 @@ if TYPE_CHECKING:
 User = get_user_model()
 
 
-
 def user_likes_count(user: 'User') -> int:
     """
     Returns count of likes for a given user.
@@ -46,11 +45,11 @@ def obj_likes_count(obj: 'Model') -> int:
     )
 
 
-def is_liked(obj, user: 'User') -> bool:
+def is_liked(obj, user: 'User', is_authenticated) -> bool:
     """
     Checks if a given object is liked by a given user.
     """
-    if not user.is_authenticated:
+    if not is_authenticated:
         return False
 
     ct = ContentType.objects.get_for_model(obj)
@@ -102,3 +101,4 @@ def send_signals(
             object=obj,
             request=request
         )
+

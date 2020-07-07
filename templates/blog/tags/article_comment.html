@@ -27,12 +27,13 @@
                                 {% else %}
                                 <h5>{{ comment.user.username }}</h5>
                                 {% endifequal %}
-                                <div class="">
-                                    <p class="comment">{{ comment.text|safe }}</p>
-                                </div>
+                                <p class="date">{{ comment.comment_time| timesince}} ago </p>
+                                
                                 <div class="d-flex justify-content-between">
                                  <div class="d-flex align-items-center">
-                                    <p class="date">{{ comment.comment_time| timesince}} ago </p>
+                                    
+                                    <p class="comment">{{ comment.text|safe }}</p>
+                                
                                  </div>
                                  <div class="reply-btn">
                                     <a href="#" class="btn-reply text-uppercase">like</a>

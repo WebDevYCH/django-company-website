@@ -5,7 +5,7 @@ from comment.form import CommentForm
 
 # add comment
 def update_comment(request):
-    referer = request.META.get('HTTP_REFERER', reverse('blogs:blogs'))
+    referer = request.META.get('HTTP_REFERER', reverse('blog:index'))
     comment_form = CommentForm(request.POST, user=request.user)
 
     if comment_form.is_valid():

@@ -1,6 +1,9 @@
 {% load blogs_info %}
+{% load likes_tags %}
 {% load static %}
-            
+{% csrf_token %}
+
+
                             <div class="col-lg-12 col-md-12">
                                 <div class="single_jobs white-bg d-flex justify-content-between">
                                     <div class="jobs_left d-flex align-items-center">
@@ -27,14 +30,24 @@
                                                 <div class="location">
                                                     <p>RS {% if job.salary > 0 %} {{ job.salary }}{% else %} Negotiable {% endif %}</p>
                                                 </div>
-
-                                            
+                                                <div class="location">
+                                                    <p>Likes <span id="likes_count">{{ job|likes_count }}</span></p>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                     <div class="jobs_right">
                                         <div class="apply_now">
-                                            <a class="heart_mark" href="#"> <i class="fa fa-heart"></i> </a>
+                                            
+                                            {% content_type job as ct %}
+                                            
+                                                <form  id="like" action="{% url 'likes-api:toggle' %}" method="POST">
+                                                    {% csrf_token %}
+                                                    <input name="id" type="hidden" value="{{job.id}}">
+                                                    <input name="content_type" type="hidden" value="{{ct}}">
+                                                </form>
+                                            <a class="heart_mark" id="save"><i class="fa ti-heart"></i> </a>
+                                            
                                             {% if not isdetail %}
                                                 <a href="{{ job.get_absolute_url }}" class="boxed-btn3">View Details </a>
                                             {% endif %}

@@ -10,7 +10,7 @@ from .serializers import (
     LikeToggleSerializer,
     IsLikedSerializer,
 )
-from .models import AgroLike
+from .models import Like
 from .services import user_likes_count
 
 
@@ -21,7 +21,7 @@ class LikeListAPIView(ListAPIView):
     """
     permission_classes = (IsAuthenticated, )
     serializer_class = LikeSerializer
-    queryset = AgroLike.objects.all()
+    queryset = Like.objects.all()
     filter_backends = (filters.SearchFilter, )
     search_fields = ('content_type__model', )
 
@@ -46,6 +46,7 @@ class LikeToggleView(CreateAPIView):
     serializer_class = LikeToggleSerializer
 
     def create(self, request, *args, **kwargs):
+        
         serializer = self.get_serializer(data=request.data)
         serializer.is_valid(raise_exception=True)
         self.perform_create(serializer)

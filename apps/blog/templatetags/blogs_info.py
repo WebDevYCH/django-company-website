@@ -25,7 +25,6 @@ from django.utils.encoding import force_text
 from django.shortcuts import get_object_or_404
 import hashlib
 import urllib
-from comment.models import Comment
 from agrosite.utils import cache_decorator, cache
 from django.contrib.auth import get_user_model
 from agrosite.utils import get_current_site

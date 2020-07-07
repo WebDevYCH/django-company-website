@@ -1,4 +1,3 @@
-from blogs.models import *
 from home.models import *
 from setting.models import *
 from django import template

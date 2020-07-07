@@ -1,14 +1,16 @@
 from django.urls import include, path
+from django.conf.urls import url
 from .apiview import (
     LikeListAPIView,
     UserCountOfLikesAPIView,
     LikeToggleView,
     IsLikedAPIView,
 )
+app_name = 'likes-api'
 
-app_name = 'agrolikes-api'
 
 urlpatterns = [
+    
     path('likes/', include([
         path('list/', LikeListAPIView.as_view(), name='list'),
         path('count/', UserCountOfLikesAPIView.as_view(), name='count'),

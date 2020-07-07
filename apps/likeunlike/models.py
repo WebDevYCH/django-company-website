@@ -5,13 +5,12 @@ from django.contrib.contenttypes.fields import GenericForeignKey
 from django.contrib.contenttypes.models import ContentType
 from django.db import models
 from django.utils.translation import pgettext_lazy
-from agrobase.models import TimeStampedUUIDModel
+from django.utils import timezone
 
 
 User = get_user_model()
 
-
-class Like(TimeStampedUUIDModel):
+class Like(models.Model):
     """
     Like model
     """
@@ -31,9 +30,10 @@ class Like(TimeStampedUUIDModel):
         max_length=50
     )
     content_object = GenericForeignKey('content_type', 'object_id')
-
+    timestamp = models.DateTimeField(default=timezone.now)
+    
     class Meta:
-        ordering = ['-created_at']
+        ordering = ['-timestamp']
         unique_together = (
             (
                 "sender",

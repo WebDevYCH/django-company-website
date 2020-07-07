@@ -2,18 +2,18 @@
 from django.utils.html import mark_safe
 from django.utils.translation import pgettext_lazy
 
-from .models import AgroLike
-from agroutils.contenttype import admin_change_url
+from .models import Like
+from .utils import admin_change_url
 import xadmin
 
-class AgroLikeAdmin(object):
+class LikeAdmin(object):
     list_filter = (
-        "created_at",
+        "timestamp",
     )
     list_display = (
         "sender",
         "content_object_link",
-        "created_at"
+        "timestamp"
     )
     list_select_related = (
         "sender",
@@ -22,7 +22,7 @@ class AgroLikeAdmin(object):
         'sender',
     )
     readonly_fields = (
-        'created_at',
+        'timestamp',
     )
     search_fields = (
         "sender__username",
@@ -41,4 +41,4 @@ class AgroLikeAdmin(object):
     content_object_link.short_description = (
         pgettext_lazy('like', 'Content object')
     )
-xadmin.site.register(AgroLike, AgroLikeAdmin)
+xadmin.site.register(Like, LikeAdmin)
