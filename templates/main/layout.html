@@ -4,7 +4,6 @@
 {% load compress %}
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -62,7 +61,7 @@
 {% compress js %}
     <!-- ******* All JS Files ******* -->
     <!-- jQuery js -->
-    <script src="{% static 'app/js/jquery.min.js' %}"></script>
+    
     <!-- Popper js -->
     <script src="{% static 'app/js/vendor/modernizr-3.5.0.min.js' %}"></script>
     
@@ -103,6 +102,7 @@
     
     {% block script_extends %}{% endblock %}
 {% endcompress %}
-{% block scripts %}{% endblock %}
+{% block scripts %}
+{% endblock %}
 </body>
 </html>

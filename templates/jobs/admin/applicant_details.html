@@ -1,0 +1,114 @@
+{% extends 'main/layout.html' %}
+{% load job_tags %}
+{% load static %}
+{% block meta %}
+    {% if tag_name %}
+        <title>{{ page_type }}:{{ tag_name }} | {{ SITE_DESCRIPTION }}</title>
+        {% comment %}<meta name="description" content="{{ page_type }}:{{ tag_name }}"/>{% endcomment %}
+    {% else %}
+        <title>{{ SITE_NAME }} Blogs | {{ SITE_DESCRIPTION }}</title>
+    {% endif %}
+    <meta name="description" content="{{ SITE_SEO_DESCRIPTION }}"/>
+    <meta name="keywords" content="{{ SITE_KEYWORDS }}"/>
+    <meta name="robots" content="index, follow">
+    <meta property="og:type" content="blog"/>
+    <meta property="og:title" content="{{ SITE_NAME }}"/>
+    <meta property="og:description" content="{{ SITE_DESCRIPTION }}"/>
+    <meta property="og:url" content="{{ SITE_BASE_URL }}"/>
+    <meta property="og:site_name" content="{{ SITE_NAME }}"/>
+    <meta property="og:image" content="https://www.herokucdn.com/images/og.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+{% endblock %}
+{% block compress_css %}
+    <link rel="stylesheet" href="{% static 'careers/careers.css' %}">
+{% endblock %}
+{% block script_extends %}
+    <script src="{% static 'careers/careers.js' %}"></script>
+{% endblock %}
+{% block content %}
+<style>
+.hero-wrap,
+.img,
+.blog-img,
+.user-img {
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center; }
+.hero-wrap {
+  width: 100%;
+  height: 100%;
+  position: relative;
+  z-index: 0; }
+  .hero-wrap .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    content: '';
+    opacity: .1;
+    background: #fff;
+    z-index: 0; }
+  .hero-wrap.hero-wrap-2 .overlay {
+    opacity: .8; }
+  .hero-wrap .text {
+    z-index: 1;
+    font-size: 18px;
+    font-weight: 500; }
+    .hero-wrap .text .img {
+      width: 200px;
+      height: 200px;
+      margin: 0 auto;
+      -webkit-border-radius: 50%;
+      -moz-border-radius: 50%;
+      -ms-border-radius: 50%;
+      border-radius: 50%; }
+    .hero-wrap .text .subheading {
+      font-size: 24px;
+      color: #bfbfbf;
+      font-weight: 300; }
+    .hero-wrap .text h1 {
+      letter-spacing: 1px;
+      font-weight: 900; }
+    .hero-wrap .text .btn-custom {
+      font-weight: 400;
+      color: #b3b3b3;
+      border-bottom: 2px solid #b3b3b3; }
+
+</style>
+  <a href="#" class="js-colorlib-nav-toggle colorlib-nav-toggle"><i></i></a>
+  <aside id="colorlib-aside" role="complementary" class="js-fullheight text-center" style="height: 538px;">
+			<h1 id="colorlib-logo"><a href="index.html">elen<span>.</span></a></h1>
+			<nav id="colorlib-main-menu" role="navigation">
+				<ul>
+					<li class="colorlib-active"><a href="index.html">Home</a></li>
+					<li><a href="photography.html">Photography</a></li>
+					<li><a href="travel.html">Travel</a></li>
+					<li><a href="fashion.html">Fashion</a></li>
+					<li><a href="about.html">About</a></li>
+					<li><a href="contact.html">Contact</a></li>
+				</ul>
+			</nav>
+
+		
+		</aside>
+  <div id="colorlib-main">
+    <div class="hero-wrap js-fullheight" style="margin-top:75px;background-image: url(); height: 608px; background-position: 50% 84px;">
+				<div class="overlay"></div>
+				<div class="js-fullheight d-flex justify-content-center align-items-center" style="height: 538px;">
+					<div class="col-md-8 text text-center">
+						<div class="img mb-4" style="background-image: url({{applicant.cover.url}});"></div>
+						<div class="desc">
+							<h2 class="subheading">Hello I'm</h2>
+							<h1 class="mb-4">{{applicant.fullname}}</h1>
+							<p class="mb-4">I am A Blogger Far far away, behind the word mountains, far from the countries Vokalia and Consonantia, there live the blind texts. Separated they live in Bookmarksgrove right at the coast of the Semantics, a large language ocean.</p>
+							<p><a href="#" class="btn-custom">More About Me <span class="ion-ios-arrow-forward"></span></a></p>
+						</div>
+					</div>
+				</div>
+			</div>
+  </div>
+{% endblock %}
+
+

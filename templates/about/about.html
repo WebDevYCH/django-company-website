@@ -101,37 +101,38 @@
         <div class="container-fluid">
             <div class="row">
                 <!-- Team Member Slides -->
-                <div class="team-slides dot-style d-flex owl-carousel dot-style">
+                <div class="col-md-4">
+                    <div class="d-flex">
 
-                    <!-- Single Team Slide -->
-                    {% for expert in experts %}
-                    <div class="single-team-slide">
-                        <img height="350" src="{% url 'blogs:blogs' %}media/{{ expert.cover }}" alt="{{ expert.name }}">
-                        <!-- Overlay Effect -->
-                        <div class="overlay-effect">
-                            <h6>{{ expert.role }}</h6>
-                            <h4>{{ expert.name }}</h4>
-                            <p>{{ expert.about }}</p>
+                        <!-- Single Team Slide -->
+                        {% for expert in experts %}
+                        <div class="single-team-slide">
+                            <img height="350" src="{{expert.cover.url}}" alt="{{ expert.name }}">
+                            <!-- Overlay Effect -->
+                            <div class="overlay-effect">
+                                <h6>{{ expert.role }}</h6>
+                                <h4>{{ expert.name }}</h4>
+                                <p>{{ expert.about }}</p>
+                            </div>
+                            <!-- Social Info -->
+                            <div class="team-social-info">
+                                {% if expert.facebook != ''%}
+                                    <a href="{{ expert.facebook }}" class="facebook" data-toggle="tooltip" data-placement="top" title="Facebook"><i class="fa ti-facebook"></i></a>
+                                {% endif %}
+                                {% if expert.twitter != ''%}
+                                    <a href="{{ expert.twitter }}" class="twitter" data-toggle="tooltip" data-placement="top" title="Twitter"><i class="fa ti-twitter"></i></a>
+                                {% endif %}
+        
+                                {% if expert.instagram != ''%}
+                                    <a href="{{ expert.instagram }}" class="instagram" data-toggle="tooltip" data-placement="top" title="Instagram"><i class="fa ti-instagram"></i></a>
+                                {% endif %}
+                                {% if expert.github != ''%}
+                                    <a href="{{ expert.github }}" class="github" data-toggle="tooltip" data-placement="top" title="GitHub"><i class="fa ti-github"></i></a>
+                                {% endif %}
+                            </div>
                         </div>
-                        <!-- Social Info -->
-                        <div class="team-social-info">
-                            {% if expert.facebook != ''%}
-                                <a href="{{ expert.facebook }}" class="facebook" data-toggle="tooltip" data-placement="top" title="Facebook"><i class="fa ti-facebook"></i></a>
-                            {% endif %}
-                            {% if expert.twitter != ''%}
-                                <a href="{{ expert.twitter }}" class="twitter" data-toggle="tooltip" data-placement="top" title="Twitter"><i class="fa ti-twitter"></i></a>
-                            {% endif %}
-    
-                            {% if expert.instagram != ''%}
-                                <a href="{{ expert.instagram }}" class="instagram" data-toggle="tooltip" data-placement="top" title="Instagram"><i class="fa ti-instagram"></i></a>
-                            {% endif %}
-                            {% if expert.github != ''%}
-                                <a href="{{ expert.github }}" class="github" data-toggle="tooltip" data-placement="top" title="GitHub"><i class="fa ti-github"></i></a>
-                            {% endif %}
-                        </div>
-                    </div>
-                    {% endfor %}
-                   
+                        {% endfor %}
+                   </div>
                 </div>
             </div>
         </div>

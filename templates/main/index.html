@@ -11,6 +11,7 @@
     {% endif %}
     <meta name="description" content="{{ SITE_SEO_DESCRIPTION }}"/>
     <meta name="keywords" content="{{ SITE_KEYWORDS }}"/>
+    <meta property="og:locale" content="en_US"/>
     <meta property="og:type" content="blog"/>
     <meta property="og:title" content="{{ SITE_NAME }}"/>
     <meta property="og:description" content="{{ SITE_DESCRIPTION }}"/>
@@ -260,7 +261,7 @@
                     <!-- Single Portfolio Slide -->
                         {% for portfolio in portfolios %}
                         <div class="single-portfolio-slide">
-                            <img alt="{{ portfolio.name }}" src="{% url 'blogs:blogs' %}media/{{ portfolio.cover }}">
+                            <img alt="{{ portfolio.name }}" src="{% url 'blog:index' %}media/{{ portfolio.cover }}">
                             <!-- Overlay Effect -->
                             <div class="overlay-effect">
                                 <h4>{{ portfolio.title }}</h4>

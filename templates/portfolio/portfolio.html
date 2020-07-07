@@ -1,0 +1,73 @@
+{% extends "main/layout.html" %}
+{% load static %}
+{% load blogs_info %}
+{% block meta %}
+    {% if tag_name %}
+        <title>{{ page_type }}:{{ tag_name }} | {{ SITE_DESCRIPTION }}</title>
+        {% comment %}<meta name="description" content="{{ page_type }}:{{ tag_name }}"/>{% endcomment %}
+    {% else %}
+        <title>Portfolio | {{ SITE_DESCRIPTION }}</title>
+    {% endif %}
+    <meta name="description" content="{{ SITE_SEO_DESCRIPTION }}"/>
+    <meta name="keywords" content="{{ SITE_KEYWORDS }}"/>
+    <meta property="og:type" content="portfolio"/>
+    <meta property="og:title" content="{{ SITE_NAME }}"/>
+    <meta property="og:description" content="{{ SITE_DESCRIPTION }}"/>
+    <meta property="og:url" content="{{ SITE_BASE_URL }}"/>
+    <meta property="og:site_name" content="{{ SITE_NAME }}"/>
+{% endblock %}
+
+{% block content %}
+
+<style>
+
+ 
+</style>
+
+
+<!-- ****** Gallery Area Start ****** -->
+<section class="uza-portfolio-area services-padding">
+
+    <!-- Portfolio Menu -->
+    <div class="portfolio-menu text-center mb-80">
+        <button class="btn active" data-filter="*">All Portfolio</button>
+        <button class="btn" data-filter=".ux-ui-design">UX/UI Design</button>
+        <button class="btn" data-filter=".market-analytics">Market Analytics</button>
+        <button class="btn" data-filter=".marketing-social">Marketing Social</button>
+    </div>
+
+    <div class="container-fluid">
+        <div class="row uza-portfolio">
+
+            <!-- Single Portfolio Item -->
+            {% for portfolio in lists %}
+            <div class="col-12 col-sm-6 col-lg-4 col-xl-3 single-portfolio-item market-analytics">
+                    <div class="single-portfolio-slide">
+                        <img alt="{{ portfolio.name }}" src="{{ portfolio.cover.url }}">
+                        <!-- Overlay Effect -->
+                        <div class="overlay-effect">
+                            <h4>{{ portfolio.title }}</h4>
+                            <p>{{ portfolio.about|slice:60 }}</p>
+                        </div>
+                        <!-- View More -->
+                        <div class="view-more-btn">
+                            <a href="{{ portfolio.get_absolute_url }}"><i class="ti fa-arrow_right"></i></a>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+
+            
+
+        </div>
+
+        <div class="row">
+            <div class="col-12 text-center mt-30">
+                <a href="#" class="generic-btn info uza-btn btn-3">Load More</a>
+            </div>
+        </div>
+    </div>
+</section>
+<!-- ****** Gallery Area End ****** -->
+
+{% endblock %}
