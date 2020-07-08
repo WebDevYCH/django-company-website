@@ -129,7 +129,7 @@ DEBUG = environment_checker.is_debug()
 IS_PRODUCTION = environment_checker.is_production()
 IS_BUILD = environment_checker.is_build()
 TESTING = len(sys.argv) > 1 and sys.argv[1] == 'test'
-django_heroku.settings(locals())
+
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS')
 if IS_PRODUCTION:
     if not ALLOWED_HOSTS:
@@ -321,7 +321,7 @@ AUTH_PASSWORD_VALIDATORS = [
     {"NAME": "django.contrib.auth.password_validation.CommonPasswordValidator"},
     {"NAME": "django.contrib.auth.password_validation.NumericPasswordValidator"},
 ]
-
+django_heroku.settings(locals())
 AWS_TRANSLATE_REGION = os.environ.get('AWS_TRANSLATE_REGION', 'eu-central-1')
 AWS_TRANSLATE_MAX_LENGTH = os.environ.get('AWS_TRANSLATE_MAX_LENGTH', 10000)
 OS_TRANSLATION_STRATEGY_NAME = 'default'
