@@ -13,6 +13,7 @@ sys.path.insert(0, os.path.join(PROJECT_ROOT, 'extra_apps'))
 import logging.config
 from agrosite.environment import EnvironmentChecker
 LOGGING_CONFIG = None
+import django_heroku
 
 logging.config.dictConfig({
     'version': 1,
@@ -128,7 +129,7 @@ DEBUG = environment_checker.is_debug()
 IS_PRODUCTION = environment_checker.is_production()
 IS_BUILD = environment_checker.is_build()
 TESTING = len(sys.argv) > 1 and sys.argv[1] == 'test'
-
+django_heroku.settings(locals())
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS')
 if IS_PRODUCTION:
     if not ALLOWED_HOSTS:
