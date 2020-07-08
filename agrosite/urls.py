@@ -13,6 +13,9 @@ from django.views.decorators.cache import cache_page
 import xadmin
 xadmin.autodiscover()
 
+from xadmin.plugins import xversion
+xversion.register_models()
+
 sitemaps = {
     'blog': ArticleSiteMap,
     'Category': CategorySiteMap,
