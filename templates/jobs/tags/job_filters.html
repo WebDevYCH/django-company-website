@@ -20,43 +20,43 @@
                                     
                                 <!-- Select job items start -->
                                 <div class="select-job-items2">
-                                    <select id="profession" name="position" style="display: none;">
-                                        <option value="">All Category</option>
+                                    <select id="category" name="position" style="display: none;">
+                                        <option value="all">All Category</option>
                                         {% for cat in job_categorys %}
-                                            <option value="{{cat.name}}">{{cat.name}}</option>
+                                            <option value="{{cat.pk}}">{{cat.name}}</option>
                                         {% endfor %}
                                     </select><div class="nice-select" tabindex="0"><span class="current">All Category</span>
                                     <ul class="list">
                                     <li data-value="" class="option selected focus">All Category</li>
                                     {% for cat in job_categorys %}
-                                        <li data-value="{{cat.name}}" class="option">{{cat.name}}</li>
+                                        <li data-value="{{cat.pk}}" class="option">{{cat.name}}</li>
                                     {% endfor %}
                                     </ul></div>
                                 </div>
                                 <!--  Select job items End-->
                                 <!-- select-Categories start -->
-                                <div class="select-Categories pt-80 pb-50">
+                                <div id="jobtype" class="select-Categories pt-80 pb-50">
                                     <div class="small-section-tittle2">
                                         <h4>Job Type</h4>
                                     </div>
                                     <label class="container">Full Time
-                                        <input type="checkbox" value="1">
+                                        <input type="checkbox" value="1" name="jobtype1">
                                         <span class="checkmark"></span>
                                     </label>
                                     <label class="container" >Part Time
-                                        <input type="checkbox" value="2" checked="checked active">
+                                        <input type="checkbox" value="2" name="jobtype2">
                                         <span class="checkmark"></span>
                                     </label>
                                     <label class="container">Internship
-                                        <input type="checkbox" value="3">
+                                        <input type="checkbox" value="3" name="jobtype3">
                                         <span class="checkmark"></span>
                                     </label>
                                     <label class="container">Remote
-                                        <input type="checkbox" value="4">
+                                        <input type="checkbox" value="4" name="jobtyp4">
                                         <span class="checkmark"></span>
                                     </label>
                                     <label class="container">Freelance
-                                        <input type="checkbox" value="5">
+                                        <input type="checkbox" value="5" name="jobtype5">
                                         <span class="checkmark"></span>
                                     </label>
                                 </div>
@@ -69,21 +69,17 @@
                                </div>
                                 <!-- Select job items start -->
                                 <div class="select-job-items2">
-                                    <select id="location" name="location" style="display: none;">
-                                        <option value="">Anywhere</option>
-                                        {% for location in job_locations %}
-                                            <option value="{{location}}">{{location}}</option>
+                                    <select id="location" name="position" style="display: none;">
+                                        <option value="all">Anywhere</option>
+                                        {% for loc in job_locations %}
+                                            <option value="{{loc.pk}}">{{loc.location}}</option>
                                         {% endfor %}
-                                        <option value="">Category 1</option>
-                                        <option value="">Category 2</option>
-                                        <option value="">Category 3</option>
-                                        <option value="">Category 4</option>
                                     </select><div class="nice-select" tabindex="0"><span class="current">Anywhere</span>
                                     <ul class="list">
-                                        <li data-value="" class="option selected">Anywhere</li>
-                                        {% for location in job_locations %}
-                                            <li data-value="{{location}}" class="option">{{location}}</li>
-                                        {% endfor %}
+                                    <li data-value="" class="option selected focus">Anywhere</li>
+                                    {% for loc in job_locations %}
+                                        <li data-value="{{loc.pk}}" class="option">{{loc.location}}</li>
+                                    {% endfor %}
                                     </ul></div>
                                 </div>
                                 <!--  Select job items End-->

@@ -2,7 +2,7 @@
 from django import template
 from django.utils.safestring import mark_safe
 from django.urls import reverse
-from careers.models import Job, JobCategory, ApplicantDetails
+from careers.models import Job, JobCategory, ApplicantDetails,JobLocation
 from django.shortcuts import get_object_or_404
 
 import logging
@@ -94,12 +94,11 @@ def load_jobs_baseinfo(job, user, isdetail):
 
 @register.inclusion_tag('jobs/tags/job_filters.html')
 def load_job_filters():
-    job_categorys = JobCategory.objects.all()
-    job_location = Job.objects.order_by().values('location').distinct()
+    job_categorys = JobCategory.objects.filter(is_active=True).order_by('name')
+    job_location = JobLocation.objects.filter(is_active=True).order_by('location')
     return {
         'job_categorys': job_categorys,
-        'job_location' : job_location,
-        
+        'job_locations' : job_location,
     }
 
 @register.inclusion_tag('jobs/tags/job_applicants.html')

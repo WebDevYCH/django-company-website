@@ -297,7 +297,7 @@
         activeOverlay: false, // Set CSS color to display scrollUp active point, e.g '#00FFFF'
     });
 
-
+    
     /* 9. data-background */
     $("[data-background]").each(function() {
         $(this).css("background-image", "url(" + $(this).attr("data-background") + ")")
@@ -327,6 +327,5 @@
         });
     }
     
-
 
 })(jQuery);

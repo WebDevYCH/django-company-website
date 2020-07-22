@@ -45,6 +45,7 @@ class BaseModel(models.Model):
 class JobCategory(BaseModel):
     name = models.CharField(max_length=100, verbose_name='Category Name')
     user = models.ForeignKey(User,verbose_name ='Created By', on_delete=models.CASCADE)
+    is_active = models.BooleanField("Is Active", default=True)
     def __str__(self):
         return self.name
 
@@ -55,6 +56,17 @@ class JobCategory(BaseModel):
     def get_absolute_url(self):
         return reverse('careers:careers', kwargs={'pk': self.pk})
 
+class JobLocation(BaseModel):
+    location = models.CharField(max_length=100, verbose_name='location')
+    user = models.ForeignKey(User,verbose_name ='Created By', on_delete=models.CASCADE)
+    is_active = models.BooleanField("Is Active", default=True)
+    def __str__(self):
+        return self.location
+
+    class Meta:
+        verbose_name = "Job Location"
+        verbose_name_plural = verbose_name
+
 class Job(BaseModel):
     JOB_TYPE = (
         ('1', "Full time"),
@@ -64,8 +76,7 @@ class Job(BaseModel):
         ('5', "Freelance"),
     )
     PUBLISH_STATUS = (
-        ('p', 'Article Page'),
-        ('c', 'Tutorial page'),
+        ('p', 'Published'),
         ('d', 'Draft Box'),
         ('r', 'Recycle Bin'),
     )
@@ -78,7 +89,7 @@ class Job(BaseModel):
     title = models.CharField('title',max_length=300)
     cover = models.ImageField("Upload cover", upload_to = 'job')
     description = models.TextField('Description')
-    location = models.CharField('Location',max_length=150)
+    location = models.ForeignKey(JobLocation, verbose_name = 'Job_Location', on_delete = models.CASCADE)
     jobtype = models.CharField('JobType',choices=JOB_TYPE, max_length=10)
     jobcategory = models.ForeignKey(JobCategory, verbose_name = 'Job_Category', on_delete = models.CASCADE)
     last_date = models.DateTimeField('LastDate',default=timezone.now)
@@ -86,7 +97,7 @@ class Job(BaseModel):
     salary = models.IntegerField('Salary',default=0, blank=True)
     views = models.PositiveIntegerField('Views', default = 0)
     vacancies = models.PositiveIntegerField('Number of Vaccencies', default = 0)
-    status = models.CharField('Article status', max_length = 1, choices = PUBLISH_STATUS, default = 'p')
+    status = models.CharField('Job status', max_length = 1, choices = PUBLISH_STATUS, default = 'p')
     stick = models.CharField('Whether sticky', max_length = 1, choices = STICK_STATUS, default = 'n')
     user = models.ForeignKey(User,verbose_name = 'CreatedBy',on_delete=models.CASCADE)
     

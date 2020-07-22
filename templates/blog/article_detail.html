@@ -150,6 +150,9 @@
  .fab {
 	 padding-left: 5px;
 }
+.fa {
+	 padding-left: 5px;
+}
  .one {
      background: #0e76a8;
 	 left: 0;
@@ -163,11 +166,11 @@
 	 left: 100px;
 }
  .four {
-     background: #3f729b;
+     background: #7d7d7d;
 	 left: 150px;
 }
  .five {
-     background:  #db4a39;
+     background:  #DB4A2A;
 	 left: 200px;
 }
  #hide {
@@ -426,13 +429,19 @@
         
         
         $('.share-facebook').on('click', function(){
-            window.open("https://www.facebook.com/sharer/sharer.php?u=https://{{ request.get_host }}{{ article.get_absolute_url }}/", "", "top=30px,width=200,height=100");
+            window.open("https://www.facebook.com/sharer/sharer.php?u=https://{{ request.get_host }}{{ article.get_absolute_url }}/", "");
         });
         $('.share-linkedin').on('click', function(){
-            window.open("https://www.linkedin.com/sharing/share-offsite/?url=https://{{ request.get_host }}{{ article.get_absolute_url }}/", "", "top=30px,width=200,height=100");
+            window.open("https://www.linkedin.com/sharing/share-offsite/?url=https://{{ request.get_host }}{{ article.get_absolute_url }}/", "");
         });
         $('.share-twitter').on('click', function(){
-    window.open("https://twitter.com/share?url=https://{{ request.get_host }}/{{ article.get_absolute_url }}/", "", "top=30px,width=200,height=100");
+            window.open("https://twitter.com/share?text={{ article.title }}&url=https://{{ request.get_host }}/{{ article.get_absolute_url }}/", "");
+        });
+        $('.share-email').on('click', function(){
+            window.open("https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=&su={{ article.title }}&body=+https:\/\/{{ request.get_host }}{{ article.get_absolute_url }}\/+&ui=2&tf=1&pli=1");
+        });
+        $('.share-pinterest').on('click', function(){
+            window.open("http://pinterest.com/pin/create/button/?url=https://{{ request.get_host }}/{{ article.get_absolute_url }}/&description={{article.title}}", "");
         });
     </script>
 {% endblock %}

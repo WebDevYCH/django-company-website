@@ -2,11 +2,12 @@ from django.urls import path,include
 from careers.views.admin_view import *
 from careers.views.apply_view import *
 from careers.views.jobs_view import *
-
+from careers.apiview import JobsListing
 
 app_name = "careers"
 urlpatterns = [
     path('careers/', include([
+        path("filter/", JobsListing.as_view(), name = 'listing'),
         path('', JobView.as_view(), name='careers'),
         path(r'<int:year>/<int:month>/<int:day>/<int:job_id>/<slug:slug>.html', JobDetailsView.as_view(), name='job_description'),
         path(r'applicants/<int:job_id>/job_apply.html', JobApplyView.as_view(), name='job_apply'),

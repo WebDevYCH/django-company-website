@@ -85,6 +85,48 @@
             }
         }
     });
+    var send_data = {}
+    $('#location').on('change', function () {
+        if(this.value == "all")
+            send_data['location'] = "";
+        else
+            send_data['location'] = this.value;
+        getAPIData();
+    });
+    $('#category').on('change', function () {
+        if(this.value == "all")
+            send_data['category'] = "";
+        else
+            send_data['category'] = this.value;
+        getAPIData();
+    });
+    $('#jobtype').on('change', function () {
+        // var favorite = [];
+        var i=1;
+        for(i=1;i<=5;i++){
+            if ($("input[name='jobtype"+i+"']:checked")){
+                send_data['jobtype'+i] = $("input[name='jobtype"+i+"']:checked").val();
+            }else{
+                send_data['jobtype'+i] = "";
+            }
+        }
+        // send_data['jobtype'] = favorite;
+        getAPIData()
+    });
+    
+    function getAPIData() {
+        $.ajax({
+            url: "/careers/filter/",
+            method: 'GET',
+            data : send_data,
+            success: function(data){
+                console.log(data);
+            },
+            error: function(xhr, errmsg, err){
+                console.log("error");
+            }
+        });
+    }
     $('#save').click(function(){
         $.ajax({
             type: "POST",
@@ -106,7 +148,6 @@
                 } 
                 if (!response['is_liked'])  {
                     
-                    
                     $("#save").html('<i class="fa ti-heart"></i>');
                     var newcount = $( "#likes_count" ).val();
                     $("#likes_count").text(newcount);
@@ -117,5 +158,9 @@
         });
 
     });
+
+    
     
 })(jQuery);
+var send_data = {}
+

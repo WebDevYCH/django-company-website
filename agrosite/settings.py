@@ -278,39 +278,44 @@ else:
         'PORT': RDS_PORT,
     }
 
-    DATABASES = {
-        
-        'default': writer_db_config,
-        'Reader': {
-            'ENGINE': 'django.db.backends.postgresql_psycopg2',
-            'NAME': RDS_DB_NAME,
-            'USER': RDS_USERNAME,
-            'PASSWORD': RDS_PASSWORD,
-            'HOST': RDS_HOSTNAME_READER,
-            'PORT': RDS_PORT,
-        },
-        'slave':writer_db_config,
-        
-    }
-    
     # DATABASES = {
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+        
+    #     'default': writer_db_config,
+    #     'Reader': {
+    #         'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #         'NAME': RDS_DB_NAME,
+    #         'USER': RDS_USERNAME,
+    #         'PASSWORD': RDS_PASSWORD,
+    #         'HOST': RDS_HOSTNAME_READER,
+    #         'PORT': RDS_PORT,
+    #     },
+    #     'slave':writer_db_config,
+        
     # }
-# }
+    writer_local_config = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
+    }
+    reader_db_config = {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': os.path.join(BASE_DIR, 'reader.sqlite3'),
+    }
+    DATABASES = {
+        'default': writer_local_config,
+        'Reader': reader_db_config,
+    }
     DATABASE_ROUTERS = ['django_replicated.router.ReplicationRouter']
 
-    REPLICATED_DATABASE_SLAVES = ['slave','Reader', ]
+    REPLICATED_DATABASE_SLAVES = ['Reader', ]
 
     MIDDLEWARE.append('django_replicated.middleware.ReplicationMiddleware')
 
     REPLICATED_VIEWS_OVERRIDES = {
         '/admin/*': 'master',
         '/article/*': 'master',
-        '/': 'master',
         '/careers/*': 'master',
-        '/logout/':'master'
+        '/logout/':'master',
+        '/*':'master',
     }
 
 AUTH_PASSWORD_VALIDATORS = [

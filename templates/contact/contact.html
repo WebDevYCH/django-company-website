@@ -42,35 +42,31 @@
                     <div class="contact-title">
                         <h4>Thank you for your interest. <br>Please fill out the form below to inquire about our work in Digital.</h4>
                     </div>
-                    <form class="form-contact contact_form" action="#" method="post">
+                    <form class="form-contact contact_form" action="" method="post">
+                    {% csrf_token %}
                         <div class="row">
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <input type="text" class="form-control mb-30" name="full-name" placeholder="Name">
+                                    <input type="text" class="form-control mb-30" name="username" placeholder="Name" required id="id_username">
                                 </div>
                             </div>
                             <div class="col-lg-6">
                                 <div class="form-group">
-                                    <input type="email" class="form-control mb-30" name="email" placeholder="Email">
+                                    <input type="email" class="form-control mb-30" name="email" placeholder="Email" required id="id_email">
                                 </div>
                             </div>
-                            <div class="col-lg-6">
+                            <div class="col-lg-12">
                                 <div class="form-group">
-                                    <input type="text" class="form-control mb-30" name="full-name" placeholder="Phone">
-                                </div>
-                            </div>
-                            <div class="col-lg-6">
-                                <div class="form-group">
-                                    <input type="text" class="form-control mb-30" name="email" placeholder="Organization">
+                                    <input type="text" class="form-control mb-30" name="subject" placeholder="Subject" required id="id_subject">
                                 </div>
                             </div>
                             <div class="col-12">
                                 <div class="form-group">
-                                    <textarea class="form-control mb-30" name="message" rows="8" cols="80" placeholder="Message"></textarea>
+                                    <textarea class="form-control mb-30" name="message" rows="8" cols="80" placeholder="Message"  required id="id_message"></textarea>
                                 </div>
                             </div>
                             <div class="col-12">
-                                <button class="btn btn-3 mt-15">Contact Us</button>
+                                <button class="genric-btn info-border e-large">Contact Us</button>
                             </div>
                         </div>
                     </form>
@@ -82,21 +78,21 @@
                 <div class="media contact-info">
                     <span class="contact-info__icon"><i class="ti-home"></i></span>
                     <div class="media-body">
-                        <h3>Buttonwood, California.</h3>
+                        <h3>3rd stage, Koramangala, Bangalore.</h3>
                             <p>Rosemead, CA 91770</p>
                     </div>
                 </div>
                 <div class="media contact-info">
                     <span class="contact-info__icon"><i class="ti-tablet"></i></span>
                     <div class="media-body">
-                        <h3>+1 253 565 2365</h3>
+                        <h3>+91 953 568 8928</h3>
                         <p>Mon to Fri 9am to 6pm</p>
                     </div>
                 </div>
                 <div class="media contact-info">
                     <span class="contact-info__icon"><i class="ti-email"></i></span>
                     <div class="media-body">
-                        <h3>support@colorlib.com</h3>
+                        <h3>support@agrowdev.tech</h3>
                         <p>Send us your query anytime!</p>
                     </div>
                 </div>
