@@ -8,7 +8,7 @@ from django.http import Http404
 class PortfolioListView(ListView):
     """Renders the about page."""
     template_name = 'portfolio/portfolio.html'  
-    context_object_name = 'lists'           
+    context_object_name = 'portfolios'           
     extra_context={
         'title':'Home Page',
         'year':datetime.now().year,

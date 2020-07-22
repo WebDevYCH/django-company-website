@@ -1,4 +1,62 @@
-            <div class="col-md-4">
+    <div class="col-md-4">
+        <div class="outer-div">
+        <div class="inner-div">
+            <div class="front">
+                <div class="card-container">
+                    <span class="pro">Applied {{ applicant.created_at.astimezone }}</span>
+                    <img class="round" src="{{ applicant.cover.url }}" alt="{{ applicant.fullnamename }}" />
+                    <h3>{{ applicant.fullnamename }}</h3>
+                    <h6>{{ applicant.location }}</h6>
+                    <p>{{ applicant.job.title }}</p>
+                    <div class="buttons">
+                        <button class="primary">
+                            Message
+                        </button>
+                        <button class="primary ghost">
+                            Following
+                        </button>
+                    </div>
+                    <div class="skills">
+                        <h6>Skills</h6>
+                        <ul>
+                            <li>UI / UX</li>
+                            <li>Front End Development</li>
+                            <li>HTML</li>
+                            <li>CSS</li>
+                            <li>JavaScript</li>
+                            <li>React</li>
+                            <li>Node</li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+            <div class="back">
+            <div class="social-media-wrapper">
+                {% if applicant.facebook %}
+                    <a href="{{ applicant.facebook }}" class="social-icon"><i class="fa ti-facebook"></i></a>
+                {% endif %}
+                {% if applicant.twitter %}
+                    <a href="{{ applicant.twitter }}" class="social-icon"><i class="fa ti-twitter"></i></a>
+                {% endif %}
+        
+                {% if applicant.instagram %}
+                    <a href="{{ applicant.instagram }}" class="social-icon"><i class="fa ti-instagram"></i></a>
+                {% endif %}
+                {% if applicant.github %}
+                    <a href="{{ applicant.github }}" class="social-icon"><i class="fa ti-github"></i></a>
+                {% endif %}
+                {% if applicant.linkedin %}
+                    <a href="{{ applicant.linkedin }}" class="social-icon"><i class="fa ti-linkedin"></i></a>
+                {% endif %}
+                
+                <a href="{{ applicant.get_absolute_url }}" class="genric-btn info circle float-right" ><i class="fa ti-long-arrow-right "></i>View More</a>
+                  
+            </div>
+            </div>
+        </div>
+    </div>
+    </div>
+            {% comment %} <div class="col-md-4">
                         <div class="single-team-slide">
                             <img height="350" src="{{ applicant.cover.url }}" alt="{{ applicant.fullnamename }}">
                             <!-- Overlay Effect -->
@@ -35,4 +93,4 @@
                                 
                             </div>
                         </div>
-                    </div>
+                    </div> {% endcomment %}

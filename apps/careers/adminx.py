@@ -31,8 +31,13 @@ class JobAdmin(object):
 
     # style_fields = {'body':'ueditor'}
 class JobCategoryAdmin(object):
-    list_display = ['id','name']
+    list_display = ['id','name','is_active']
     search_fields = ['name']
+    model_icon = 'fa fa-file-text'
+    
+class JobLocationAdmin(object):
+    list_display = ['id','location','is_active']
+    search_fields = ['location']
     model_icon = 'fa fa-file-text'
 
 class ApplicantDetailsAdmin(object):
@@ -47,5 +52,6 @@ class ApplicantAdmin(object):
     
 xadmin.site.register(Applicant,ApplicantAdmin)
 xadmin.site.register(JobCategory,JobCategoryAdmin)
+xadmin.site.register(JobLocation,JobLocationAdmin)
 xadmin.site.register(Job,JobAdmin)
 xadmin.site.register(ApplicantDetails,ApplicantDetailsAdmin)

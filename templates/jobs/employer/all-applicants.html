@@ -4,9 +4,10 @@
     Applicants
 {% endblock %}
 {% load static %}
-
+{% block compress_css %}
+	<link rel="stylesheet" href="{% static 'portfolio/style.css' %}"> 
+{%endblock%}
 {% block content %}
-
     <div class="services-area">
         <div class="container">
             <!-- Section-tittle -->

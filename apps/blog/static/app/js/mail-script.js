@@ -10,22 +10,20 @@
             e.preventDefault(); // prevent default form submit
 
             $.ajax({
-                url: 'mail.php', // form action url
-                type: 'POST', // form submit method get/post
-                dataType: 'html', // request type html/json/xml
-                data: form.serialize(), // serialize form data
+                url: form.attr('action'), // form action url
+                type: 'POST', // form submit method get/post// request type html/json/xml
+                data: form.serialize(),
                 beforeSend: function() {
-                    alert.fadeOut();
-                    submit.html('Sending....'); // change submit button text
+                    alert.html('Sending....'); // change submit button text
                 },
-                success: function(data) {
-                    alert.html(data).fadeIn(); // fade in response data
-                    form.trigger('reset'); // reset form
-                    submit.attr("style", "display: none !important");; // reset submit button text
+                success: function(data) {// reset form
+                    alert.html('thanks for subscribing....'); // reset submit button text
                 },
                 error: function(e) {
-                    console.log(e)
+                    var r = jQuery.parseJSON(e.responseText);
+                    alert.html(r.email+"..");
                 }
             });
+            return false;
         });
     });

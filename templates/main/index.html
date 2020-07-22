@@ -1,5 +1,6 @@
 {% extends "main/layout.html" %}
 {% load blogs_info %}
+{% load portfolio_tags %}
 {% load staticfiles %}
 {% load cache %}
 {% block meta %}
@@ -18,9 +19,16 @@
     <meta property="og:url" content="{{ SITE_BASE_URL }}"/>
     <meta property="og:site_name" content="{{ SITE_NAME }}"/>
 {% endblock %}
+{% block compress_css %}
+	<link rel="stylesheet" href="{% static 'portfolio/style.css' %}">
+{%endblock%}
+{% block script_extends %}
+<script src="{% static 'portfolio/scripts.js' %}"></script>
+{% endblock %}
 {% block content %}
-    <!-- ***** Welcome Area Start ***** -->
 
+    <!-- ***** Welcome Area Start ***** -->
+    
     <!-- Slider Area Start-->
         <div class="slider-area ">
             <div class="slider-active">
@@ -236,51 +244,40 @@
             </div>
         </div>
         <!-- Applic App End -->
-    <!-- ***** Portfolio Area Start ***** -->
-    <section class="uza-portfolio-area section-padding-80">
-        <div class="container">
-            <div class="row">
-                <!-- Section Heading -->
-                <div class="col-12">
-                    <div class="section-heading text-center">
-                        <h2>Our Portfolio</h2>
-                        <p>We stay on top of our industry by being experts in yours.</p>
+    <!-- Slider Area Start-->
+    
+    <div class="services-area">
+            <div class="container">
+                <!-- Section-tittle -->
+                <div class="row d-flex justify-content-center">
+                    <div class="col-lg-8">
+                        <div class="section-tittle text-center">
+                            <h2 class="heading">Our <span class="accent">Port</span>folio.
+                            </h2>
+                            <p style="margin-top:-79px">We stay on top of our industry by being experts in yours.</p>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
-
+    <section class="section-padding2">
         <div class="container-fluid">
             <div class="row">
-
-                <!-- Portfolio Slides -->
-                <div class="portfolio-sildes owl-carousel">
-
-                    <!-- Single Portfolio Slide -->
-                    
-                    <!-- Single Portfolio Slide -->
-                        {% for portfolio in portfolios %}
-                        <div class="single-portfolio-slide">
-                            <img alt="{{ portfolio.name }}" src="{% url 'blog:index' %}media/{{ portfolio.cover }}">
-                            <!-- Overlay Effect -->
-                            <div class="overlay-effect">
-                                <h4>{{ portfolio.title }}</h4>
-                                <p>{{ portfolio.excerpt }}</p>
-                            </div>
-                            <!-- View More -->
-                            <div class="view-more-btn">
-                                <a href="{{ portfolio.get_absolute_url }}"><i class="arrow_right"></i></a>
-                            </div>
-                        </div>
-                         {% endfor %}
-
-                </div>
-            </div>
+                    {% for portfolio in portfolios %}
+                        {% load_portfolio_card portfolio %}
+                    {% endfor %}
+            </div> <!-- / row -->
         </div>
+        <!-- Item 01 -->
+        {% for portfolio in portfolios %}
+            {% load_portfolio_modal portfolio %} <!-- / Item 02 -->
+        {% endfor %}
+        
+    </section> <!-- / projects -->
 
         
         <!-- Our Customer Start -->
-        <div class="our-customer section-padd-top30">
+        <div class="our-customer">
             <div class="container-fluid">
             <div class="our-customer-wrapper">
                     <!-- Section Tittle -->
@@ -344,9 +341,8 @@
         </div>           
         <!-- Our Customer End -->
     
-    </section>
     <!-- ***** Portfolio Area End ***** -->
-    <!-- Slider Area Start-->
+    
     {% if recent_articles %}
         <div class="services-area">
             <div class="container">
