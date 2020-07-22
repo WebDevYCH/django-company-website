@@ -420,9 +420,9 @@ REDIS_LOCATION = '%(protocol)s%(password)s@%(host)s:%(port)d' % {'protocol': red
 RQ_SHOW_ADMIN_LINK = False
 
 REDIS_DEFAULT_CACHE_LOCATION = '%(redis_location)s/%(db)d' % {'redis_location': REDIS_LOCATION, 'db': 0}
-REDIS_RQ_DEFAULT_JOBS_CACHE_LOCATION = '%(redis_location)s/%(db)d' % {'redis_location': REDIS_LOCATION, 'db': 1}
-REDIS_RQ_HIGH_JOBS_CACHE_LOCATION = '%(redis_location)s/%(db)d' % {'redis_location': REDIS_LOCATION, 'db': 2}
-REDIS_RQ_LOW_JOBS_CACHE_LOCATION = '%(redis_location)s/%(db)d' % {'redis_location': REDIS_LOCATION, 'db': 3}
+REDIS_RQ_DEFAULT_JOBS_CACHE_LOCATION = '%(redis_location)s/%(db)d' % {'redis_location': REDIS_LOCATION, 'db': 0}
+REDIS_RQ_HIGH_JOBS_CACHE_LOCATION = '%(redis_location)s/%(db)d' % {'redis_location': REDIS_LOCATION, 'db': 0}
+REDIS_RQ_LOW_JOBS_CACHE_LOCATION = '%(redis_location)s/%(db)d' % {'redis_location': REDIS_LOCATION, 'db': 0}
 
 
 CACHES = {
@@ -459,7 +459,17 @@ CACHES = {
         "KEY_PREFIX": "ob-api-rq-low-job-"
     },
 }
-
+# CACHES = {
+#     'default': {
+#         "BACKEND": "django_redis.cache.RedisCache",
+#         "LOCATION": REDIS_DEFAULT_CACHE_LOCATION,
+#         "OPTIONS": {
+#             "CLIENT_CLASS": "django_redis.client.DefaultClient"
+#         },
+#         "KEY_PREFIX": "ob-api-"
+#     }
+    
+# }
 CACHEOPS_REDIS_DB = int(os.environ.get('CACHEOPS_REDIS_DB', '1'))
 
 CACHEOPS_REDIS = '%(redis_location)s/%(db)d' % {'redis_location': REDIS_LOCATION, 'db': CACHEOPS_REDIS_DB}
