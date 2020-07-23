@@ -156,17 +156,6 @@ p {
     font-weight: normal
 }
 
-.bg-img-1 {
-    background-image: url(../img/slider/slider-img-1.jpg)
-}
-
-.bg-img-2 {
-    background-image: url(../img/background-img/bg-img-2.jpg)
-}
-
-.cta-bg-1 {
-    background-image: url(../img/background-img/bg-img-3.jpg)
-}
 
 .img {
     max-width: 100%;
@@ -3881,17 +3870,6 @@ hr {
     background-color: #222
 }
 
-.breadcam_bg {
-    background-image: url(../img/banner/bradcam.png)
-}
-
-.breadcam_bg_1 {
-    background-image: url(../img/banner/bradcam2.png)
-}
-
-.breadcam_bg_2 {
-    background-image: url(../img/banner/bradcam3.png)
-}
 
 .bradcam_area {
     background-size: cover;
