@@ -5839,10 +5839,6 @@ z .slider-area .hero-cap h2 {
     margin-bottom: 0
 }
 
-.job-form-section.job-form-section--image {
-    background: center center url("../img/jobs/meeting.jpg") no-repeat;
-    background-size: cover
-}
 .job-form-box {
     background-color: rgba(255, 255, 255, 0.8);
     padding: 40px;

@@ -396,12 +396,17 @@ MEDIA_ROOT = os.environ.get('MEDIA_ROOT', './media')
 
 MEDIA_URL = os.environ.get('MEDIA_URL', '/media/')
 
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/1.9/howto/static-files/
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
+STATIC_URL = '/static/'
+
+# Extra places for collectstatic to find static files.
 STATICFILES_DIRS = (
     os.path.join(BASE_DIR, 'static'),
 )
-
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
-
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 PROXY_URL = os.environ.get('PROXY_URL', '')
 
 REDIS_HOST = os.environ.get('REDIS_HOST', 'localhost')

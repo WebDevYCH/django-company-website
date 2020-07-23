@@ -19,4 +19,5 @@ Thumbs.db
 /data.tar.gz
 /static_collected
 /node_modules
+/staticfiles
 # </DEFAULT>
