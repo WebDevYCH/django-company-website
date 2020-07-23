@@ -470,7 +470,7 @@ CACHES = {
 #     }
     
 # }
-CACHEOPS_REDIS_DB = int(os.environ.get('CACHEOPS_REDIS_DB', '1'))
+CACHEOPS_REDIS_DB = int(os.environ.get('CACHEOPS_REDIS_DB', '0'))
 
 CACHEOPS_REDIS = '%(redis_location)s/%(db)d' % {'redis_location': REDIS_LOCATION, 'db': CACHEOPS_REDIS_DB}
 

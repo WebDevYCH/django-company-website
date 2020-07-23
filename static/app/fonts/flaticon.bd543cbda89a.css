@@ -1,0 +1,36 @@
+	/*
+  	Flaticon icon font: Flaticon
+  	Creation date: 20/02/2020 09:43
+  	*/
+
+@font-face {
+  font-family: "Flaticon";
+  src: url("./Flaticon.38fe1cd35574.eot");
+  src: url("./Flaticon.38fe1cd35574.eot?#iefix") format("embedded-opentype"),
+       url("./Flaticon.517984c7fd15.woff2") format("woff2"),
+       url("./Flaticon.4dc19277a114.woff") format("woff"),
+       url("./Flaticon.edc2230713ef.ttf") format("truetype"),
+       url("./Flaticon.8b3acefc7d58.svg#Flaticon") format("svg");
+  font-weight: normal;
+  font-style: normal;
+}
+
+@media screen and (-webkit-min-device-pixel-ratio:0) {
+  @font-face {
+    font-family: "Flaticon";
+    src: url("./Flaticon.8b3acefc7d58.svg#Flaticon") format("svg");
+  }
+}
+
+[class^="flaticon-"]:before, [class*=" flaticon-"]:before,
+[class^="flaticon-"]:after, [class*=" flaticon-"]:after {   
+  font-family: Flaticon;
+        font-size: 20px;
+font-style: normal;
+margin-left: 20px;
+}
+
+.flaticon-businessman:before { content: "\f100"; }
+.flaticon-pay:before { content: "\f101"; }
+.flaticon-plane:before { content: "\f102"; }
+.flaticon-support:before { content: "\f103"; }
