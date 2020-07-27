@@ -64,6 +64,15 @@
             </p>
             <p class="card-text">{{ article.body|custom_markdown|escape|truncate }}...</p>
             {% load_article_metas article user False %}
+            <p class='tagcloud'>
+            {% if article.type == 'a' %}
+                {% if article.tags.all %}
+                    {% for t in article.tags.all %}
+                        <a href=' {{ article.get_absolute_url }}' rel="tag" title="View all articles tagged with {{ t.name }}">{{ t.name }}</a>
+                    {% endfor %}
+                {% endif %}
+            {% endif %}
+            </p>
             <p class='read-more' style="margin-bottom:6rem;">
                 <a href='{{ article.get_absolute_url }}' class="genric-btn info-border circle arrow">Continue Reading</a>
             </p>

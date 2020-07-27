@@ -3475,10 +3475,6 @@ hr {
     color: #ff5c97
 }
 
-.single-post-area .blog-author p {
-    margin-bottom: 0;
-    font-size: 15px
-}
 
 .single-post-area .blog-author h4 {
     font-size: 16px
@@ -3490,9 +3486,6 @@ hr {
     margin-top: 55px
 }
 
-.single-post-area .navigation-area p {
-    margin-bottom: 0px
-}
 
 .single-post-area .navigation-area h4 {
     font-size: 18px;

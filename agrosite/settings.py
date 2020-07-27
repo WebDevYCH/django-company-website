@@ -118,6 +118,8 @@ INSTALLED_APPS = [
     'cacheops',
     'django_extensions',
     'django_nose',
+
+    # 'jet_django',
     # Django Elasticsearch integration
     # 'django_elasticsearch_dsl',
 
@@ -306,7 +308,7 @@ else:
     # }
     DATABASE_ROUTERS = ['django_replicated.router.ReplicationRouter']
 
-    REPLICATED_DATABASE_SLAVES = ['Reader', ]
+    REPLICATED_DATABASE_SLAVES = ['Reader',]
 
     MIDDLEWARE.append('django_replicated.middleware.ReplicationMiddleware')
 
@@ -349,7 +351,8 @@ LOGIN_URL = '/login/'
 LOCALE_PATHS = (
     os.path.join(BASE_DIR, 'locale'),
 )
-
+# JET_PROJECT = 'puneethreddy'
+# JET_TOKEN = '508899d1-c612-4ff7-8bde-02b65d9c1b0f'
 
 LIKES_MODELS = {
     "blog.Article": {

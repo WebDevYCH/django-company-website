@@ -9,6 +9,15 @@
      </ul>
       <p class="excert  ">
         {{ article.body|custom_markdown }}
+        <p class='tagcloud'>
+            {% if article.type == 'a' %}
+                {% if article.tags.all %}
+                    {% for t in article.tags.all %}
+                        <a href=' {{ article.get_absolute_url }}' rel="tag" title="View all articles tagged with {{ t.name }}">{{ t.name }}</a>
+                    {% endfor %}
+                {% endif %}
+            {% endif %}
+            </p>
       </p>
    </div>
 </div>
