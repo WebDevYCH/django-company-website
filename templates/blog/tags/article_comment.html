@@ -21,27 +21,27 @@
                             </div>
                             {% endifequal %}
                             <!-- Comment Meta -->
-                            <div class="desc page-container" id="comment_{{ comment.pk }}">
+                            <div class="desc" id="comment_{{ comment.pk }}">
                                 {% ifequal reply.user.username 'reborn' %}
                                 <h5>Blogger</h5>
                                 {% else %}
                                 <h5>{{ comment.user.username }}</h5>
                                 {% endifequal %}
-                                <p class="date">{{ comment.comment_time| timesince}} ago </p>
-                                
-                                <div class="d-flex justify-content-between">
-                                 <div class="d-flex align-items-center">
-                                    
-                                    <p class="comment">{{ comment.text|safe }}</p>
-                                
-                                 </div>
-                                 <div class="reply-btn">
-                                    <a href="#" class="btn-reply text-uppercase">like</a>
-                                 </div>
-                                 <div class="reply-btn">
-                                    <a href="javascript:reply({{ comment.pk }})" class="btn-reply text-uppercase">reply</a>
-                                 </div>
-                              </div>
+                                <div class="">
+                                    <p id="comment_{{ comment.pk }}" class="comment">{{ comment.text|safe }}</p>
+                                </div>
+                                        <div class="d-flex justify-content-between">
+                                            <div class="d-flex align-items-center">
+                                                <p class="date">{{ comment.comment_time| timesince}} ago </p>
+                                            </div>
+                                            <div class="reply-btn">
+                                                <a href="#" class="btn-reply text-uppercase">like</a>
+                                            </div>
+                                            <div class="reply-btn">
+                                                <a href="javascript:reply({{ reply.pk }})" class="btn-reply text-uppercase">reply</a>
+                                            </div>
+                                        </div>
+                                   
                             </div>
                         </div>
                         {% if reply.user.username is  null %}
@@ -61,7 +61,7 @@
                                     </div>
                                     {% endifequal %}
                                     <!-- Comment Meta -->
-                                    <div class="desc page-container" id="comment_{{ reply.pk }}">
+                                    <div class="desc" id="comment_{{ reply.pk }}">
                                         {% ifequal reply.user.username 'reborn' %}
                                         <h5>Blogger</h5>
                                         {% else %}

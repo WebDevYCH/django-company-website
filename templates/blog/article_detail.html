@@ -265,13 +265,10 @@
         <div class="container">
             <div class="row d-flex justify-content-center">
                 <div class="col-lg-8">
-                    <div class="job-page-tittle text-center mb-80">
+                    <div class="job-page-tittle text-center">
                         <h2 class="heading">{{article.title}}
                         </h2>
                     </div>
-                </div>
-                <div class="col-lg-4 blog_right_sidebar">
-                    {% include 'blog/tags/search.html' %}
                 </div>
             </div>
         </div>
@@ -280,8 +277,11 @@
     <section class="blog_area single-post-area">
         <div class="container">
             <div class="row ">
+                <div class="col-lg-2">
+                    
+                </div>
                 <div class="col-lg-8 posts-list">
-                    <div class="page-container">
+                    <div class="">
                         {% load_article_detail_info article True user %}
                     </div>
                     <div class="navigation-top">
@@ -381,17 +381,243 @@
                 </div>
                     
                 </div>
-                <div class="col-lg-4">
-                    <div class="blog_right_sidebar">
-                            {% block sidebar %}
-                                {% with request.user.username as cachekey %}
-                                    {% cache 36000 asidebar cachekey %}
-                                        {% load_sidebar user linktype %}
-                                    {% endcache %}
-                                {% endwith %}
-                            {% endblock %}
-                        </div>
-                    </div>
+                <div class="col-lg-2">
+                    <div class="blog-right" style="">
+            <div class="blog-search">
+                <input type="text" class="text" placeholder="Search" onkeypress="return onKeyPress(event)">
+                <button class="iconfont icon_search" id="blog-search-submit"></button>
+            </div>
+            <div class="blog-subscribe">
+    <span>Subscribe to our blog</span>
+    <p>To get the latest and most quality design resources!</p>
+    <div class="subscribe">
+        <input type="text" class="text" placeholder="Email address" id="subscribe-email">
+        <button id="subscribe">Sign me up</button>
+    </div>
+    <div class="subscribe-success">
+        <p>Thank you for your support!</p>
+        <div class="share-subscribe">
+            Also share on :
+            <img src="/enUS/images/Blog_3.png" id="twitter" data-src="/enUS/images/Blog_3.png" alt="">
+            <img src="/enUS/images/Blog_4.png" id="facebook" data-src="/enUS/images/Blog_4.png" alt="">
+            <img src="/enUS/images/Blog_5.png" id="ins" data-src="/enUS/images/Blog_5.png" alt="">
+        </div>
+    </div>
+</div>
+<div class="blog-article-sort">
+    <div class="selbox">
+        <span id="scale">Category</span>
+        <i class="iconfont icon_down_arrow"></i>
+    </div>
+    <div class="menu-list" style="display: none;">
+        <ul>
+            
+                <li class="scale-item"><a href="/blog/category/inside-mockplus">Inside Mockplus</a></li>
+            
+                <li class="scale-item"><a href="/blog/category/ui-design">UI design</a></li>
+            
+                <li class="scale-item"><a href="/blog/category/ux-design">UX design</a></li>
+            
+                <li class="scale-item"><a href="/blog/category/design-and-prototyping-tools">Design and Prototyping tools</a></li>
+            
+                <li class="scale-item"><a href="/blog/category/web-design">Web design</a></li>
+            
+                <li class="scale-item"><a href="/blog/category/mobile-design">Mobile design</a></li>
+            
+                <li class="scale-item"><a href="/blog/category/interaction-design">Interaction design</a></li>
+            
+                <li class="scale-item"><a href="/blog/category/product-design">Product design</a></li>
+            
+                <li class="scale-item"><a href="/blog/category/news-and-events-of-ux-design">News and Events of UX design</a></li>
+            
+                <li class="scale-item"><a href="/blog/category/ux-design-guest-post">UX design guest post</a></li>
+            
+        </ul>
+    </div>
+</div>
+
+<div class="blog-recommend-article">
+    <h5>POPULAR POST</h5>
+    <div class="list">
+        <a href="https://www.mockplus.com/blog/post/free-quick-wireframe-tools" target="_blank">
+            <div class="pic" style="background-image: url('https://file.mockplus.com/image/2017/08/d867f0bb-28e8-4d53-bc32-a5551d24b3a2.jpg')"></div>
+            <span>6 Free Quick Wireframe Tools For UI/UX Designers in 2019</span>
+        </a>
+        <a href="https://www.mockplus.com/blog/post/website-mockup-tools" target="_blank">
+            <div class="pic" style="background-image: url('https://file.mockplus.com/image/2018/09/c06edb9b-818a-4a8a-a446-1c0635c2e6e0.png')"></div>
+            <span>Top 6 Free Website Mockup Tools for Your Next Design Project</span>
+        </a>
+        <a href="https://www.mockplus.com/blog/post/login-page-examples" target="_blank">
+            <div class="pic" style="background-image: url('https://file.mockplus.com/image/2019/05/602ba7d7-2716-485a-bd30-a36a3402fc94.png')"></div>
+            <span>20 Best Login Page Examples and Responsive Templates [FREE DOWNLOAD]</span>
+        </a>
+        <a href="https://www.mockplus.com/blog/post/free-online-portfolio-websites" target="_blank">
+            <div class="pic" style="background-image: url('https://file.mockplus.com/image/2018/02/309f2cd3-1826-4389-a4f9-b6a8db5d3325.png')"></div>
+            <span>Top 22 Free Online Portfolio Websites to Create Perfect UX/UI Design Portfolios</span>
+        </a>
+        <a href="https://www.mockplus.com/blog/post/android-ui-design-tool" target="_blank">
+            <div class="pic" style="background-image: url('https://file.mockplus.com/image/2018/03/2f4f3d75-73ba-4707-b079-1f629dac5441.jpeg')"></div>
+            <span>Top 15 Android UI Design Tools That Designers Should Not Miss</span>
+        </a>
+        <a href="https://www.mockplus.com/blog/post/dashboard-design" target="_blank">
+            <div class="pic" style="background-image: url('https://file.mockplus.com/image/2018/12/419fbaa6-0d95-4baf-9334-3a33aecb4ae9.png')"></div>
+            <span>Top 22 Free Dashboard Design Examples, Templates &amp; UI Kits for You</span>
+        </a>
+    </div>
+</div>
+<div class="blog-recommend-flex">
+    <div class="warp">
+        <div class="con">
+            <div class="blog-recommend-more">
+                <span>MOCKPLUS CLASSIC</span>
+                <p>Best Prototyping Tool for Mobile, Web and Desktop Apps.</p>
+                <a href="/download/mockplus-rp" target="_blank" onclick="ga('send', 'event', 'sideblog-rp', 'click', 'blog banner', 1);">Get Started for Free</a>
+            </div>
+            <div class="blog-recommend-more">
+                <span>MOCKPLUS CLOUD</span>
+                <p>Handoff Designs with Accurate Specs, Assets, Code Snippets Automatically.</p>
+                <a target="_blank" href="/mockplus-idoc" onclick="ga('send', 'event', 'sideblog-idoc', 'click', 'blog banner', 1);">Get Started for Free</a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="blog-recommend-article blog-recommend-article2">
+    <h5>Start prototyping and collaboration</h5>
+    <div class="list">
+        <a href="https://help.mockplus.com/p/318" target="_blank">
+            <div class="pic" style="background-image: url('/images/tutorial_1.png')"></div>
+            <span>Learn design and collaboration in 3 minutes</span>
+        </a>
+        <a href="https://help.mockplus.com/p/209" target="_blank">
+            <div class="pic" style="background-image: url('/images/tutorial_2.png')"></div>
+            <span>Get the basics to start prototyping Web and Apps</span>
+        </a>
+    </div>
+</div>
+
+<script>
+  // 搜索
+  function blogSearch() {
+    var region = 'blog';
+    var keyword = $('.blog-search .text').val().trim();
+    if (!keyword) {
+    	showMessage('Search query cannot be empty!');
+      return;
+    }
+    window.location.href = '/' + region + '/search?q=' + keyword + '&page=1';
+  }
+
+  function onKeyPress(e) {
+    var keyCode = null;
+    if (e.which) {
+      keyCode = e.which;
+    } else if (e.keyCode) {
+      keyCode = e.keyCode;
+    }
+    if (keyCode === 13) {
+      blogSearch();
+      return false;
+    }
+    return true;
+  }
+
+  $('#blog-search-submit').click(function () {
+    blogSearch();
+  });
+  // 订阅
+  $('#subscribe').click(function () {
+    var email = $('#subscribe-email').val().trim();
+    if (!email) {
+      showMessage('Please input your email address.');
+      return
+    }
+    $.post('/blog/subscribe', {
+      email: email
+    }, function (res) {
+      if (res.code !== 0) {
+        showMessage(res.message);
+        return;
+      }
+      $('.subscribe-success').show();
+      $('.subscribe').hide();
+    })
+  });
+  var URL = 'https://www.mockplus.com/blog';
+  var title = 'A selection of the best product design and UX/UI design resources | Mockplus Blog';
+  var image = 'https://www.mockplus.com/images/Mockplus_share.png';
+
+  $('#twitter').click(function () {
+    var url = 'https://twitter.com/intent/tweet?text=' + encodeURIComponent(title.split('|')[0]) + ' @Mockplus&related=Mockplus&url=' + URL;
+    window.open(url, '_blank');
+  });
+
+  $('#facebook').click(function () {
+    var url = 'http://www.facebook.com/sharer.php?u=' + URL + '&t=' + title;
+    window.open(url, '_blank');
+  });
+
+  $('#ins').click(function () {
+    var url = 'https://www.linkedin.com/shareArticle?mini=true&url=' + URL;
+    window.open(url, '_blank');
+  });
+
+  $('.close-dlg').click(function () {
+    $('.dlg').hide();
+  });
+
+  $(function () {
+    // 右侧mockplus、idoc分类跟随
+    var recommendFlex = $('.blog-recommend-flex');
+    var blogRight = $('.blog-right');
+
+    function controlFlex() {
+      var height = blogRight.height();
+      var scrollTop = blogRight.offset().top;
+      var scroll = $(window).scrollTop();
+      var leftHeight = $('.blog-left').height();
+      if (height + scrollTop < scroll) {
+        recommendFlex.addClass('flex');
+        if (scroll > leftHeight - 375) {
+          recommendFlex.removeClass('flex');
+        }
+      } else {
+        recommendFlex.removeClass('flex');
+      }
+    }
+
+    $(window).scroll(function () {
+      controlFlex();
+    });
+    $(window).resize(function () {
+      controlFlex();
+    });
+  })
+</script>
+<script>
+	$('.selbox').click(function (e) {
+		if ($('.menu-list').css('display') === 'none') {
+			$('.menu-list').show();
+		} else {
+			$('.menu-list').hide();
+		}
+		e.stopPropagation();
+	})
+
+	$('.scale-item').click(function () {
+		var people = $(this).text();
+		$('#scale').text(people);
+		$('#scale').css('color','#353030');
+		$('.menu-list').hide();
+	})
+
+	$('body').click(function () {
+		$('.menu-list').hide();
+	})
+</script>
+
+        </div>
+                </div>
             </div>
         </div>
     </section>
@@ -429,13 +655,13 @@
         
         
         $('.share-facebook').on('click', function(){
-            window.open("https://www.facebook.com/sharer/sharer.php?u=https://{{ request.get_host }}{{ article.get_absolute_url }}/", "");
+            window.open("https://www.facebook.com/sharer/sharer.php?u=https://{{ request.get_host }}{{ article.get_absolute_url }}", "");
         });
         $('.share-linkedin').on('click', function(){
-            window.open("https://www.linkedin.com/sharing/share-offsite/?url=https://{{ request.get_host }}{{ article.get_absolute_url }}/", "");
+            window.open("https://www.linkedin.com/sharing/share-offsite/?url=https://{{ request.get_host }}{{ article.get_absolute_url }}", "");
         });
         $('.share-twitter').on('click', function(){
-            window.open("https://twitter.com/share?text={{ article.title }}&url=https://{{ request.get_host }}/{{ article.get_absolute_url }}/", "");
+            window.open("https://twitter.com/share?text={{ article.title }}&url=https://{{ request.get_host }}/{{ article.get_absolute_url }}", "");
         });
         $('.share-email').on('click', function(){
             window.open("https://mail.google.com/mail/?view=cm&fs=1&tf=1&to=&su={{ article.title }}&body=+https:\/\/{{ request.get_host }}{{ article.get_absolute_url }}\/+&ui=2&tf=1&pli=1");

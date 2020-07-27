@@ -13,15 +13,7 @@
                 <span itemprop="name" itemprop="publisher">{{ article.author.username }}</a>, <span>{{article.pub_time|date:'M'}} {{article.pub_time|date:'d'}}, {{article.pub_time|date:'Y'}}</span></h3>
 				</div>
 			</div>
-            <p class='tagcloud'>
-            {% if article.type == 'a' %}
-                {% if article.tags.all %}
-                    {% for t in article.tags.all %}
-                        <a href=' {{ article.get_absolute_url }}' rel="tag" title="View all articles tagged with {{ t.name }}">{{ t.name }}</a>
-                    {% endfor %}
-                {% endif %}
-            {% endif %}
-            </p>
+            
         <!-- .entry-meta -->
     {% endcache %}
 {% endwith %}

@@ -37,16 +37,17 @@
     <meta name="twitter:domain" content="www.agrowdev.com">
 {% endblock %}
 {% block compress_css %}
-    <link rel="stylesheet" href="{% static 'careers/careers.css' %}">
+    <link rel="stylesheet" href="{% static 'careers/styles.css' %}">
+    <link rel="stylesheet" href="{% static 'careers/styles.css' %}">
 {% endblock %}
 {% block content %}
 
-    <section class="job_details_area mt-5 ">
+    <section class="job_details_area">
         <div class="container">
             <div class="row">
                 <div class="col-lg-8">
                 
-                  <div class="job_details_header mb-5">
+                  <div class="job_details_header mt-5 mb-5">
                         {% load_jobs_baseinfo job user True %}
                     </div>
                     {% load_job_detail_info job request.user %}
