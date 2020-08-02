@@ -30,6 +30,7 @@ urlpatterns = [
     # add your own patterns here
     path('admin/', xadmin.site.urls, name="admin"),
     path('mdeditor/', include('mdeditor.urls')),
+    path('cookies/', include('cookie_consent.urls')),
     path('', include('notice.urls')),
     path('', include('myzone.urls')),
     path('', include('home.urls')),

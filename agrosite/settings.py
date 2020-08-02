@@ -118,7 +118,7 @@ INSTALLED_APPS = [
     'cacheops',
     'django_extensions',
     'django_nose',
-
+    'cookie_consent',
     # 'jet_django',
     # Django Elasticsearch integration
     # 'django_elasticsearch_dsl',
@@ -131,7 +131,7 @@ DEBUG = environment_checker.is_debug()
 IS_PRODUCTION = environment_checker.is_production()
 IS_BUILD = environment_checker.is_build()
 TESTING = len(sys.argv) > 1 and sys.argv[1] == 'test'
-
+COOKIE_CONSENT_LOG_ENABLED = False
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS')
 if IS_PRODUCTION:
     if not ALLOWED_HOSTS:
@@ -308,7 +308,7 @@ else:
     # }
     DATABASE_ROUTERS = ['django_replicated.router.ReplicationRouter']
 
-    REPLICATED_DATABASE_SLAVES = ['Reader',]
+    REPLICATED_DATABASE_SLAVES = ['Reader','slave']
 
     MIDDLEWARE.append('django_replicated.middleware.ReplicationMiddleware')
 
@@ -537,6 +537,10 @@ else:
         '--with-spec', '--spec-color',
         '--with-coverage', '--cover-html',
         '--cover-html-dir=reports/cover', '--verbosity=1', '--nologcapture', '--nocapture']
+
+COOKIE_CONSENT_NAME = "cookie_consent"
+COOKIE_CONSENT_MAX_AGE = 60 * 60 * 24 * 365 * 1  # 1 year
+COOKIE_CONSENT_LOG_ENABLED = True
 FAILED_JOB_THRESHOLD = 20
 ACTIVE_JOB_THRESHOLD = 50
 ACTIVE_WORKER_THRESHOLD = 5

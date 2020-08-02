@@ -19,7 +19,7 @@
 {% endblock %}
 {% block compress_css %}
 	<link rel="stylesheet" href="{% static 'portfolio/style.css' %}"> 
-    
+    <link rel="stylesheet" href="{% static 'portfolio/base.css' %}"> 
 {%endblock%}
 {% block content %}
 
@@ -42,19 +42,22 @@
 
         <div class="container-fluid">
             <div class="row">
-                
+
                         {% for portfolio in portfolios %}
                             {% load_portfolio_card portfolio %}
                         {% endfor %}
+                    
                  <!-- / row -->
             </div>
-	</div>
-
+	    </div>
+        
 <!-- Modal -->
 {% for portfolio in portfolios %}
     {% load_portfolio_modal portfolio %}
 {% endfor%}
 {% endblock %}
 {% block script_extends %}
+<script src="{% static 'portfolio/TweenMax.min.js' %}"></script>
 <script src="{% static 'portfolio/scripts.js' %}"></script>
+<script src="{% static 'portfolio/demo.js' %}"></script>
 {% endblock %}

@@ -16,5 +16,8 @@ jQuery(document).ready(function($) {
     secondImage.css('background-image', 'url(' + getImage2 + ')');
   }
 
+  
+  
+
 });
 
