@@ -21,9 +21,12 @@
 {% endblock %}
 {% block compress_css %}
 	<link rel="stylesheet" href="{% static 'portfolio/style.css' %}">
+    <link rel="stylesheet" href="{% static 'portfolio/base.css' %}"> 
 {%endblock%}
 {% block script_extends %}
 <script src="{% static 'portfolio/scripts.js' %}"></script>
+<script src="{% static 'portfolio/TweenMax.min.js' %}"></script>
+<script src="{% static 'portfolio/demo.js' %}"></script>
 {% endblock %}
 {% block content %}
 

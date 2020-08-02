@@ -1,5 +1,5 @@
-
-<div class="popup" id="portfolio{{portfolio.id}}">
+{% load static %}
+{% comment %} <div class="popup" id="portfolio{{portfolio.id}}">
     <div class="popup-inner">
       <div class="popup__text">
         <h1>{{portfolio.title}}</h1>
@@ -7,4 +7,20 @@
       </div>
       <a class="popup__close" href="#">X</a>
     </div>
-  </div>
+  </div> {% endcomment %}
+
+  <div class="portfolio_overlay">
+				<div class="portfolio_overlay__reveal"></div>
+				<div class="portfolio_overlay__item" id="portfolio{{portfolio.id}}">
+					<div class="box">
+						<div class="box__shadow"></div>
+						<img class="box__img box__img--original" src="{{portfolio.cover.url}}" alt="{{portfolio.title}}"/>
+						<h3 class="box__title"><span class="box__title-inner">{{portfolio.title}}</span></h3>
+						<h4 class="box__text"><span class="box__text-inner">{{portfolio.title}}</span></h4>
+						<div class="box__deco">&#10014;</div>
+					</div>
+					<p class="portfolio_overlay__content">{{portfolio.about}}</p>
+				</div>
+				
+				<button class="portfolio_overlay__close"><img class="icon icon--cross" src="{% static 'app/img/close.svg' %}"></button>
+		</div>

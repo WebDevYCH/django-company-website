@@ -22,7 +22,7 @@ from django.utils.html import escape
 from django.utils.translation import pgettext_lazy, ugettext_lazy as _
 from django.utils.safestring import mark_safe
 from django.contrib import admin
-
+import xadmin
 action_names = {
     ADDITION: pgettext_lazy('logentry_admin:action_type', 'Addition'),
     DELETION: pgettext_lazy('logentry_admin:action_type', 'Deletion'),
@@ -30,7 +30,7 @@ action_names = {
 }
 
 
-class LogEntryAdmin(admin.ModelAdmin):
+class LogEntryAdmin(object):
     date_hierarchy = 'action_time'
 
     readonly_fields = ([f.name for f in LogEntry._meta.fields] +
@@ -79,7 +79,7 @@ class LogEntryAdmin(admin.ModelAdmin):
     ]
 
     def has_add_permission(self, request):
-        return False
+        return True
 
     def has_change_permission(self, request, obj=None):
         return (
@@ -147,3 +147,5 @@ class LogEntryAdmin(admin.ModelAdmin):
         return obj.get_change_message()
 
     get_change_message.short_description = _('change message')
+
+xadmin.site.register(LogEntry,LogEntryAdmin)

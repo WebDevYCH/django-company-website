@@ -1,7 +1,9 @@
 ﻿{% load staticfiles %}
 {% load notifications_tags %}
 {% load cache %}
+{% load cookie_consent_tags %}
 {% load compress %}
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -39,7 +41,67 @@
         <link rel="stylesheet" href="{% static 'app/css/style.css' %}">
         {% block compress_css %}{% endblock %}
     {% comment %} {% endcompress %} {% endcomment %}
-    
+    <style>
+#cookie-law-info-bar {
+    /* border: 0; */
+    font-size: 10pt;
+    margin: 0 auto;
+    padding: 13px 10px;
+    position: absolute;
+    text-align: center;
+    box-sizing: border-box;
+    width: 100%;
+    z-index: 9999;
+    box-shadow: rgba(0,0,0,.5) 0px 5px 50px;
+    display: none;
+    left: 0px;
+}
+#cookie-law-info-bar {
+    width: 100% !important;
+    padding: 1rem !important;
+    font-weight: 300;
+}
+#cookie-law-info-bar span {
+    vertical-align: middle;
+}
+#cookie-law-info-bar span a {
+    color: blue;
+    text-decoration-line: underline;
+}
+.small.cli-plugin-button, .small.cli-plugin-button:visited {
+    font-size: 11px;
+}
+.cli-plugin-button {
+    margin-top: 5px;
+}
+.cli-plugin-button, .cli-plugin-button:visited, .medium.cli-plugin-button, .medium.cli-plugin-button:visited {
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1;
+}
+.cli-plugin-button, .cli-plugin-button:visited {
+    display: inline-block;
+    padding: 10px 16px 10px;
+    color: #fff;
+    text-decoration: none;
+    position: relative;
+    cursor: pointer;
+    margin-left: 0px;
+    text-decoration: none;
+}
+    body .with-cookie-bar {
+        padding-top: 35px;
+      }
+      .cookie-bar {
+        position: fixed;
+        width: 100%;
+        top:0;
+        text-align:center;
+        height:25px;
+        line-height: 25px;
+        background: #eee;
+      }
+    </style>
 </head>
 
 <body>
@@ -53,9 +115,53 @@
     {% block content %}{% endblock %}
     
     {% include 'main/connectus.html' %}
+    <h1>Test page</h1>
+
+    <h2>
+      Social cookies
+    </h2>
+    <p>
+      sharing button is displayed below only if "Social" cookies are accepted.
+    </p>
+    <div class="share-gplus"><g:plusone size="small" count="false"></g:plusone></div>
+
+    <h2>Optional cookies</h2>
+    {% if request|cookie_group_accepted:"optional" %}
+      <p>
+        "optional" cookies accepted
+      </p>
+    {% elif request|cookie_group_declined:"optional" %}
+      <p>
+        "optional" cookies declined
+      </p>
+    {% else %}
+      <p>
+        "optional" cookies not accepted or declined
+      </p>
+    {% endif %}
+
+    {# not existing cookie group #}
+    {% if request|cookie_group_accepted:"foo=*:.foo.com" %}
+      <p>
+        None existing cookies
+      </p>
+    {% endif %}
+
+    <p>
+      <a href="{% url "cookie_consent_cookie_group_list" %}">Cookies policy</a>
+    </p>
     
 </main>
+
 <div id="colorlib-main">
+    <div id="cookie-law-info-bar" style="background-color: rgb(152, 152, 152); color: rgb(255, 255, 255); font-family: inherit; bottom: 0px; position: fixed; display: block;">
+        <span>Codrops uses cookies for its advertisement solutions and for analytics. We hope you're ok with this, but you can opt-out if you wish. Read our 
+            <a href="https://www.iubenda.com/privacy-policy/92067710">Privacy Policy</a> 
+            and 
+            <a href="https://www.iubenda.com/privacy-policy/92067710/cookie-policy">Cookie Policy</a>. 
+            <a role="button" tabindex="0" data-cli_action="accept" id="cookie_action_close_header" class="small cli-plugin-button cli-plugin-main-button cookie_action_close_header cli_action_button" style="display: inline-block; color: rgb(255, 255, 255); background-color: rgb(0, 153, 204);">OK</a>
+        </span>
+    </div>
     {% include 'main/footer.html' %}
 </div>
 {% comment %} {% compress js %} {% endcomment %}
@@ -112,7 +218,56 @@
     </script>
     <noscript><img src="https://beacon.ticksel.com/beam?account_id=4259220&referrer=&tags=" style="border:0;" width="0" height="0" alt="" /></noscript>
 <!-- End Ticksel Code -->
-    
+    <script type="text/javascript" src="{% static 'cookie_consent/cookiebar.js' %}"></script>
+
+    <script type="{% js_type_for_cookie_consent request 'social' '*:.google.com' %}" data-varname="social">
+      (function() {
+        var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+        po.src = 'https://apis.google.com/js/plusone.js';
+        var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+      })();
+    </script>
+
+
+    {% if request|cookie_consent_enabled %}
+      {% not_accepted_or_declined_cookie_groups request as cookie_groups %}
+
+      {% if cookie_groups %}
+        {% url "cookie_consent_cookie_group_list" as url_cookies %}
+        {% cookie_consent_accept_url cookie_groups as url_accept %}
+        {% cookie_consent_decline_url cookie_groups as url_decline %}
+        <script type="text/javascript">
+          var cookie_groups = [];
+          {% for cookie_group in cookie_groups %}
+            cookie_groups.push("{{ cookie_group.varname }}");
+          {% endfor %}
+
+          function ready(fn) {
+	          if (document.readyState != 'loading') {
+	            fn();
+	          } else if (document.addEventListener) {
+	            document.addEventListener('DOMContentLoaded', fn);
+	          } else {
+	            document.attachEvent('onreadystatechange', function() {
+		          if (document.readyState != 'loading')
+		            fn();
+	            });
+	          }
+          }
+
+          ready(function() {
+	          showCookieBar({
+              content: "{% filter escapejs %}{% with cookie_groups=cookie_groups|join:", " %}<div class="cookie-bar">This site uses {{ cookie_groups }} cookies for better performance and user experience. Do you agree to use cookies? <a href="{{ url_accept }}" class="cc-cookie-accept">Accept</a> <a href="{{ url_decline }}" class="cc-cookie-decline">Decline</a> <a href="{{ url_cookies }}">Cookies info</a></div>{% endwith %}{% endfilter %}",
+              cookie_groups: cookie_groups,
+              cookie_decline: "{% get_decline_cookie_groups_cookie_string request cookie_groups %}",
+              beforeDeclined: function() {
+                document.cookie = "{% get_decline_cookie_groups_cookie_string request cookie_groups %}";
+              }
+            });
+          });
+        </script>
+      {% endif %}
+    {% endif %}
     {% block script_extends %}{% endblock %}
 {% comment %} {% endcompress %} {% endcomment %}
 {% block scripts %}

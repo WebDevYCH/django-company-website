@@ -1,0 +1,253 @@
+.ad-container {
+	display: flex;
+	justify-content: space-around;
+	align-items: flex-start;
+  
+  }
+.pater {
+	position: fixed;
+    right: 2em;
+    top: 10.5em;
+    max-width: 200px;
+    pointer-events: none;
+    color: #000;
+    z-index: 10000;
+}
+
+.pater::before {
+	content: 'Our Sponsor';
+  	position: relative;
+	bottom: calc(100% + 0.75em);
+	left: 0;
+	font-size: 0.65em;
+	color: #a09897;
+}
+
+.pater__img {
+	max-width: 100%;
+	pointer-events: auto;
+	display: block;
+	filter:  contrast(70%);
+	transition: filter 0.3s;
+}
+
+.pater:hover .pater__img {
+	filter: contrast(100%);
+}
+
+.pater__title {
+	font-size: 0.975em;
+	font-weight: 500;
+	margin: 0;
+	padding: 0.5em 0;
+	pointer-events: auto;
+	transition: transform 0.3s, opacity 0.3s;
+}
+
+.pater__desc {
+	font-size: 0.85em;
+	margin: 0;
+	line-height: 1.5;
+	pointer-events: none;
+	opacity: 0;
+	transform: translate3d(0,10px,0);
+	transition: transform 0.3s, opacity 0.3s;
+}
+
+.pater__desc strong {
+	display: block;
+	margin: 0.5em 0 0 0;
+}
+
+@media screen and (min-width: 60em) {
+	.pater:hover .pater__title {
+		opacity: 0;
+		transform: translate3d(-100%,0,0);
+	}
+	.pater:hover .pater__desc {
+		pointer-events: auto;
+		opacity: 1;
+		transform: translate3d(0,-3.25em,0);
+	}
+	
+}
+
+@media screen and (max-width: 60em) {
+	.pater {
+		position: fixed;
+		top: auto;
+		bottom: 0;
+		left: 0;
+		display: flex;
+		align-items: center;
+		width: 100%;
+		max-width: none;
+		padding: 0.5em;
+		text-align: left;
+		pointer-events: auto;
+		color: #fff !important;
+		background: rgba(0, 0, 0, 0.9);
+		z-index: 10000;
+	}
+	.pater::before {
+		display: none;
+	}
+	.pater__img {
+		flex: none;
+		width: 50px;
+		margin: 0;
+	}
+	.pater__title {
+		font-size: 0.85em;
+		font-weight: bold;
+		padding: 0 0 0 1.5em;
+		color: #fff;
+	}
+	.pater__desc {
+		display: none;
+	}
+}
+.banner {
+	position: fixed;
+	bottom: 0;
+	left: 0;
+	background: #000;
+	color: #fff;
+	width: 100%;
+	padding: 0.5em 0.5em 0 0.5em;
+	display: flex;
+	align-items: center;
+	justify-items: center;
+	justify-content: space-between;
+	text-align: center;
+	font-size: 0.85em;
+	z-index: 10000;
+	font-family: "Avenir Next", "Avenir", Arial, sans-serif;
+}
+
+.banner:hover,
+.banner:focus {
+	color: #fff;
+}
+
+.banner__sponsor {
+	vertical-align: middle;
+}
+
+.banner__sponsor span {
+	font-size: 0.65em;
+	letter-spacing: 3px;
+	margin-left: 0.5em;
+	text-transform: uppercase;
+	font-weight: bold;
+
+}
+
+.banner__logo {
+	max-height: 1.5em;
+	vertical-align: middle;
+}
+
+.banner__title {
+	margin: 0;
+	text-transform: uppercase;
+	letter-spacing: 1px;
+	display: flex;
+	flex-direction: column;
+}
+
+.banner__title span:first-child {
+	font-size: 0.85em;
+	display: block;
+	line-height: 1;
+	color: #fff;
+
+}
+
+.banner__title span:nth-child(2) {
+	letter-spacing: 2px;
+	font-size: 0.5em;
+	display: none;
+}
+
+.banner__description {
+	margin: 0;
+	display: none;
+}
+
+.banner__img {
+	max-height: 65px;
+}
+
+@media screen and (min-width: 55em) {
+	.banner {
+		left: 0;
+		bottom: 86px;
+		width: 260px;
+		display: grid;
+		padding: 1.5em 1.5em 0 1.5em;
+		grid-template-columns: 65% 35%;
+		grid-template-rows: 1em 9em;
+		font-size: 1em;
+		border-radius: 12px 12px 0 0;
+		background: #130629;
+		text-align: left;
+	}
+	.banner__sponsor {
+		width: 100%;
+		grid-area: 1 / 1 / 2 / 3;
+	}
+	.banner__logo {
+		padding: 0 0 0 0.45em;
+	}
+	.banner__img {
+		max-height: none;
+		max-width: 100%;
+		grid-area: 2 / 2 / 3 / 3;
+		align-self: end;
+		transition: transform 0.3s, opacity 0.3s;
+		transition-timing-function: ease-in-out;
+		transform-origin: 100% 100%;
+	}
+	.banner:hover .banner__img {
+		opacity: 0.7;
+		transform: scale3d(1.1,1.1,1);
+	}
+	.banner__title,
+	.banner__description {
+		grid-area: 2 / 1 / 3 / 2;
+		align-self: end;
+		padding: 0 0 1em 0.25em;
+		transition: transform 0.3s, opacity 0.3s;
+		transition-timing-function: ease-in-out;
+		color: #fff;
+	}
+	.banner:hover .banner__title {
+		opacity: 0;
+		transform: translate3d(0,-20px,0);
+	}
+	.banner__description {
+		display: block;
+		font-weight: 500;
+		text-transform: uppercase;
+		font-size: 0.85em;
+		letter-spacing: 1px;
+		line-height: normal;
+		padding-right: 1.25em;
+		opacity: 0;
+		transform: translate3d(0,20px,0);
+	}
+	.banner:hover .banner__description {
+		opacity: 1;
+		transform: translate3d(0,0,0);
+	}
+	.banner__title span:first-child {
+		margin: 0 0 0.25em;
+		font-size: 0.6em;
+    	font-weight: 700;
+	}
+	.banner__title span:nth-child(2) {
+		display: block;
+		font-size: 0.32em;
+	}
+}
