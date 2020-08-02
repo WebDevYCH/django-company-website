@@ -308,6 +308,27 @@ def get_comment_count(article):
     content_type = ContentType.objects.get_for_model(article)
     return Comment.objects.filter(content_type=content_type,object_id=article.id).count()
 
+@register.simple_tag
+def load_related_articles(article, user, slug, tags):
+    """
+    Load article details
+    : param article:
+    : param isindex: Whether the list page, if the list page only displays the summary
+    :return:
+    """
+    from itertools import chain
+    category = get_object_or_404(Category, slug=slug)
+    categoryname = article.category.name
+    categoryname = categoryname
+    categorynames = list(map(lambda c: c.name, category.get_sub_categorys()))
+    category_list = Article.objects.filter(category__name__in=categorynames, status='p', is_removed=False)
+    print(category_list)
+    for tag in tags:
+        tags_list = Article.objects.filter(tags__name=tag, type='a', status='p', is_removed=False)
+    result = list(set(chain(category_list,tags_list)))
+    return result
+
+
 
 
 @register.inclusion_tag('blog/tags/article_comment_form.html')

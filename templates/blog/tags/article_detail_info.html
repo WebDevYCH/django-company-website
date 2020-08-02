@@ -13,7 +13,7 @@
             {% if article.type == 'a' %}
                 {% if article.tags.all %}
                     {% for t in article.tags.all %}
-                        <a href=' {{ article.get_absolute_url }}' rel="tag" title="View all articles tagged with {{ t.name }}">{{ t.name }}</a>
+                        <a href=' {{ t.get_absolute_url }}' rel="tag" title="View all articles tagged with {{ t.name }}">{{ t.name }}</a>
                     {% endfor %}
                 {% endif %}
             {% endif %}

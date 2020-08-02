@@ -4,41 +4,40 @@
 
 {% block article %}
 <style>
-@media only screen and (max-width: 350px) {
-  .card-img {
-   height:155px;
-  }
-}
-@media only screen and (max-width: 476px) {
-  .card-img {
-   height:220px;
-  }
-}
-@media only screen and (max-width: 760px) {
-  .card-img {
-   height:260px;
-  }
-}
-@media only screen and (max-width: 980px) {
-  .card-img {
-   height:350px;
-  }
-}
-@media only screen and (max-width: 1800px) {
-  .card-img {
-   height:350px;
-  }
-}
 .card-img {
     width: 100%;
     border-radius: calc(.25rem - 1px);
 }
+@media only screen and (max-width: 350px) {
+    .card-img {
+     height:155px;
+    }
+  }
+  @media only screen and (max-width: 476px) {
+    .card-img {
+     height:220px;
+    }
+  }
+  @media only screen and (max-width: 760px) {
+    .card-img {
+     height:260px;
+    }
+  }
+  @media only screen and (max-width: 980px) {
+    .card-img {
+     height:350px;
+    }
+  }
+  @media only screen and (max-width: 1800px) {
+    .card-img {
+     height:350px;
+    }
+  }
 </style>
-
-    <article class="blog_item post-{{ article.pk }}" id="post-{{ article.pk }} ">
+    <article class="blog_item card post-{{ article.pk }}" id="post-{{ article.pk }} ">
         {% markdown_images article.body as imgs %}
         {% if imgs %}
-            <div class="blog_item_img card">
+            <div class="blog_item_img">
                 <div class="h1-testimonial-active owl-carousel">
                     {%  for img in imgs  %}
                         <div class="single-cases-img">
@@ -53,9 +52,13 @@
             </div>
         {% endif %}
     
-        <div class="blog_details">
+        <div class="blog_details" style="padding:20px">
             <a class="d-inline-block" href="{{ article.get_absolute_url }}">
-                <h3>{{ article.title }}</h3>
+                {% if isindex %}
+                    <h3>{{ article.title | truncatewords:6}}</h3>
+                {% else %}
+                    <h3>{{ article.title}}</h3>
+                {% endif %}
             </a>
             <p>
             {% if article.type == 'a' %}
@@ -68,7 +71,7 @@
             {% if article.type == 'a' %}
                 {% if article.tags.all %}
                     {% for t in article.tags.all %}
-                        <a href=' {{ article.get_absolute_url }}' rel="tag" title="View all articles tagged with {{ t.name }}">{{ t.name }}</a>
+                        <a href=' {{ t.get_absolute_url }}' rel="tag" title="View all articles tagged with {{ t.name }}">{{ t.name }}</a>
                     {% endfor %}
                 {% endif %}
             {% endif %}
