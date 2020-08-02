@@ -202,41 +202,7 @@
     {% block content %}{% endblock %}
     
     {% include 'main/connectus.html' %}
-    <h1>Test page</h1>
-
-    <h2>
-      Social cookies
-    </h2>
-    <p>
-      sharing button is displayed below only if "Social" cookies are accepted.
-    </p>
-    <div class="share-gplus"><g:plusone size="small" count="false"></g:plusone></div>
-
-    <h2>Optional cookies</h2>
-    {% if request|cookie_group_accepted:"optional" %}
-      <p>
-        "optional" cookies accepted
-      </p>
-    {% elif request|cookie_group_declined:"optional" %}
-      <p>
-        "optional" cookies declined
-      </p>
-    {% else %}
-      <p>
-        "optional" cookies not accepted or declined
-      </p>
-    {% endif %}
-
-    {# not existing cookie group #}
-    {% if request|cookie_group_accepted:"foo=*:.foo.com" %}
-      <p>
-        None existing cookies
-      </p>
-    {% endif %}
-
-    <p>
-      <a href="{% url "cookie_consent_cookie_group_list" %}" style="color:green;background:cyan;">Cookies policy</a>
-    </p>
+    
     
 </main>
 
