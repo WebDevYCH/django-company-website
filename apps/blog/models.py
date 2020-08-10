@@ -14,6 +14,9 @@ from mdeditor.fields import MDTextField
 from django.contrib.auth import get_user_model
 User = get_user_model()
 logger = logging.getLogger(__name__)
+from django.utils.html import strip_tags
+
+
 
 LINK_SHOW_TYPE =(
     ('i', 'Home'),
@@ -54,6 +57,7 @@ class BaseModel(models.Model):
         pass
 
 
+
 class Article(BaseModel):
     """article"""
     STATUS_CHOICES =(
@@ -80,6 +84,7 @@ class Article(BaseModel):
     article_order = models.IntegerField('article order', blank=False, null=False, default=0)
     category = models.ForeignKey('Category', verbose_name='category', on_delete=models.CASCADE, blank=False, null=False)
     tags = models.ManyToManyField('Tag', verbose_name='tags', blank=True)
+    audio = models.CharField("audiofile path", max_length=150)
 
     def body_to_string(self):
         return self.body
@@ -113,25 +118,8 @@ class Article(BaseModel):
 
     
     def save(self, *args, **kwargs):
-        # from bs4 import BeautifulSoup as BS
-        # import urllib
-        # from PIL import Image
-        # import io
-        # import re
         
-
-        # soup = BS(self.body, "html.parser")
-        # for imgtag in soup.find_all('img'):
-        #     if '.jpg' in imgtag['src'] or '.png' in imgtag['src']:
-        #         fd = urllib.request.urlopen(imgtag['src'])
-        #         image_file = io.BytesIO(fd.read())
-        #         image = Image.open(image_file)
-        #         img_width ,img_height = image.size
-        #         if img_width >= 750 and img_height >= 375:
-        #             new_html = re.sub('<img src="(.*?)"', '<img src="" ', self.body)
-        #             imgtag['width']='750'
-        #             imgtag['height']='375'
-                    
+        self.audio = settings.MEDIA_URL+'audio/'+ slugify(self.title) + '.mp3'
         super().save(*args, **kwargs)
 
     def viewed(self):
@@ -306,3 +294,8 @@ class BlogSettings(models.Model):
         super().save(*args, **kwargs)
         from agrosite.utils import cache
         cache.clear()
+
+class Speech(models.Model):
+    text = models.TextField(max_length=2000)
+    language = models.TextField(max_length=50)
+    file_name = models.TextField(max_length=1000)

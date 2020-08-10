@@ -4,12 +4,16 @@
 
 <div class="single-post">
    <div class="blog_details">
-      <ul class="blog-info-link mt-3 mb-4">
+        <div>
+            <textarea id="textToSpeech" hidden>{{ article.body|custom_markdown|striptags}}</textarea>
+        </div>
+        <ul>
          {% load_article_metas article user True %}
-     </ul>
-      <p class="excert  ">
+        </ul>
+      <p class="excert">
         {{ article.body|custom_markdown }}
-        <p class='tagcloud'>
+        </p>
+      <p class='tagcloud'>
             {% if article.type == 'a' %}
                 {% if article.tags.all %}
                     {% for t in article.tags.all %}
@@ -18,6 +22,5 @@
                 {% endif %}
             {% endif %}
             </p>
-      </p>
    </div>
 </div>
