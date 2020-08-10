@@ -114,7 +114,7 @@ INSTALLED_APPS = [
     'blog',
     'portfolio',
     'servermanager',
-    
+
     'cacheops',
     'django_extensions',
     'django_nose',
@@ -398,7 +398,6 @@ LANGUAGES = [
 MEDIA_ROOT = os.environ.get('MEDIA_ROOT', './media')
 
 MEDIA_URL = os.environ.get('MEDIA_URL', '/media/')
-
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.9/howto/static-files/

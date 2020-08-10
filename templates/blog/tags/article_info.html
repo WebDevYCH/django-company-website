@@ -3,37 +3,6 @@
 {% load cache %}
 
 {% block article %}
-<style>
-.card-img {
-    width: 100%;
-    border-radius: calc(.25rem - 1px);
-}
-@media only screen and (max-width: 350px) {
-    .card-img {
-     height:155px;
-    }
-  }
-  @media only screen and (max-width: 476px) {
-    .card-img {
-     height:220px;
-    }
-  }
-  @media only screen and (max-width: 760px) {
-    .card-img {
-     height:260px;
-    }
-  }
-  @media only screen and (max-width: 980px) {
-    .card-img {
-     height:350px;
-    }
-  }
-  @media only screen and (max-width: 1800px) {
-    .card-img {
-     height:350px;
-    }
-  }
-</style>
     <article class="blog_item card post-{{ article.pk }}" id="post-{{ article.pk }} ">
         {% markdown_images article.body as imgs %}
         {% if imgs %}

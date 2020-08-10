@@ -52,7 +52,7 @@ class ArticlelAdmin(object):
     list_display_links = ('id', 'title')
     list_filter = ( 'status', 'type', 'category', 'tags')
     filter_horizontal = ('tags',)
-    exclude = ('created_time', 'last_mod_time')
+    exclude = ('created_time', 'last_mod_time','audio')
     view_on_site = True
     actions = [makr_article_publish, draft_article, close_article_commentstatus, open_article_commentstatus]
 
@@ -69,7 +69,29 @@ class ArticlelAdmin(object):
         return form
 
     def save_model(self, request, obj, form, change):
-        super(ArticlelAdmin, self).save_model(request, obj, form, change)
+        if change:
+            import pyttsx3
+            engine = pyttsx3.init()
+            rate = engine.getProperty('rate')   # getting details of current speaking rate
+            print (rate)                        #printing current voice rate
+            engine.setProperty('rate', 125)
+            """VOLUME"""
+            volume = engine.getProperty('volume')   #getting to know current volume level (min=0 and max=1)
+            print (volume)                          #printing current volume level
+            engine.setProperty('volume',1.0)    # setting up volume level  between 0 and 1
+
+            """VOICE"""
+            voices = engine.getProperty('voices')       #getting details of current voice
+            #engine.setProperty('voice', voices[0].id)  #changing index, changes voices. o for male
+            engine.setProperty('voice', voices[1].id)
+            engine.save_to_file(self.title+". " + strip_tags(self.body), './'+settings.MEDIA_URL + 'audio/'+ slugify(self.title) + '.mp3')
+            engine.stop()
+
+            from gtts import gTTS
+            tts = gTTS(self.title + strip_tags(self.body))
+            tts.save('./'+settings.MEDIA_ROOT +  slugify(self.title) + '.mp3')
+        
+            super(ArticlelAdmin, self).save_model(request, obj, form, change)
 
     def get_view_on_site_url(self, obj=None):
         if obj:
