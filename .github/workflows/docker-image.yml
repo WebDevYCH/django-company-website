@@ -13,6 +13,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: puneethreddyhc/agroapp
+    - uses: puneethreddyhc
     - name: agroapp
       run: docker build . --file Dockerfile --tag agroapp:$(date +%s)
