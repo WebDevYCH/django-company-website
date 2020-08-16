@@ -13,6 +13,6 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    - uses: /docker/puneethreddyhc/agroap
+    - uses: actions/checkout@v2
     - name: agroap
       run: docker build . --file Dockerfile --tag agroapp:$(date +%s)
