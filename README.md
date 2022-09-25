@@ -1,8 +1,6 @@
 # django company website
 ![GitHub](https://img.shields.io/github/license/puneethreddyhc/online-shopping-system-advanced)
 
-<a href="https://www.buymeacoffee.com/puneethreddyhc" target="_blank"><img src="https://cdn.buymeacoffee.com/buttons/v2/default-yellow.png" alt="Buy Me A Coffee" width="195" height="55"></a>
-
 
 <h3>Things I code with</h3>
 <p>
@@ -28,7 +26,7 @@
   <img alt="TypeScript" src="https://img.shields.io/badge/-TypeScript-007ACC?style=flat-square&logo=typescript&logoColor=white" />
   
 </p>
-<h1>Projects We develop</h1>
+<h1>Projects I develop</h1>
 
 <ul>
 	<li><b>Vue JS</b></li>
@@ -40,4 +38,4 @@
 	<li><b>React JS</b></li>
 	<li><b>AI/ML</b></li>
 </ul>
-<h2> Projects with installation support and code explaination for Premium contact phone: +919535688928 gmail: puneethreddy951@gmail.com or visit :<a href="http://www.projectswall.com/">Projects Wall</a></h2>
+
